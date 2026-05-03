@@ -65,6 +65,24 @@
     font-size: 14px;
   }
 
+  .back-link {
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent) !important;
+    text-decoration: none !important;
+    padding: 4px 10px;
+    margin-right: 14px;
+    border: 1px solid transparent !important;
+    border-radius: 14px;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .back-link:hover {
+    background: rgba(139, 58, 31, 0.06);
+    border-color: rgba(139, 58, 31, 0.2) !important;
+  }
+
   .nav a {
     color: var(--ink-soft);
     text-decoration: none;
@@ -395,6 +413,7 @@
 
 <nav class="nav">
   <div class="nav-inner">
+    <a href="index.html" class="back-link" title="Volver al inicio">← Inicio</a>
     <span class="nav-title">Memoria Activa</span>
     <a href="#eje-1">Morin</a>
     <a href="#eje-2">Cibernética 2°</a>

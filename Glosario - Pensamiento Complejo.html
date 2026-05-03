@@ -56,6 +56,23 @@
     color: var(--ink);
   }
   .brand span { color: var(--muted); font-weight: 400; font-style: italic; }
+  .back-link {
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+    font-size: 0.82em;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 5px 10px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .back-link:hover {
+    background: var(--accent-soft);
+    border-color: var(--accent-soft);
+    text-decoration: none;
+  }
   .search-wrap {
     flex: 1; max-width: 320px; position: relative;
   }
@@ -335,6 +352,7 @@
 
 <div class="topbar">
   <div class="topbar-inner">
+    <a href="index.html" class="back-link" title="Volver al inicio">← Inicio</a>
     <div class="brand">Glosario · <span>Pensamiento Complejo</span></div>
     <div class="search-wrap">
       <input id="search" type="text" placeholder="Buscar término, definición, cita…" autocomplete="off" spellcheck="false">
