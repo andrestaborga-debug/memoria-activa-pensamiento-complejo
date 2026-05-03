@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Memoria Activa del Pensamiento Complejo</title>
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --paper: #fbf8f1;
+    --ink: #2a2620;
+    --ink-soft: #5b5246;
+    --muted: #7a7060;
+    --rule: #d9cfb8;
+    --accent: #8b3a1f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Crimson Pro', 'Crimson Text', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container {
+    max-width: 680px;
+    width: 100%;
+  }
+  .kicker {
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 500;
+    margin: 0 0 18px;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+  h1 em { color: var(--accent); font-style: italic; }
+  .lead {
+    font-size: 1.08em;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+    max-width: 560px;
+  }
+  .lead em { color: var(--accent); font-style: italic; }
+  .subtle {
+    font-size: 0.92em;
+    color: var(--muted);
+    font-style: italic;
+    max-width: 540px;
+    margin: 0 0 36px;
+  }
+  .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 36px;
+  }
+  .btn {
+    display: block;
+    padding: 22px 24px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    color: var(--ink);
+    text-decoration: none;
+    transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+    box-shadow: 0 4px 16px rgba(139, 58, 31, 0.08);
+  }
+  .btn-label {
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .btn-title {
+    font-size: 1.4em;
+    font-weight: 500;
+    margin-bottom: 8px;
+    letter-spacing: -0.005em;
+  }
+  .btn-title em { color: var(--accent); font-style: italic; }
+  .btn-desc {
+    font-size: 0.92em;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+  .meta {
+    border-top: 1px solid var(--rule);
+    padding-top: 20px;
+    font-size: 0.85em;
+    color: var(--muted);
+  }
+  .meta a { color: var(--accent); text-decoration: none; }
+  .meta a:hover { text-decoration: underline; }
+  @media (max-width: 600px) {
+    .buttons { grid-template-columns: 1fr; }
+    h1 { font-size: 1.9em; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="kicker">Andrés Taborga · Taller TRAMA</div>
+  <h1>Memoria Activa del <em>Pensamiento Complejo</em></h1>
+  <p class="lead">
+    Cartografía navegable de la obra de <em>Edgar Morin</em> y trece autores afines en diálogo con <em>El Método</em>: Maturana &amp; Varela, von Foerster, Merleau-Ponty, Whitehead, Prigogine &amp; Stengers, Kauffman, Tononi, Friston, Clark, Sotolongo &amp; Delgado, Zuboff y Seager.
+  </p>
+  <p class="subtle">
+    91 entradas en un glosario unificado, 19 fichas de obra organizadas en 7 ejes temáticos, y una constelación de puentes conceptuales que cruzan transversalmente el corpus. Citas literales verificadas de cada libro fuente.
+  </p>
+
+  <div class="buttons">
+    <a class="btn" href="Indice_Memoria_Activa.html">
+      <div class="btn-label">Mapa</div>
+      <div class="btn-title">Índice de obras</div>
+      <div class="btn-desc">19 fichas en 7 ejes temáticos · Constelación de puentes conceptuales · punto de entrada al corpus</div>
+    </a>
+    <a class="btn" href="Glosario - Pensamiento Complejo.html">
+      <div class="btn-label">Diccionario</div>
+      <div class="btn-title"><em>Glosario</em> unificado</div>
+      <div class="btn-desc">91 entradas con citas verificadas · 4 vistas (A→Z, tradición, autor, tema) · búsqueda en vivo</div>
+    </a>
+  </div>
+
+  <div class="meta">
+    Material derivado original bajo <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+    Citas textuales bajo derecho de cita académico. Construido iterativamente con asistencia de Claude (Anthropic).
+    Código fuente en <a href="https://github.com/andrestaborga-debug/memoria-activa-pensamiento-complejo">GitHub</a>.
+  </div>
+</div>
+</body>
+</html>
