@@ -74,7 +74,9 @@ Cada entrada cita su capítulo y página. Para los libros con OCR válido, el li
 
 ## Licencia
 
-Material derivado original (HTMLs, glosario, índice, README) bajo decisión de licencia pendiente. **Las citas textuales** de cada autor pertenecen a sus respectivos editores y se reproducen aquí como uso citativo académico bajo derecho de cita.
+El **material derivado original** (HTMLs, glosario, índice, README, materiales del taller) se publica bajo **[Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/)**. Sos libre de copiar, modificar y redistribuir, incluso comercialmente, siempre que: (a) atribuyas la obra a Andrés Taborga + colaboración con Claude, y (b) compartas tus derivados bajo la misma licencia. Ver `LICENSE` para el texto completo.
+
+Las **citas textuales** de cada autor pertenecen a sus respectivos editores y se reproducen aquí como uso citativo académico bajo derecho de cita. La licencia CC BY-SA 4.0 cubre el material de este repositorio, no las obras citadas.
 
 ---
 
