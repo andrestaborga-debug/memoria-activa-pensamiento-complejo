@@ -105,6 +105,53 @@
     color: var(--ink-soft);
     line-height: 1.45;
   }
+  .companion {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 20px 24px;
+    margin-bottom: 36px;
+    border-radius: 1px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+  .companion:hover {
+    border-color: var(--accent);
+    box-shadow: 0 2px 12px rgba(139, 58, 31, 0.06);
+  }
+  .companion-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    background: var(--accent);
+    color: var(--paper);
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 600;
+    border-radius: 12px;
+    flex-shrink: 0;
+  }
+  .companion-text {
+    flex: 1;
+    min-width: 220px;
+    font-size: 0.94em;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .companion-text strong { color: var(--ink); }
+  .companion-cta {
+    color: var(--accent);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.92em;
+    white-space: nowrap;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.15s;
+  }
+  .companion-cta:hover { border-bottom-color: var(--accent); }
   .meta {
     border-top: 1px solid var(--rule);
     padding-top: 20px;
@@ -142,6 +189,14 @@
       <div class="btn-desc">91 entradas con citas verificadas · 4 vistas (A→Z, tradición, autor, tema) · búsqueda en vivo</div>
     </a>
   </div>
+
+  <a class="companion" href="https://andrestaborga-debug.github.io/trama/" target="_blank" rel="noopener" style="text-decoration:none;">
+    <span class="companion-pill">Taller hermano</span>
+    <div class="companion-text">
+      <strong>TRAMA</strong> · 24 sesiones asincrónicas (6 módulos × 4) para profesionales que enfrentan problemas que no se simplifican. Bilingüe ES/EN, autoguiado, ~30 min por sesión × 12 semanas.
+    </div>
+    <span class="companion-cta">Abrir taller →</span>
+  </a>
 
   <div class="meta">
     Material derivado original bajo <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
