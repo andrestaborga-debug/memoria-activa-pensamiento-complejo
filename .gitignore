@@ -1,0 +1,20 @@
+# Biblioteca con material académico bajo copyright — no se distribuye.
+# Los chapter-links del glosario asumen que cada usuario tiene su propia copia
+# en una carpeta `Biblioteca/` adyacente a los HTMLs. Ver README.
+Biblioteca/
+Biblioteca.zip
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editores
+.vscode/
+.idea/
+*.swp
+*~
+
+# Archivos temporales del pipeline OCR (Tesseract + Poppler)
+_*_text.txt
+*.tmp

@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Memoria Activa del Pensamiento Complejo — Índice</title>
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --paper: #fbf8f1;
+    --ink: #2a2620;
+    --ink-soft: #5b5246;
+    --rule: #d9cfb8;
+    --accent: #8b3a1f;
+    --eje-1: #a44a2a;
+    --eje-2: #4a6b7c;
+    --eje-3: #6b7c4a;
+    --eje-4: #6b3a5c;
+    --eje-5: #b8851f;
+    --eje-6: #3a4a6b;
+    --eje-7: #8b6b3a;
+    --eje-8: #a86b3f;
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: 90px; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Crimson Pro', 'Crimson Text', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(245, 241, 232, 0.96);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 32px;
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+  }
+
+  .nav-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 18px;
+    align-items: baseline;
+  }
+
+  .nav-title {
+    font-weight: 600;
+    color: var(--ink);
+    margin-right: 18px;
+    letter-spacing: 0;
+    font-size: 14px;
+  }
+
+  .nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 60px 40px 120px;
+  }
+
+  header.masthead {
+    text-align: center;
+    margin-bottom: 80px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .kicker {
+    font-family: -apple-system, Inter, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 44px;
+    font-weight: 500;
+    line-height: 1.15;
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+
+  h1 em { font-style: italic; color: var(--accent); }
+
+  .subtitle {
+    font-size: 18px;
+    color: var(--ink-soft);
+    font-style: italic;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .intro {
+    max-width: 640px;
+    margin: 36px auto 0;
+    color: var(--ink-soft);
+    font-size: 16px;
+    text-align: left;
+  }
+
+  .intro p { margin: 0 0 14px; }
+
+  section.eje {
+    margin-top: 80px;
+    scroll-margin-top: 90px;
+  }
+
+  .eje-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 6px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--eje-color, var(--accent));
+  }
+
+  .eje-num {
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 12px;
+    color: var(--eje-color, var(--accent));
+    letter-spacing: 0.18em;
+    font-weight: 600;
+  }
+
+  h2 {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 30px;
+    font-weight: 500;
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+
+  .eje-blurb {
+    font-style: italic;
+    color: var(--ink-soft);
+    margin: 18px 0 36px;
+    font-size: 16px;
+    max-width: 680px;
+  }
+
+  .work {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--eje-color, var(--accent));
+    padding: 28px 32px;
+    margin-bottom: 22px;
+    border-radius: 1px;
+    scroll-margin-top: 90px;
+  }
+
+  .work-head {
+    margin-bottom: 16px;
+  }
+
+  .work-title {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.25;
+    margin: 0 0 4px;
+  }
+
+  .work-title em { color: var(--accent); }
+
+  .work-meta {
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 12px;
+    color: var(--ink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  .work-meta .file {
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 11px;
+    background: rgba(139, 58, 31, 0.06);
+    padding: 1px 6px;
+    border-radius: 2px;
+  }
+
+  .field {
+    margin-top: 14px;
+  }
+
+  .field-label {
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--eje-color, var(--accent));
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .field-body {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .conceptos {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .conceptos li {
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 12px;
+    background: rgba(0,0,0,0.03);
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    padding: 3px 10px;
+    border-radius: 12px;
+  }
+
+  .puente {
+    font-size: 15px;
+    color: var(--ink-soft);
+    padding-left: 14px;
+    border-left: 2px solid var(--rule);
+    margin: 6px 0;
+  }
+
+  .puente strong { color: var(--ink); font-weight: 600; }
+
+  /* Recursos derivados — botones de navegación */
+  .recursos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .recurso-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--eje-color, var(--accent));
+    background: rgba(0,0,0,0.02);
+    border: 1px solid var(--rule);
+    padding: 5px 12px;
+    border-radius: 3px;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .recurso-link:hover {
+    background: var(--eje-color, var(--accent));
+    color: var(--paper);
+    border-color: var(--eje-color, var(--accent));
+  }
+
+  .recurso-link::before {
+    content: "→";
+    font-size: 13px;
+    opacity: 0.7;
+  }
+
+  /* Constelación final */
+  .constelacion {
+    margin-top: 100px;
+    padding-top: 50px;
+    border-top: 1px solid var(--rule);
+  }
+
+  .constelacion h2 { text-align: center; margin-bottom: 8px; }
+
+  .constelacion .subtitle-small {
+    text-align: center;
+    color: var(--ink-soft);
+    font-style: italic;
+    margin-bottom: 50px;
+  }
+
+  .puentes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 22px;
+  }
+
+  .puente-card {
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    padding: 22px 24px;
+    transition: border-color 0.15s, transform 0.15s;
+  }
+
+  .puente-card:hover { border-color: var(--accent); }
+
+  .puente-card .term {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .puente-card .term a {
+    color: inherit;
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(139, 58, 31, 0.3);
+    transition: border-color 0.15s;
+  }
+
+  .puente-card .term a:hover { border-bottom-color: var(--accent); border-bottom-style: solid; }
+
+  .puente-card .term a::after {
+    content: " ↗";
+    font-style: normal;
+    font-size: 0.65em;
+    opacity: 0.6;
+    border-bottom: none;
+  }
+
+  .puente-card .links {
+    font-size: 14px;
+    color: var(--ink-soft);
+    line-height: 1.7;
+  }
+
+  .puente-card .links a {
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px dotted rgba(43, 38, 32, 0.25);
+    transition: border-color 0.15s, color 0.15s;
+  }
+
+  .puente-card .links a:hover {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    border-bottom-style: solid;
+  }
+
+  footer {
+    margin-top: 100px;
+    padding-top: 30px;
+    border-top: 1px solid var(--rule);
+    text-align: center;
+    color: var(--ink-soft);
+    font-size: 13px;
+    font-family: -apple-system, Inter, sans-serif;
+  }
+
+  /* Per-eje colors */
+  #eje-1 { --eje-color: var(--eje-1); }
+  #eje-2 { --eje-color: var(--eje-2); }
+  #eje-3 { --eje-color: var(--eje-3); }
+  #eje-4 { --eje-color: var(--eje-4); }
+  #eje-5 { --eje-color: var(--eje-5); }
+  #eje-6 { --eje-color: var(--eje-6); }
+  #eje-7 { --eje-color: var(--eje-7); }
+  #eje-8 { --eje-color: var(--eje-8); }
+
+  @media (max-width: 700px) {
+    .container { padding: 40px 22px 80px; }
+    h1 { font-size: 32px; }
+    h2 { font-size: 24px; }
+    .work { padding: 22px; }
+    .nav { padding: 10px 16px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <span class="nav-title">Memoria Activa</span>
+    <a href="#eje-1">Morin</a>
+    <a href="#eje-2">Cibernética 2°</a>
+    <a href="#eje-3">Cognición encarnada</a>
+    <a href="#eje-4">Consciencia</a>
+    <a href="#eje-5">Termodinámica</a>
+    <a href="#eje-6">Proceso</a>
+    <a href="#eje-7">Complejidad social</a>
+    <a href="#constelacion">Constelación</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<header class="masthead">
+  <div class="kicker">Biblioteca · Mayo 2026</div>
+  <h1>Memoria Activa<br>del <em>Pensamiento Complejo</em></h1>
+  <p class="subtitle">Cartografía de un corpus en formación. Diecisiete obras, siete ejes, una conversación abierta.</p>
+
+  <div class="intro">
+    <p>Este índice ordena la biblioteca local de obras que sostienen el taller TRAMA y los proyectos derivados. No pretende ser una enciclopedia: es una manera de tener cerca, en la cabeza y en el escritorio, lo que cada autor aporta y dónde se cruza con los demás.</p>
+    <p>El núcleo es Morin. A su alrededor se han ido sumando voces que dialogan con <em>El Método</em> desde otros frentes: la biología del conocer, la cognición encarnada, las teorías contemporáneas de la consciencia, la termodinámica de lo vivo, la metafísica del proceso y la lectura latinoamericana de la complejidad. La sección final reúne los <strong>puentes conceptuales</strong> que cruzan transversalmente el corpus.</p>
+  </div>
+</header>
+
+<!-- ============== EJE 1: MORIN ============== -->
+<section class="eje" id="eje-1">
+  <div class="eje-header">
+    <span class="eje-num">EJE 01</span>
+    <h2>Núcleo Morin — <em>El Método</em></h2>
+  </div>
+  <p class="eje-blurb">Seis tomos publicados entre 1977 y 2004. La obra-río de Morin: cada volumen es una región del bucle que liga naturaleza, vida, conocimiento, ideas, humanidad y ética.</p>
+
+  <article class="work" id="morin-1">
+    <div class="work-head">
+      <h3 class="work-title"><em>El Método I</em> — La naturaleza de la Naturaleza</h3>
+      <div class="work-meta">Edgar Morin · 1977 · <span class="file">Morin... Vol. 1.epub</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Funda una <em>physis</em> generalizada: orden y desorden, sistema y entorno, organización y desorganización son inseparables. Introduce el bucle tetralógico (orden ↔ desorden ↔ interacciones ↔ organización) como matriz de toda emergencia.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>physis</li><li>bucle tetralógico</li><li>sistema abierto</li><li>organización</li><li>orden/desorden</li><li>emergencia</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-morin">Glosario · Tomo I</a>
+          <a class="recurso-link" href="Morin_MetodoI_Diagrams_EN.html">Diagramas (EN)</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="morin-2">
+    <div class="work-head">
+      <h3 class="work-title"><em>El Método II</em> — La vida de la Vida</h3>
+      <div class="work-meta">Edgar Morin · 1980 · <span class="file">Morin... Vol. 2.epub</span> + <span class="file">LaVidadelaVida.pdf</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">La vida no se define por una sustancia sino por una <em>auto-eco-organización</em>: el viviente se hace a sí mismo en relación constitutiva con su ambiente. Lo vivo es bucle entre individuo, especie y ecosistema.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>auto-eco-organización</li><li>autonomía</li><li>individualidad viviente</li><li>especie/individuo/sociedad</li><li>computo viviente</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Maturana &amp; Varela:</strong> Morin se apropia de la <em>autopoiesis</em> pero la inserta en un marco "auto-eco" más amplio que el clausurado original.</p>
+      <p class="puente"><strong>Kauffman:</strong> ambos buscan formas de "orden gratis" que la termodinámica del no-equilibrio permite.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-morin">Glosario · Tomo II</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="morin-3">
+    <div class="work-head">
+      <h3 class="work-title"><em>El Método III</em> — El conocimiento del Conocimiento</h3>
+      <div class="work-meta">Edgar Morin · 1986 · <span class="file">Morin... Vol. 3.epub</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Conocer es una actividad biológica, cerebral, lógica, lingüística, cultural, social e histórica a la vez. La cognición es <em>computación-cogitación</em>: cómputo viviente que se vuelve sobre sí mismo en el sujeto.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>computo/cogitación</li><li>sujeto</li><li>noosfera (semilla)</li><li>cerebro/espíritu</li><li>error/ilusión</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Von Foerster:</strong> el observador es parte del sistema observado. Morin radicaliza: el conocedor es producto del conocer.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-morin">Glosario · Tomo III</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="morin-4">
+    <div class="work-head">
+      <h3 class="work-title"><em>El Método IV</em> — Las ideas. Su hábitat, su vida, sus costumbres, su organización</h3>
+      <div class="work-meta">Edgar Morin · 1991 · <span class="file">Morin... Vol. 4.epub</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Las ideas no son contenidos pasivos: viven, se reproducen y compiten en una <em>noosfera</em>. La cultura es ecosistema de ideas con sus propias leyes evolutivas, parásitas y simbióticas con los seres humanos.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>noosfera</li><li>ecología de las ideas</li><li>noología</li><li>creencia/conocimiento</li><li>posesión por las ideas</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-morin">Glosario · Tomo IV</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="morin-5">
+    <div class="work-head">
+      <h3 class="work-title"><em>El Método V</em> — La humanidad de la Humanidad</h3>
+      <div class="work-meta">Edgar Morin · 2001 · <span class="file">Morin... Vol. 5.epub</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Lo humano es trinitario indisociable: <em>individuo / sociedad / especie</em>. Cada término produce y es producido por los otros. La identidad humana es <em>homo complexus</em>: sapiens y demens, faber y ludens, prosaico y poético.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>trinidad humana</li><li>homo complexus</li><li>identidad terrenal</li><li>sapiens/demens</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-morin">Glosario · Tomo V</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="morin-6">
+    <div class="work-head">
+      <h3 class="work-title"><em>El Método VI</em> — Ética</h3>
+      <div class="work-meta">Edgar Morin · 2004 · <span class="file">Morin... Vol. 6.epub</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">La ética emerge de la <em>religación</em>: el imperativo de re-ligar lo que el conocimiento ha separado. Tres niveles entrelazados: autoética (consigo), socioética (con la comunidad), antropoética (con la humanidad y la Tierra).</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>religación</li><li>autoética</li><li>socioética</li><li>antropoética</li><li>resistencia a la barbarie</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-morin">Glosario · Tomo VI</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============== EJE 2: CIBERNÉTICA 2° ORDEN ============== -->
+<section class="eje" id="eje-2">
+  <div class="eje-header">
+    <span class="eje-num">EJE 02</span>
+    <h2>Cibernética de segundo orden — Autopoiesis</h2>
+  </div>
+  <p class="eje-blurb">El giro reflexivo: la ciencia incluye al observador. Lo vivo se define por su clausura operacional, no por una lista de propiedades.</p>
+
+  <article class="work" id="maturana-varela">
+    <div class="work-head">
+      <h3 class="work-title"><em>El árbol del conocimiento</em></h3>
+      <div class="work-meta">Humberto Maturana &amp; Francisco Varela · 1984 · <span class="file">epub + pdf</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">"Todo hacer es conocer y todo conocer es hacer." La célula viva es una red autopoiética: produce los componentes que la producen. Conocer no es representar un mundo exterior sino <em>hacer emerger</em> un mundo en el acoplamiento estructural con el medio.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>autopoiesis</li><li>clausura operacional</li><li>acoplamiento estructural</li><li>deriva natural</li><li>conocer/vivir</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Morin (II y III):</strong> Morin incorpora la autopoiesis pero abre la clausura — para él, lo vivo es siempre <em>auto-eco</em>, abierto en su ser cerrado.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-autopoiesis">Glosario Extendido · Maturana &amp; Varela</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="von-foerster">
+    <div class="work-head">
+      <h3 class="work-title"><em>On Constructing a Reality</em></h3>
+      <div class="work-meta">Heinz von Foerster · 1973 · <span class="file">PDF (paper)</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">"El ambiente como lo experimentamos es nuestro invento." El sistema nervioso no decodifica una realidad pre-dada: la <em>computa</em>. Funda la cibernética de segundo orden — la ciencia debe incluir al observador entre sus objetos.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>observador</li><li>cibernética 2° orden</li><li>imperativo ético constructivista</li><li>eigenforms</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Morin (III):</strong> el conocer construye al conocedor. La epistemología compleja hereda directamente este giro.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-cybernetics">Glosario Extendido · Von Foerster</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============== EJE 3: COGNICIÓN ENCARNADA ============== -->
+<section class="eje" id="eje-3">
+  <div class="eje-header">
+    <span class="eje-num">EJE 03</span>
+    <h2>Cognición encarnada — Enactivismo</h2>
+  </div>
+  <p class="eje-blurb">La mente no está en la cabeza: está en el cuerpo en acción y en el mundo que ese cuerpo enactúa. Fenomenología y biología cognitiva en diálogo.</p>
+
+  <article class="work" id="embodied-mind">
+    <div class="work-head">
+      <h3 class="work-title"><em>The Embodied Mind</em></h3>
+      <div class="work-meta">Francisco Varela, Evan Thompson, Eleanor Rosch · 1991 · <span class="file">Varela, Thompson, Rosch.pdf</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Cognición no es computación sobre representaciones internas: es <em>acción encarnada</em> que hace emerger un mundo. Tiende un puente entre fenomenología (Merleau-Ponty), ciencia cognitiva y la tradición meditativa budista.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>enacción</li><li>cognición situada</li><li>middle way</li><li>círculo hermenéutico cognitivo</li><li>autopoiesis cognitiva</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Maturana &amp; Varela:</strong> es la extensión cognitiva de la autopoiesis biológica.</p>
+      <p class="puente"><strong>Merleau-Ponty:</strong> Varela lo adopta como filósofo tutelar de la fase media de su pensamiento.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-embodied">Glosario Extendido · Cognición encarnada</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="merleau-ponty">
+    <div class="work-head">
+      <h3 class="work-title"><em>Fenomenología de la percepción</em></h3>
+      <div class="work-meta">Maurice Merleau-Ponty · 1945 · <span class="file">PDF</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">El cuerpo no es un objeto entre objetos: es el <em>esquema</em> a través del cual hay mundo para mí. La percepción es apertura pre-reflexiva, no juicio. La <em>chair</em> (carne) es el tejido común de cuerpo y mundo.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>cuerpo propio</li><li>esquema corporal</li><li>chair</li><li>intercorporalidad</li><li>percepción primaria</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#cuerpo-propio">Glosario Extendido · Merleau-Ponty</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============== EJE 4: CONSCIENCIA ============== -->
+<section class="eje" id="eje-4">
+  <div class="eje-header">
+    <span class="eje-num">EJE 04</span>
+    <h2>Consciencia — Mente predictiva — Panpsiquismo</h2>
+  </div>
+  <p class="eje-blurb">Tres familias de teorías contemporáneas de la consciencia que confluyen en este corpus: la mente como sistema predictivo (Clark/Friston), la consciencia como información integrada (Tononi), y la hipótesis de que la consciencia es fundamental (Zuboff/Seager et al.).</p>
+
+  <article class="work" id="clark">
+    <div class="work-head">
+      <h3 class="work-title"><em>Whatever Next? Predictive Brains and Situated Agents</em></h3>
+      <div class="work-meta">Andy Clark · 2013 · <span class="file">PDF (BBS paper)</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">El cerebro es una <em>máquina de predicción</em>: anticipa la entrada sensorial y solo procesa el error de predicción. Percepción y acción son dos caras del mismo proceso de minimización del error.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>predictive processing</li><li>error de predicción</li><li>inferencia activa</li><li>cognición situada</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-predictive">Glosario Extendido · Mente predictiva</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="friston">
+    <div class="work-head">
+      <h3 class="work-title"><em>The Free-Energy Principle: A Rough Guide to the Brain</em></h3>
+      <div class="work-meta">Karl Friston · 2009 · <span class="file">PDF</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Un sistema autoorganizado debe minimizar su <em>energía libre variacional</em> para resistir la dispersión hacia estados de alta entropía. De este único principio se derivan percepción, acción y aprendizaje.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>energía libre variacional</li><li>Markov blanket</li><li>inferencia activa</li><li>homeostasis predictiva</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Prigogine:</strong> ambos fundan lo vivo en la física del no-equilibrio. Friston formaliza la intuición prigoginiana en términos bayesianos.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#energia-libre-variacional">Glosario Extendido · Friston</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="tononi">
+    <div class="work-head">
+      <h3 class="work-title"><em>An Information Integration Theory of Consciousness</em></h3>
+      <div class="work-meta">Giulio Tononi · 2004 · <span class="file">PDF</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">La consciencia es la cantidad de <em>información integrada</em> (Φ, phi) que un sistema genera por encima de sus partes. Donde hay integración irreducible de información, hay un cuanto de experiencia.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>Φ (phi)</li><li>información integrada</li><li>complejo principal</li><li>cualia como estructura</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-iit">Glosario Extendido · Tononi (IIT)</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="zuboff">
+    <div class="work-head">
+      <h3 class="work-title"><em>One Self: The Logic of Experience</em> + <em>Finding Myself Beyond the False Boundaries</em></h3>
+      <div class="work-meta">Arnold Zuboff · 1990 / s.f. · <span class="file">2 PDFs</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Argumento del <em>universalismo del yo</em>: las fronteras que parecen separar mi experiencia de la de otros son ilusorias bajo análisis riguroso. Toda experiencia es, en cierto sentido lógico, "mía". Provocación filosófica útil para repensar la individualidad.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>open individualism</li><li>identidad personal</li><li>fronteras del yo</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#universalismo-del-yo">Glosario Extendido · Zuboff</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="seager">
+    <div class="work-head">
+      <h3 class="work-title"><em>The Routledge Handbook of Panpsychism</em></h3>
+      <div class="work-meta">William Seager (ed.) — Strawson, Goff et al. · <span class="file">PDF</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Manual de la tesis de que la <em>experiencia</em> es una propiedad fundamental de la realidad — no una emergencia tardía. Mapea variantes (panpsiquismo constitutivo, cosmopsicismo, panprotopsiquismo) y respuestas a la objeción de la combinación.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>panpsiquismo</li><li>cosmopsicismo</li><li>problema de la combinación</li><li>experiencia fundamental</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#panpsiquismo">Glosario Extendido · Panpsiquismo</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============== EJE 5: TERMODINÁMICA ============== -->
+<section class="eje" id="eje-5">
+  <div class="eje-header">
+    <span class="eje-num">EJE 05</span>
+    <h2>Termodinámica — Autoorganización — Complejidad</h2>
+  </div>
+  <p class="eje-blurb">La física que reconcilia tiempo, vida y orden. Estructuras disipativas, criticidad, orden gratis: el universo como fábrica de novedad.</p>
+
+  <article class="work" id="prigogine">
+    <div class="work-head">
+      <h3 class="work-title"><em>La nueva alianza</em></h3>
+      <div class="work-meta">Ilya Prigogine &amp; Isabelle Stengers · 1979 · <span class="file">PDF</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">La ciencia clásica negaba el tiempo (mecánica reversible) y separaba al hombre del mundo. Las <em>estructuras disipativas</em> y la termodinámica del no-equilibrio devuelven el tiempo a la naturaleza y reabren el diálogo entre ciencia y humanidades.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>estructura disipativa</li><li>tiempo irreversible</li><li>bifurcación</li><li>orden por fluctuación</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Morin (I):</strong> es uno de los pilares físicos del bucle tetralógico. La organización emerge del desorden.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#estructura-disipativa">Glosario Extendido · Prigogine &amp; Stengers</a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <article class="work" id="kauffman">
+    <div class="work-head">
+      <h3 class="work-title"><em>At Home in the Universe</em> + <em>The Origins of Order</em></h3>
+      <div class="work-meta">Stuart Kauffman · 1993 / 1995 · <span class="file">2 PDFs</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">El orden biológico no es solo selección natural: hay <em>orden gratis</em> que emerge espontáneamente en redes complejas en el borde del caos. La vida es esperable, no improbable, en universos que permiten química combinatoria.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>orden gratis</li><li>redes booleanas</li><li>edge of chaos</li><li>conjuntos autocatalíticos</li><li>adyacente posible</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#auto-organizacion-kauffman">Glosario Extendido · Kauffman</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============== EJE 6: PROCESO ============== -->
+<section class="eje" id="eje-6">
+  <div class="eje-header">
+    <span class="eje-num">EJE 06</span>
+    <h2>Metafísica del proceso</h2>
+  </div>
+  <p class="eje-blurb">Sustituir la sustancia por el evento. Lo real no son cosas que cambian sino procesos que se entretejen.</p>
+
+  <article class="work" id="whitehead">
+    <div class="work-head">
+      <h3 class="work-title"><em>Process and Reality</em></h3>
+      <div class="work-meta">Alfred North Whitehead · 1929 (ed. corregida 1978) · <span class="file">PDF</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">El átomo de la realidad no es la cosa sino la <em>ocasión actual</em>: un evento que <em>prehende</em> (toma en cuenta) el universo entero desde su perspectiva. La realidad es un tejido relacional de eventos en devenir.</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>ocasión actual</li><li>prehensión</li><li>concrescencia</li><li>nexus</li><li>filosofía del organismo</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Morin:</strong> ambos sustituyen ontologías de la sustancia por ontologías relacionales del proceso.</p>
+      <p class="puente"><strong>Panpsiquismo (Seager):</strong> Whitehead es uno de los antecedentes mayores del panpsiquismo contemporáneo.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-proceso">Glosario Extendido · Whitehead</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============== EJE 7: COMPLEJIDAD SOCIAL ============== -->
+<section class="eje" id="eje-7">
+  <div class="eje-header">
+    <span class="eje-num">EJE 07</span>
+    <h2>Complejidad social — Epistemología latinoamericana</h2>
+  </div>
+  <p class="eje-blurb">El pensamiento complejo aterrizado en las ciencias sociales del Sur global. Voz cubana en diálogo con Morin.</p>
+
+  <article class="work" id="sotolongo">
+    <div class="work-head">
+      <h3 class="work-title"><em>La revolución contemporánea del saber y la complejidad social</em></h3>
+      <div class="work-meta">Pedro Luis Sotolongo Codina &amp; Carlos Jesús Delgado Díaz · CLACSO · 2006 · <span class="file">sotolongo.pdf</span></div>
+    </div>
+    <div class="field">
+      <div class="field-label">Tesis central</div>
+      <div class="field-body">Hacia "unas ciencias sociales de nuevo tipo" capaces de pensar lo social desde la complejidad: superando la fragmentación disciplinaria y la pretensión de neutralidad. Material derivado de un curso a distancia de la Cátedra Florestan Fernandes (CLACSO).</div>
+    </div>
+    <div class="field">
+      <div class="field-label">Conceptos</div>
+      <ul class="conceptos">
+        <li>ciencias sociales complejas</li><li>epistemología del Sur</li><li>saber holístico</li><li>transdisciplina</li>
+      </ul>
+    </div>
+    <div class="field">
+      <div class="field-label">Puentes</div>
+      <p class="puente"><strong>Morin (todos los tomos):</strong> aplicación del programa moriniano al campo social latinoamericano.</p>
+    </div>
+    <div class="field">
+      <div class="field-label">Recursos</div>
+      <div class="field-body">
+        <div class="recursos">
+          <a class="recurso-link" href="Glosario - Pensamiento Complejo.html#trad-social">Glosario Extendido · Sotolongo &amp; Delgado</a>
+        </div>
+      </div>
+    </div>
+  </article>
+</section>
+
+<!-- ============== CONSTELACIÓN ============== -->
+<section class="constelacion" id="constelacion">
+  <h2>Constelación de puentes</h2>
+  <p class="subtitle-small">Conceptos que cruzan transversalmente el corpus. Los términos con <span style="border-bottom:1px dashed rgba(139,58,31,0.5)">subrayado punteado</span> linkean al glosario; los autores en <strong>negrita</strong> a su ficha.</p>
+
+  <div class="puentes-grid">
+
+    <div class="puente-card">
+      <div class="term"><a href="Glosario - Pensamiento Complejo.html#auto-eco-organizacion">autoorganización</a></div>
+      <div class="links"><a href="#morin-1">Morin I</a> · <a href="#prigogine">Prigogine &amp; Stengers</a> · <a href="#kauffman">Kauffman</a> · <a href="#friston">Friston</a> — el orden que emerge del flujo lejos del equilibrio.</div>
+    </div>
+
+    <div class="puente-card">
+      <div class="term">autopoiesis &amp; clausura</div>
+      <div class="links"><a href="#maturana-varela">Maturana &amp; Varela</a> · <a href="#morin-2">Morin II</a> · <a href="#embodied-mind">Varela/Thompson/Rosch</a> — sistemas que producen los componentes que los producen.</div>
+    </div>
+
+    <div class="puente-card">
+      <div class="term"><a href="Glosario - Pensamiento Complejo.html#sujeto">observador &amp; sujeto</a></div>
+      <div class="links"><a href="#von-foerster">Von Foerster</a> · <a href="#morin-3">Morin III</a> · <a href="#maturana-varela">Maturana</a> — la ciencia que se incluye a sí misma entre sus objetos.</div>
+    </div>
+
+    <div class="puente-card">
+      <div class="term">cuerpo &amp; cognición</div>
+      <div class="links"><a href="#merleau-ponty">Merleau-Ponty</a> · <a href="#embodied-mind">Varela/Thompson/Rosch</a> · <a href="#clark">Clark</a> — la mente no termina en la piel.</div>
+    </div>
+
+    <div class="puente-card">
+      <div class="term">predicción &amp; entropía</div>
+      <div class="links"><a href="#friston">Friston</a> · <a href="#clark">Clark</a> · <a href="#prigogine">Prigogine</a> — vivir es minimizar la sorpresa que destruye la forma.</div>
+    </div>
+
+    <div class="puente-card">
+      <div class="term">consciencia &amp; integración</div>
+      <div class="links"><a href="#tononi">Tononi</a> · <a href="#seager">Seager (panpsiquismo)</a> · <a href="#zuboff">Zuboff</a> · <a href="#whitehead">Whitehead</a> — qué hace que un sistema "sienta" que es algo.</div>
+    </div>
+
+    <div class="puente-card">
+      <div class="term">proceso &amp; relación</div>
+      <div class="links"><a href="#whitehead">Whitehead</a> · <a href="#eje-1">Morin (todos)</a> · <a href="#prigogine">Prigogine</a> — primero el devenir, después las cosas.</div>
+    </div>
+
+    <div class="puente-card">
+      <div class="term"><a href="Glosario - Pensamiento Complejo.html#reliance">religación &amp; ética</a></div>
+      <div class="links"><a href="#morin-6">Morin VI</a> · <a href="#sotolongo">Sotolongo &amp; Delgado</a> — re-ligar lo que el saber moderno ha separado.</div>
+    </div>
+
+    <div class="puente-card">
+      <div class="term"><a href="Glosario - Pensamiento Complejo.html#noosfera">noosfera &amp; cultura</a></div>
+      <div class="links"><a href="#morin-4">Morin IV</a> · (puerta abierta a memética, semiótica, estudios culturales — corpus pendiente de ampliar).</div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  Memoria Activa del Pensamiento Complejo · Andrés Taborga · Revisión 2026-05-03<br>
+  17 obras · 7 ejes · puentes en construcción
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complex Science · A Playable Journey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<style>
+  :root{
+    --pink:#FF6B9D;
+    --purple:#6C5CE7;
+    --teal:#00CEC9;
+    --yellow:#FDCB6E;
+    --coral:#FF7675;
+    --dark:#1A1B3A;
+    --cream:#FFF8EC;
+    --ink:#2D3436;
+    --soft:#F4EEFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'DM Sans',system-ui,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;font-weight:900;line-height:1.1}
+  h2{font-size:clamp(1.8rem,4vw,3rem);margin-bottom:.5rem}
+  h3{font-size:1.3rem;margin:1rem 0 .5rem}
+  p{margin-bottom:1rem}
+  a{color:var(--purple)}
+
+  /* ----------- NAV ----------- */
+  nav{
+    position:sticky;top:0;z-index:100;
+    background:rgba(255,248,236,.9);
+    backdrop-filter:blur(10px);
+    border-bottom:2px solid var(--ink);
+    padding:.8rem 1rem;
+  }
+  nav .wrap{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+  nav .logo{font-family:'Fraunces',serif;font-weight:900;font-size:1.2rem;color:var(--dark);text-decoration:none}
+  nav .logo span{color:var(--pink)}
+  nav ul{list-style:none;display:flex;gap:.4rem;flex-wrap:wrap;margin-left:auto}
+  nav a.chip{
+    display:inline-block;padding:.3rem .7rem;border-radius:20px;
+    background:transparent;color:var(--ink);text-decoration:none;
+    font-size:.85rem;font-weight:500;border:1.5px solid transparent;
+    transition:all .2s;
+  }
+  nav a.chip:hover{background:var(--purple);color:#fff;transform:translateY(-2px)}
+
+  /* ----------- HERO ----------- */
+  .hero{
+    min-height:90vh;
+    display:flex;align-items:center;justify-content:center;
+    padding:4rem 1.5rem;
+    position:relative;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(255,107,157,.25), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(108,92,231,.25), transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(0,206,201,.15), transparent 60%),
+      var(--cream);
+  }
+  .hero-inner{max-width:900px;text-align:center;position:relative;z-index:2}
+  .hero h1{
+    font-size:clamp(2.5rem,7vw,5.5rem);
+    margin-bottom:1rem;
+  }
+  .hero h1 .w1{color:var(--pink)}
+  .hero h1 .w2{color:var(--purple);font-style:italic}
+  .hero p.lead{font-size:clamp(1.1rem,2vw,1.35rem);max-width:650px;margin:0 auto 2rem;color:#555}
+  .hero .cta{
+    display:inline-block;padding:.9rem 2rem;
+    background:var(--dark);color:var(--cream);
+    border-radius:40px;text-decoration:none;font-weight:700;
+    border:2px solid var(--dark);
+    transition:all .2s;
+  }
+  .hero .cta:hover{background:var(--pink);border-color:var(--pink);transform:translateY(-3px);box-shadow:0 10px 30px rgba(255,107,157,.4)}
+  .hero-orbs{position:absolute;inset:0;pointer-events:none;z-index:1}
+  .orb{position:absolute;border-radius:50%;filter:blur(40px);opacity:.6;animation:float 12s ease-in-out infinite}
+  .orb.a{width:300px;height:300px;background:var(--pink);top:10%;left:5%}
+  .orb.b{width:250px;height:250px;background:var(--teal);bottom:10%;right:8%;animation-delay:-4s}
+  .orb.c{width:200px;height:200px;background:var(--yellow);top:50%;right:20%;animation-delay:-8s}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(30px,-40px) scale(1.1)}
+    66%{transform:translate(-20px,30px) scale(.9)}
+  }
+
+  /* ----------- INTRO STRIP ----------- */
+  .intro-strip{
+    background:var(--dark);color:var(--cream);
+    padding:3rem 1.5rem;text-align:center;
+    border-top:3px solid var(--ink);border-bottom:3px solid var(--ink);
+  }
+  .intro-strip p{font-family:'Fraunces',serif;font-style:italic;font-size:clamp(1.2rem,2.5vw,1.8rem);max-width:800px;margin:0 auto .5rem}
+  .intro-strip .who{font-size:.9rem;color:var(--yellow);font-style:normal;font-family:'DM Sans',sans-serif}
+
+  /* ----------- SECTIONS ----------- */
+  section.gadget{
+    padding:5rem 1.5rem;
+    border-bottom:2px solid var(--ink);
+  }
+  section.gadget .inner{max-width:1100px;margin:0 auto}
+  .kicker{
+    display:inline-block;
+    padding:.25rem .8rem;border-radius:20px;
+    font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;
+    margin-bottom:.8rem;
+  }
+  .k-pink{background:var(--pink);color:#fff}
+  .k-purple{background:var(--purple);color:#fff}
+  .k-teal{background:var(--teal);color:var(--dark)}
+  .k-yellow{background:var(--yellow);color:var(--dark)}
+  .k-coral{background:var(--coral);color:#fff}
+  .k-dark{background:var(--dark);color:var(--cream)}
+  .gadget-body{
+    display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start;
+    margin-top:1.5rem;
+  }
+  @media(max-width:820px){
+    .gadget-body{grid-template-columns:1fr}
+  }
+  .gadget-text p{color:#444}
+  .try{
+    margin-top:1rem;padding:1rem 1.2rem;
+    border-radius:14px;background:var(--soft);
+    border-left:4px solid var(--purple);
+    font-size:.95rem;
+  }
+  .try strong{color:var(--purple);display:block;margin-bottom:.2rem;font-family:'Fraunces',serif;font-size:1.05rem}
+
+  /* Gadget "card" */
+  .stage{
+    background:#fff;border:2px solid var(--ink);
+    border-radius:20px;overflow:hidden;
+    box-shadow:6px 6px 0 var(--ink);
+  }
+  .stage .controls{
+    padding:.9rem 1rem;background:var(--soft);
+    border-bottom:2px solid var(--ink);
+    display:flex;gap:.6rem;flex-wrap:wrap;align-items:center;
+    font-size:.85rem;
+  }
+  .stage .canvas-wrap{padding:1rem;display:flex;justify-content:center;align-items:center;min-height:280px;background:#fff}
+  canvas{max-width:100%;display:block;border-radius:10px}
+  svg{max-width:100%;display:block}
+  button, select{
+    font:inherit;font-weight:600;font-size:.85rem;
+    padding:.4rem .8rem;border-radius:10px;
+    border:1.5px solid var(--ink);background:#fff;cursor:pointer;
+    transition:all .15s;
+  }
+  button:hover{background:var(--yellow);transform:translateY(-1px)}
+  button.primary{background:var(--pink);color:#fff;border-color:var(--pink)}
+  button.primary:hover{background:var(--coral);border-color:var(--coral)}
+  input[type=range]{accent-color:var(--pink);vertical-align:middle}
+  label.rng{display:flex;flex-direction:column;gap:.1rem;font-size:.78rem;color:#555;min-width:110px}
+  label.rng span{font-variant-numeric:tabular-nums;color:var(--dark);font-weight:700}
+
+  /* ----------- FOOTER ----------- */
+  footer{
+    padding:4rem 1.5rem;text-align:center;
+    background:var(--dark);color:var(--cream);
+  }
+  footer .quote{
+    font-family:'Fraunces',serif;font-style:italic;
+    font-size:clamp(1.1rem,2vw,1.5rem);
+    max-width:750px;margin:0 auto 1rem;line-height:1.4;
+  }
+  footer .sig{color:var(--yellow);font-size:.9rem;margin-bottom:2rem}
+  footer .refs{font-size:.8rem;color:#aaa;max-width:700px;margin:0 auto}
+
+  /* Utilities */
+  .pill{display:inline-block;padding:.15rem .6rem;border-radius:20px;background:var(--soft);font-size:.8rem;margin-right:.3rem;margin-bottom:.3rem}
+  .dim{color:#777;font-size:.9rem}
+</style>
+</head>
+<body>
+
+<!-- ============= NAV ============= -->
+<nav>
+  <div class="wrap">
+    <a href="#top" class="logo">Complex<span>·</span>Science</a>
+    <ul>
+      <li><a class="chip" href="#tetra">Loop</a></li>
+      <li><a class="chip" href="#feedback">Feedback</a></li>
+      <li><a class="chip" href="#life">Life</a></li>
+      <li><a class="chip" href="#nk">NK Nets</a></li>
+      <li><a class="chip" href="#lorenz">Lorenz</a></li>
+      <li><a class="chip" href="#logistic">Chaos</a></li>
+      <li><a class="chip" href="#boids">Flock</a></li>
+      <li><a class="chip" href="#mandel">Fractal</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ============= COMPACT HEADER ============= -->
+<header id="top" style="padding:2.5rem 1.5rem 1.5rem;text-align:center;background:var(--cream);border-bottom:2px solid var(--ink)">
+  <h1 style="font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.05;margin:0 auto;max-width:900px">
+    <span style="color:var(--pink)">Complex</span> <span style="color:var(--purple);font-style:italic">science</span>, eight ways to play.
+  </h1>
+  <p style="max-width:620px;margin:.6rem auto 0;color:#555;font-size:clamp(.95rem,1.5vw,1.05rem)">
+    Hands-on toys to see how disorder becomes order, how a handful of rules create entire worlds, and why the simple isn't always the true.
+  </p>
+</header>
+
+<!-- ============= 1 · TETRALOGICAL LOOP ============= -->
+<section class="gadget" id="tetra" style="background:linear-gradient(180deg,#FFF8EC 0%,#FFE8F0 100%)">
+  <div class="inner">
+    <span class="kicker k-pink">01 · Edgar Morin</span>
+    <h2>The tetralogical loop</h2>
+    <p class="dim">Order · Disorder · Interactions · Organization</p>
+    <div class="gadget-body">
+      <div class="gadget-text">
+        <p>Morin argues that no phenomenon in the universe can be explained by just one of these four notions. A star is born from the thermal <b>disorder</b> of gas; it gains <b>order</b> through gravity; it sustains itself via <b>interactions</b> between forces; and that dance produces an <b>organization</b> — the star itself — which in turn fuels more interactions.</p>
+        <p>Each node needs the other three. None comes first. There's no hierarchy: there's a <i>loop</i>.</p>
+        <div class="try">
+          <strong>Try this</strong>
+          Click each node. See how the four are interdependent: remove one and the others lose their meaning. That's the idea of the recursive loop.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="controls">
+          <span>Click the nodes →</span>
+          <span id="tetra-label" style="margin-left:auto;font-weight:700;color:var(--purple)">Order</span>
+        </div>
+        <div class="canvas-wrap">
+          <svg id="tetra-svg" viewBox="0 0 400 380" width="400" height="380">
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#1A1B3A"/>
+              </marker>
+            </defs>
+            <g id="tetra-arrows"></g>
+            <g id="tetra-nodes"></g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 2 · FEEDBACK LOOPS ============= -->
+<section class="gadget" id="feedback">
+  <div class="inner">
+    <span class="kicker k-teal">02 · Cybernetics</span>
+    <h2>Feedback loops</h2>
+    <p class="dim">The Lotka-Volterra loop: foxes and rabbits</p>
+    <div class="gadget-body">
+      <div class="gadget-text">
+        <p>Wiener's cybernetics showed that a system can <b>regulate itself</b> with no central command, just through loops: when rabbits are abundant, foxes eat well and multiply; when foxes are abundant, rabbits grow scarce; the foxes then starve and decline; the rabbits recover. And the cycle begins again.</p>
+        <p>There's no static equilibrium. There's <i>oscillation</i> — order in time, not order in a single instant.</p>
+        <div class="try">
+          <strong>Try this</strong>
+          Raise the hunting rate (β). What happens if foxes become too efficient? Now lower it a lot: does the ecosystem get boring?
+        </div>
+      </div>
+      <div class="stage">
+        <div class="controls">
+          <label class="rng">α rabbit birth <span id="a-val">1.0</span>
+            <input id="fb-a" type="range" min="0.2" max="2" step="0.05" value="1.0">
+          </label>
+          <label class="rng">β hunting <span id="b-val">0.5</span>
+            <input id="fb-b" type="range" min="0.1" max="1.5" step="0.05" value="0.5">
+          </label>
+          <label class="rng">δ fox birth <span id="d-val">0.5</span>
+            <input id="fb-d" type="range" min="0.1" max="1.2" step="0.05" value="0.5">
+          </label>
+          <button id="fb-reset">Reset</button>
+        </div>
+        <div class="canvas-wrap" style="padding:.5rem">
+          <canvas id="fb-canvas" width="500" height="280"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 3 · GAME OF LIFE ============= -->
+<section class="gadget" id="life" style="background:#F4EEFF">
+  <div class="inner">
+    <span class="kicker k-purple">03 · Cellular automata</span>
+    <h2>The Game of Life</h2>
+    <p class="dim">Three rules. Whole universes.</p>
+    <div class="gadget-body">
+      <div class="gadget-text">
+        <p>Conway devised this game in 1970 with absurdly simple rules: a live cell with 2 or 3 neighbors survives; a dead cell with exactly 3 neighbors is born; everything else dies. And yet, on that grid, <b>gliders</b> appear that travel, <b>oscillators</b> that pulse, and structures that reproduce themselves.</p>
+        <p>This is the canonical example of <i>emergence</i>: properties of the system that aren't in its parts. The glider doesn't live in any single cell — it lives in the pattern.</p>
+        <div class="try">
+          <strong>Try this</strong>
+          Load the <b>Glider</b> and hit play. Now try the <b>Pulsar</b>. Click on the board to draw your own cells. Can you create something that doesn't die?
+        </div>
+      </div>
+      <div class="stage">
+        <div class="controls">
+          <button class="primary" id="life-play">▶ Play</button>
+          <button id="life-step">Step</button>
+          <button id="life-random">Random</button>
+          <button id="life-clear">Clear</button>
+          <select id="life-preset">
+            <option value="">Patterns…</option>
+            <option value="glider">Glider</option>
+            <option value="pulsar">Pulsar</option>
+            <option value="gosper">Gosper Gun</option>
+            <option value="acorn">Acorn</option>
+          </select>
+          <label class="rng" style="min-width:80px">Speed <span id="life-spd-v">8</span>
+            <input id="life-spd" type="range" min="1" max="30" step="1" value="8">
+          </label>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="life-canvas" width="500" height="350"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 4 · NK NETWORKS ============= -->
+<section class="gadget" id="nk">
+  <div class="inner">
+    <span class="kicker k-yellow">04 · Stuart Kauffman</span>
+    <h2>NK Boolean networks</h2>
+    <p class="dim">The edge of chaos</p>
+    <div class="gadget-body">
+      <div class="gadget-text">
+        <p>Kauffman imagined a network of <b>N</b> genes where each one "listens" to <b>K</b> neighbors and decides to turn on or off using a random lookup table. If K=1, the network is boring (everything freezes fast). If K≥3, it's ungovernable chaos. But with <b>K=2</b> something magical happens: the network settles into stable cycles, as if it "remembered" patterns. Kauffman suggested this is why life is possible — natural selection needed <i>that</i> regime, neither frozen nor chaotic.</p>
+        <p>There are roughly √N attractors. With N=20 you'll see ~4-5 states the network always returns to.</p>
+        <div class="try">
+          <strong>Try this</strong>
+          Set K=1 (frozen), then K=2 (life), then K=4 (chaos). Watch the pattern below: with K=2 there's <i>rhythmic order</i>. At K=4 it looks like TV static.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="controls">
+          <label class="rng" style="min-width:70px">N <span id="nk-N-v">20</span>
+            <input id="nk-N" type="range" min="6" max="40" step="1" value="20">
+          </label>
+          <label class="rng" style="min-width:70px">K <span id="nk-K-v">2</span>
+            <input id="nk-K" type="range" min="1" max="5" step="1" value="2">
+          </label>
+          <button class="primary" id="nk-new">New network</button>
+          <span id="nk-info" class="pill" style="margin-left:auto">—</span>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="nk-canvas" width="500" height="320"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 5 · LORENZ ============= -->
+<section class="gadget" id="lorenz" style="background:linear-gradient(180deg,#FFF8EC 0%,#EAFBF9 100%)">
+  <div class="inner">
+    <span class="kicker k-coral">05 · Prigogine &amp; time</span>
+    <h2>The Lorenz attractor</h2>
+    <p class="dim">Determinism + sensitivity = chaos</p>
+    <div class="gadget-body">
+      <div class="gadget-text">
+        <p>In 1963 Edward Lorenz was modeling the weather with three simple equations. When he restarted a run with a number rounded to three decimals, he got a <i>completely different</i> result. He had just discovered <b>sensitivity to initial conditions</b>: the famous butterfly effect.</p>
+        <p>But notice: the trajectory doesn't fly off to infinity. It stays trapped in a wing-shaped figure. It's <b>unpredictable in detail</b> and <b>orderly in aggregate</b>. That's a strange attractor — the heart of complexity.</p>
+        <div class="try">
+          <strong>Try this</strong>
+          Turn on "butterfly": two trajectories start almost identical. Watch how, despite obeying the same law, they separate. That's the weather. That's almost everything.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="controls">
+          <label class="rng">σ <span id="lz-s-v">10</span>
+            <input id="lz-s" type="range" min="4" max="20" step="0.5" value="10">
+          </label>
+          <label class="rng">ρ <span id="lz-r-v">28</span>
+            <input id="lz-r" type="range" min="10" max="50" step="0.5" value="28">
+          </label>
+          <label class="rng">β <span id="lz-b-v">2.67</span>
+            <input id="lz-b" type="range" min="0.5" max="5" step="0.05" value="2.67">
+          </label>
+          <button id="lz-reset">Reset</button>
+          <button id="lz-butterfly" class="primary">🦋 Butterfly</button>
+        </div>
+        <div class="canvas-wrap">
+          <canvas id="lz-canvas" width="500" height="340"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 6 · LOGISTIC MAP ============= -->
+<section class="gadget" id="logistic">
+  <div class="inner">
+    <span class="kicker k-dark">06 · Chaos theory</span>
+    <h2>The road to chaos</h2>
+    <p class="dim">The logistic map and period doubling</p>
+    <div class="gadget-body">
+      <div class="gadget-text">
+        <p>An elementary-school equation: <code>x ← r·x·(1−x)</code>. A very simple model of population. Change <b>r</b> and watch:</p>
+        <ul style="margin:0 0 1rem 1.2rem;font-size:.95rem">
+          <li>With r&lt;3 the population settles on a single value.</li>
+          <li>Past r≈3, it oscillates between two values.</li>
+          <li>Then four. Then eight. <i>Period doubling.</i></li>
+          <li>At r≈3.57 it explodes into chaos — and "windows" of order appear inside the chaos.</li>
+        </ul>
+        <p>This is the <b>Feigenbaum cascade</b>, and astonishingly, the same ratios show up in very different systems. Chaos has universal numbers.</p>
+        <div class="try">
+          <strong>Try this</strong>
+          Drag the vertical line. See a white window near r=3.83? Inside the chaos, order briefly returns. The universe quotes its own motifs.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="controls">
+          <span>Drag the line →</span>
+          <span id="lg-r-show" style="margin-left:auto;font-weight:700;color:var(--pink)">r = 3.57</span>
+        </div>
+        <div class="canvas-wrap" style="padding:.5rem">
+          <canvas id="lg-canvas" width="520" height="320"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 7 · BOIDS ============= -->
+<section class="gadget" id="boids" style="background:#EAFBF9">
+  <div class="inner">
+    <span class="kicker k-teal">07 · Emergence</span>
+    <h2>Flock of boids</h2>
+    <p class="dim">Three local rules, one global pattern</p>
+    <div class="gadget-body">
+      <div class="gadget-text">
+        <p>No single bird in a flock knows where the whole is heading. Each one follows three local rules (Reynolds, 1987):</p>
+        <p class="pill" style="background:#fff">① Separate from those too close</p>
+        <p class="pill" style="background:#fff">② Align with neighbors' heading</p>
+        <p class="pill" style="background:#fff">③ Move toward the group's center</p>
+        <p>From those three rules the <b>flock</b> emerges, appearing to have a mind of its own. No one is in charge. But it exists, it turns, it decides.</p>
+        <div class="try">
+          <strong>Try this</strong>
+          Max out "separation" and drop "cohesion" to zero: the flock falls apart. Now do the opposite: it collapses into a single point. Balance between opposing forces is what makes the phenomenon appear.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="controls">
+          <label class="rng">Separation <span id="bd-s-v">1.5</span><input id="bd-s" type="range" min="0" max="3" step="0.1" value="1.5"></label>
+          <label class="rng">Alignment <span id="bd-a-v">1.0</span><input id="bd-a" type="range" min="0" max="2" step="0.1" value="1.0"></label>
+          <label class="rng">Cohesion <span id="bd-c-v">1.0</span><input id="bd-c" type="range" min="0" max="2" step="0.1" value="1.0"></label>
+          <button id="bd-add">+30 boids</button>
+        </div>
+        <div class="canvas-wrap" id="bd-wrap" style="padding:0"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= 8 · MANDELBROT ============= -->
+<section class="gadget" id="mandel">
+  <div class="inner">
+    <span class="kicker k-purple">08 · Fractals</span>
+    <h2>Mandelbrot: the infinite within</h2>
+    <p class="dim">The broken geometry of nature</p>
+    <div class="gadget-body">
+      <div class="gadget-text">
+        <p>Benoît Mandelbrot noticed that clouds aren't spheres, mountains aren't cones, coastlines can't be measured with a ruler. Nature has <b>detail at every scale</b> — it's fractal.</p>
+        <p>The set that bears his name is generated by a trivial formula: <code>z ← z² + c</code>. But as you zoom in, every region holds a copy-like version of the whole, and you discover motifs no one drew by hand. The part carries the whole — Morin's <b>hologrammatic principle</b> in pure geometry.</p>
+        <div class="try">
+          <strong>Try this</strong>
+          Click and drag to draw a rectangle and zoom in. Keep diving. Do you recognize the main outline reappearing in miniature? That's self-similarity.
+        </div>
+      </div>
+      <div class="stage">
+        <div class="controls">
+          <button class="primary" id="mb-reset">Back to start</button>
+          <button id="mb-back">← Back</button>
+          <span class="dim" style="margin-left:auto;font-size:.78rem" id="mb-coord">—</span>
+        </div>
+        <div class="canvas-wrap" style="padding:.5rem">
+          <canvas id="mb-canvas" width="520" height="360" style="cursor:crosshair"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============= FOOTER ============= -->
+<footer>
+  <p class="quote">"Complexity is not a recipe for knowing the unexpected. It is a thought that learned to negotiate with uncertainty, with the random, with contradiction."</p>
+  <p class="sig">— Edgar Morin</p>
+  <p class="refs">
+    Made with care, so we can think together. Sources: Morin <i>(The Method I–VI)</i> · Prigogine <i>(The End of Certainty)</i> · Kauffman <i>(At Home in the Universe)</i> · Bateson <i>(Steps to an Ecology of Mind)</i> · von Foerster <i>(Second-order Cybernetics)</i> · Lorenz · Mandelbrot · Conway · Reynolds.
+  </p>
+</footer>
+
+<script>
+/* =========================================================
+   1 · TETRALOGICAL LOOP  (SVG, clickable nodes)
+   ========================================================= */
+(function(){
+  const svg = document.getElementById('tetra-svg');
+  const nodes = [
+    {id:'order',    label:'Order',         x:200, y:60,  color:'#FF6B9D', text:'Regularity, law, repetition. But alone, in equilibrium, order would be crystal: dead.'},
+    {id:'disorder', label:'Disorder',      x:340, y:200, color:'#6C5CE7', text:'Noise, chance, entropy. The dark source of all novelty. Without it, nothing changes.'},
+    {id:'inter',    label:'Interactions',  x:200, y:340, color:'#00CEC9', text:'Collisions, bonds, encounters between elements. Where order and disorder negotiate.'},
+    {id:'org',      label:'Organization',  x:60,  y:200, color:'#FDCB6E', text:'Out of interactions, a stable, self-sustaining form emerges: the system. That system then generates more interactions. Loop.'}
+  ];
+  const gArrows = document.getElementById('tetra-arrows');
+  const gNodes = document.getElementById('tetra-nodes');
+  const label = document.getElementById('tetra-label');
+
+  // arrows (cycle)
+  const order = ['order','disorder','inter','org'];
+  for(let i=0;i<4;i++){
+    const a = nodes.find(n=>n.id===order[i]);
+    const b = nodes.find(n=>n.id===order[(i+1)%4]);
+    const dx = b.x-a.x, dy=b.y-a.y, d=Math.hypot(dx,dy);
+    const ux=dx/d, uy=dy/d;
+    const ox=-uy*18, oy=ux*18; // offset for arc look
+    const x1=a.x+ux*50+ox, y1=a.y+uy*50+oy;
+    const x2=b.x-ux*50+ox, y2=b.y-uy*50+oy;
+    const mx=(x1+x2)/2+ox*1.2, my=(y1+y2)/2+oy*1.2;
+    const path = document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d',`M${x1},${y1} Q${mx},${my} ${x2},${y2}`);
+    path.setAttribute('fill','none');
+    path.setAttribute('stroke','#1A1B3A');
+    path.setAttribute('stroke-width','2');
+    path.setAttribute('stroke-dasharray','5,3');
+    path.setAttribute('marker-end','url(#arrow)');
+    path.setAttribute('opacity','.5');
+    gArrows.appendChild(path);
+  }
+
+  // text area
+  const descBg = document.createElementNS('http://www.w3.org/2000/svg','rect');
+  descBg.setAttribute('x',60);descBg.setAttribute('y',150);descBg.setAttribute('width',280);descBg.setAttribute('height',100);
+  descBg.setAttribute('rx',14);descBg.setAttribute('fill','#1A1B3A');descBg.setAttribute('opacity','0');
+  gNodes.appendChild(descBg);
+  const descTxt = document.createElementNS('http://www.w3.org/2000/svg','foreignObject');
+  descTxt.setAttribute('x',70);descTxt.setAttribute('y',160);descTxt.setAttribute('width',260);descTxt.setAttribute('height',80);
+  descTxt.innerHTML = `<div xmlns="http://www.w3.org/1999/xhtml" id="tetra-desc" style="font-family:DM Sans;font-size:12px;color:#FFF8EC;line-height:1.35;opacity:0;transition:opacity .25s"></div>`;
+  gNodes.appendChild(descTxt);
+
+  // nodes
+  nodes.forEach(n=>{
+    const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.style.cursor='pointer';
+    const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',n.x);c.setAttribute('cy',n.y);c.setAttribute('r',38);
+    c.setAttribute('fill',n.color);c.setAttribute('stroke','#1A1B3A');c.setAttribute('stroke-width','2.5');
+    const t = document.createElementNS('http://www.w3.org/2000/svg','text');
+    t.setAttribute('x',n.x);t.setAttribute('y',n.y+4);
+    t.setAttribute('text-anchor','middle');t.setAttribute('font-family','Fraunces');
+    t.setAttribute('font-weight','900');t.setAttribute('font-size','12');t.setAttribute('fill','#1A1B3A');
+    t.textContent=n.label;
+    g.appendChild(c);g.appendChild(t);
+    g.addEventListener('click',()=>{
+      label.textContent=n.label;
+      document.getElementById('tetra-desc').textContent=n.text;
+      document.getElementById('tetra-desc').style.opacity=1;
+      descBg.setAttribute('opacity','.95');
+      c.animate([{r:38},{r:45},{r:38}],{duration:400});
+    });
+    gNodes.appendChild(g);
+  });
+  // trigger initial
+  setTimeout(()=>{
+    document.getElementById('tetra-desc').textContent = nodes[0].text;
+    document.getElementById('tetra-desc').style.opacity=1;
+    descBg.setAttribute('opacity','.95');
+  },200);
+})();
+
+/* =========================================================
+   2 · LOTKA–VOLTERRA FEEDBACK
+   ========================================================= */
+(function(){
+  const cv = document.getElementById('fb-canvas');
+  const ctx = cv.getContext('2d');
+  let a=1.0,b=0.5,d=0.5,g=0.5;
+  let R=2.0, F=1.0; // rabbits, foxes
+  const histR=[], histF=[], MAX=500;
+  const inA=document.getElementById('fb-a'),inB=document.getElementById('fb-b'),inD=document.getElementById('fb-d');
+  const lbA=document.getElementById('a-val'),lbB=document.getElementById('b-val'),lbD=document.getElementById('d-val');
+  function read(){ a=+inA.value;b=+inB.value;d=+inD.value; lbA.textContent=a.toFixed(2);lbB.textContent=b.toFixed(2);lbD.textContent=d.toFixed(2);}
+  [inA,inB,inD].forEach(i=>i.addEventListener('input',read));read();
+  document.getElementById('fb-reset').addEventListener('click',()=>{R=2;F=1;histR.length=0;histF.length=0;});
+  function step(){
+    const dt=0.03;
+    const dR = (a*R - b*R*F)*dt;
+    const dF = (d*R*F - g*F)*dt;
+    R=Math.max(0,R+dR); F=Math.max(0,F+dF);
+    histR.push(R); histF.push(F);
+    if(histR.length>MAX){histR.shift();histF.shift();}
+  }
+  function draw(){
+    const W=cv.width,H=cv.height;
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H);
+    ctx.strokeStyle='#eee';ctx.lineWidth=1;
+    for(let i=0;i<=4;i++){const y=i*H/4;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.strokeStyle='#1A1B3A';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(30,10);ctx.lineTo(30,H-30);ctx.lineTo(W-10,H-30);ctx.stroke();
+    ctx.fillStyle='#555';ctx.font='11px DM Sans';
+    ctx.fillText('time →',W-60,H-15);
+    ctx.save();ctx.translate(15,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('population',0,0);ctx.restore();
+
+    const maxV = Math.max(3, ...histR, ...histF);
+    function plot(arr,color){
+      ctx.strokeStyle=color;ctx.lineWidth=2.2;ctx.beginPath();
+      arr.forEach((v,i)=>{
+        const x=30+(i/MAX)*(W-40);
+        const y=H-30 - (v/maxV)*(H-45);
+        if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+      });
+      ctx.stroke();
+    }
+    plot(histR,'#FF6B9D');
+    plot(histF,'#6C5CE7');
+    ctx.fillStyle='#FF6B9D';ctx.fillRect(W-130,10,12,12);
+    ctx.fillStyle='#1A1B3A';ctx.fillText('rabbits',W-115,20);
+    ctx.fillStyle='#6C5CE7';ctx.fillRect(W-60,10,12,12);
+    ctx.fillStyle='#1A1B3A';ctx.fillText('foxes',W-45,20);
+  }
+  function loop(){ for(let k=0;k<2;k++) step(); draw(); requestAnimationFrame(loop);}
+  loop();
+})();
+
+/* =========================================================
+   3 · GAME OF LIFE
+   ========================================================= */
+(function(){
+  const cv = document.getElementById('life-canvas');
+  const ctx = cv.getContext('2d');
+  const CELL=10, COLS=Math.floor(cv.width/CELL), ROWS=Math.floor(cv.height/CELL);
+  let grid = new Uint8Array(COLS*ROWS);
+  let next = new Uint8Array(COLS*ROWS);
+  let playing=false, speed=8, frameSkip=0;
+  const idx=(x,y)=>((y+ROWS)%ROWS)*COLS + (x+COLS)%COLS;
+  function random(){for(let i=0;i<grid.length;i++)grid[i]=Math.random()<.25?1:0;}
+  function clear(){grid.fill(0);}
+  function step(){
+    for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){
+      let n=0;
+      for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+        if(dx===0&&dy===0)continue;
+        n+=grid[idx(x+dx,y+dy)];
+      }
+      const alive=grid[idx(x,y)];
+      next[idx(x,y)] = (alive?(n===2||n===3):(n===3))?1:0;
+    }
+    [grid,next]=[next,grid];
+  }
+  function draw(){
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.fillStyle='#6C5CE7';
+    for(let y=0;y<ROWS;y++)for(let x=0;x<COLS;x++){
+      if(grid[idx(x,y)]){
+        ctx.fillRect(x*CELL+1,y*CELL+1,CELL-2,CELL-2);
+      }
+    }
+  }
+  function loop(){
+    if(playing){frameSkip++;if(frameSkip>=Math.max(1,Math.round(32/speed))){step();frameSkip=0;}}
+    draw();
+    requestAnimationFrame(loop);
+  }
+  random();loop();
+
+  cv.addEventListener('click',e=>{
+    const r=cv.getBoundingClientRect();
+    const x=Math.floor((e.clientX-r.left)*cv.width/r.width/CELL);
+    const y=Math.floor((e.clientY-r.top)*cv.height/r.height/CELL);
+    if(x>=0&&x<COLS&&y>=0&&y<ROWS)grid[idx(x,y)]=1-grid[idx(x,y)];
+  });
+  document.getElementById('life-play').addEventListener('click',e=>{playing=!playing;e.target.textContent=playing?'⏸ Pause':'▶ Play';});
+  document.getElementById('life-step').addEventListener('click',()=>step());
+  document.getElementById('life-random').addEventListener('click',random);
+  document.getElementById('life-clear').addEventListener('click',clear);
+  const spd=document.getElementById('life-spd'),spdV=document.getElementById('life-spd-v');
+  spd.addEventListener('input',()=>{speed=+spd.value;spdV.textContent=speed;});
+
+  const presets={
+    glider:[[1,0],[2,1],[0,2],[1,2],[2,2]],
+    pulsar:[[2,0],[3,0],[4,0],[8,0],[9,0],[10,0],[0,2],[5,2],[7,2],[12,2],[0,3],[5,3],[7,3],[12,3],[0,4],[5,4],[7,4],[12,4],[2,5],[3,5],[4,5],[8,5],[9,5],[10,5],[2,7],[3,7],[4,7],[8,7],[9,7],[10,7],[0,8],[5,8],[7,8],[12,8],[0,9],[5,9],[7,9],[12,9],[0,10],[5,10],[7,10],[12,10],[2,12],[3,12],[4,12],[8,12],[9,12],[10,12]],
+    gosper:[[0,4],[0,5],[1,4],[1,5],[10,4],[10,5],[10,6],[11,3],[11,7],[12,2],[12,8],[13,2],[13,8],[14,5],[15,3],[15,7],[16,4],[16,5],[16,6],[17,5],[20,2],[20,3],[20,4],[21,2],[21,3],[21,4],[22,1],[22,5],[24,0],[24,1],[24,5],[24,6],[34,2],[34,3],[35,2],[35,3]],
+    acorn:[[1,0],[3,1],[0,2],[1,2],[4,2],[5,2],[6,2]]
+  };
+  document.getElementById('life-preset').addEventListener('change',e=>{
+    if(!e.target.value)return;
+    clear();
+    const pts=presets[e.target.value];
+    const ox=Math.floor(COLS/2-10),oy=Math.floor(ROWS/2-7);
+    pts.forEach(([x,y])=>{grid[idx(x+ox,y+oy)]=1});
+    e.target.value='';
+  });
+})();
+
+/* =========================================================
+   4 · NK BOOLEAN NETWORK
+   ========================================================= */
+(function(){
+  const cv = document.getElementById('nk-canvas');
+  const ctx = cv.getContext('2d');
+  const iN=document.getElementById('nk-N'),iK=document.getElementById('nk-K');
+  const lN=document.getElementById('nk-N-v'),lK=document.getElementById('nk-K-v');
+  const info=document.getElementById('nk-info');
+  let N=20,K=2, neighbors=[], rules=[], state=[], history=[];
+  const MAX_HIST=80;
+
+  function build(){
+    N=+iN.value;K=+iK.value;lN.textContent=N;lK.textContent=K;
+    neighbors=[];rules=[];
+    for(let i=0;i<N;i++){
+      const nb=[];const avail=[...Array(N).keys()].filter(j=>j!==i);
+      for(let k=0;k<K;k++){nb.push(avail.splice(Math.floor(Math.random()*avail.length),1)[0]);}
+      neighbors.push(nb);
+      const tbl=[];for(let k=0;k<(1<<K);k++)tbl.push(Math.random()<.5?1:0);
+      rules.push(tbl);
+    }
+    state=Array.from({length:N},()=>Math.random()<.5?1:0);
+    history=[state.slice()];
+    info.textContent=`N=${N}, K=${K}`;
+  }
+  function step(){
+    const ns=new Array(N);
+    for(let i=0;i<N;i++){
+      let key=0;
+      neighbors[i].forEach((j,k)=>{key|=state[j]<<k;});
+      ns[i]=rules[i][key];
+    }
+    state=ns;
+    history.push(state.slice());
+    if(history.length>MAX_HIST)history.shift();
+    let period=0;
+    for(let p=1;p<history.length/2 && p<=20;p++){
+      const n=history.length;
+      let ok=true;
+      for(let i=0;i<p;i++){
+        if(history[n-1-i].join('')!==history[n-1-i-p].join('')){ok=false;break;}
+      }
+      if(ok){period=p;break;}
+    }
+    info.textContent = period>0 ? `N=${N}, K=${K} · attractor period ${period}` : `N=${N}, K=${K} · searching...`;
+  }
+  function draw(){
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height);
+    const cellW=cv.width/N;
+    const cellH=cv.height/MAX_HIST;
+    for(let t=0;t<history.length;t++){
+      for(let i=0;i<N;i++){
+        if(history[t][i]){
+          ctx.fillStyle = t===history.length-1 ? '#FF6B9D' : '#1A1B3A';
+          ctx.fillRect(i*cellW, t*cellH, cellW-0.5, cellH-0.2);
+        }
+      }
+    }
+    ctx.fillStyle='#999';ctx.font='10px DM Sans';
+    ctx.fillText('time ↓',4,12);
+    ctx.fillText('nodes →',cv.width-60,12);
+  }
+  function loop(){step();draw();setTimeout(()=>requestAnimationFrame(loop),120);}
+  [iN,iK].forEach(i=>i.addEventListener('change',build));
+  document.getElementById('nk-new').addEventListener('click',build);
+  build();loop();
+})();
+
+/* =========================================================
+   5 · LORENZ ATTRACTOR
+   ========================================================= */
+(function(){
+  const cv = document.getElementById('lz-canvas');
+  const ctx = cv.getContext('2d');
+  let sigma=10, rho=28, beta=2.67;
+  let p1={x:.1,y:0,z:0}, p2={x:.1001,y:0,z:0};
+  let trail1=[], trail2=[], showTwo=false;
+  const MAX=2500;
+  const iS=document.getElementById('lz-s'),iR=document.getElementById('lz-r'),iB=document.getElementById('lz-b');
+  const lS=document.getElementById('lz-s-v'),lR=document.getElementById('lz-r-v'),lB=document.getElementById('lz-b-v');
+  function read(){sigma=+iS.value;rho=+iR.value;beta=+iB.value;lS.textContent=sigma;lR.textContent=rho;lB.textContent=beta.toFixed(2);}
+  [iS,iR,iB].forEach(i=>i.addEventListener('input',read));read();
+  document.getElementById('lz-reset').addEventListener('click',()=>{p1={x:.1,y:0,z:0};p2={x:.1001,y:0,z:0};trail1=[];trail2=[];});
+  document.getElementById('lz-butterfly').addEventListener('click',()=>{showTwo=!showTwo;p2={x:p1.x+0.0001,y:p1.y,z:p1.z};trail2=[];});
+  function step(p){
+    const dt=.009;
+    const dx=sigma*(p.y-p.x);
+    const dy=p.x*(rho-p.z)-p.y;
+    const dz=p.x*p.y-beta*p.z;
+    p.x+=dx*dt;p.y+=dy*dt;p.z+=dz*dt;
+    return {x:p.x,y:p.y,z:p.z};
+  }
+  function project(pt){
+    return {x:cv.width/2 + pt.x*9, y:cv.height - pt.z*7 - 20};
+  }
+  function draw(){
+    ctx.fillStyle='rgba(255,255,255,.1)';ctx.fillRect(0,0,cv.width,cv.height);
+    for(let i=0;i<6;i++){
+      trail1.push(project(step(p1)));if(trail1.length>MAX)trail1.shift();
+      if(showTwo){trail2.push(project(step(p2)));if(trail2.length>MAX)trail2.shift();}
+    }
+    function drawTrail(t,color){
+      ctx.strokeStyle=color;ctx.lineWidth=1.1;ctx.beginPath();
+      t.forEach((p,i)=>{if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);});
+      ctx.stroke();
+      const h=t[t.length-1];if(h){ctx.fillStyle=color;ctx.beginPath();ctx.arc(h.x,h.y,3,0,7);ctx.fill();}
+    }
+    drawTrail(trail1,'#FF6B9D');
+    if(showTwo)drawTrail(trail2,'#6C5CE7');
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* =========================================================
+   6 · LOGISTIC MAP (BIFURCATION)
+   ========================================================= */
+(function(){
+  const cv = document.getElementById('lg-canvas');
+  const ctx = cv.getContext('2d');
+  const show = document.getElementById('lg-r-show');
+  let lineR = 3.57;
+  let dragging=false;
+  const rMin=2.5,rMax=4.0;
+  function render(){
+    ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height);
+    const W=cv.width,H=cv.height;
+    const img=ctx.getImageData(0,0,W,H);
+    const d=img.data;
+    for(let px=0;px<W;px++){
+      const r = rMin + (px/W)*(rMax-rMin);
+      let x=0.5;
+      for(let i=0;i<100;i++) x=r*x*(1-x);
+      for(let i=0;i<200;i++){
+        x=r*x*(1-x);
+        const py=Math.floor((1-x)*H);
+        if(py>=0&&py<H){
+          const o=(py*W+px)*4;
+          d[o]=40;d[o+1]=40;d[o+2]=80;d[o+3]=Math.min(255,(d[o+3]||0)+60);
+        }
+      }
+    }
+    ctx.putImageData(img,0,0);
+    const x=((lineR-rMin)/(rMax-rMin))*W;
+    ctx.strokeStyle='#FF6B9D';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();
+    ctx.fillStyle='#FF6B9D';ctx.fillRect(x-6,0,12,6);
+    ctx.fillStyle='#333';ctx.font='11px DM Sans';
+    ctx.fillText('r=2.5',4,H-4);
+    ctx.fillText('r=4.0',W-34,H-4);
+    ctx.fillText('x (stable population)',6,14);
+  }
+  function update(e){
+    const r=cv.getBoundingClientRect();
+    const x=(e.clientX-r.left)*cv.width/r.width;
+    lineR = Math.max(rMin, Math.min(rMax, rMin + (x/cv.width)*(rMax-rMin)));
+    show.textContent = 'r = '+lineR.toFixed(3);
+    render();
+  }
+  cv.addEventListener('mousedown',e=>{dragging=true;update(e);});
+  cv.addEventListener('mousemove',e=>{if(dragging)update(e);});
+  ['mouseup','mouseleave'].forEach(ev=>cv.addEventListener(ev,()=>dragging=false));
+  cv.addEventListener('touchstart',e=>{dragging=true;update(e.touches[0]);e.preventDefault();});
+  cv.addEventListener('touchmove',e=>{if(dragging)update(e.touches[0]);e.preventDefault();});
+  cv.addEventListener('touchend',()=>dragging=false);
+  render();
+})();
+
+/* =========================================================
+   7 · BOIDS (p5 instance)
+   ========================================================= */
+(function(){
+  let boids = [];
+  let sep=1.5, ali=1.0, coh=1.0;
+  const iS=document.getElementById('bd-s'),iA=document.getElementById('bd-a'),iC=document.getElementById('bd-c');
+  const lS=document.getElementById('bd-s-v'),lA=document.getElementById('bd-a-v'),lC=document.getElementById('bd-c-v');
+  function read(){sep=+iS.value;ali=+iA.value;coh=+iC.value;lS.textContent=sep.toFixed(1);lA.textContent=ali.toFixed(1);lC.textContent=coh.toFixed(1);}
+  [iS,iA,iC].forEach(i=>i.addEventListener('input',read));read();
+
+  const sketch = (p)=>{
+    class Boid {
+      constructor(x,y){
+        this.pos=p.createVector(x,y);
+        this.vel=p5.Vector.random2D().mult(p.random(1,3));
+        this.acc=p.createVector();
+        this.maxSpeed=3;this.maxForce=.08;
+      }
+      flock(others){
+        const perception=50, sepDist=24;
+        let sepV=p.createVector(),aliV=p.createVector(),cohV=p.createVector();
+        let ct=0,sCt=0;
+        for(const o of others){
+          if(o===this)continue;
+          const d=p5.Vector.dist(this.pos,o.pos);
+          if(d<perception){
+            aliV.add(o.vel);
+            cohV.add(o.pos);
+            ct++;
+            if(d<sepDist){
+              const diff=p5.Vector.sub(this.pos,o.pos);
+              diff.div(d||1);
+              sepV.add(diff);
+              sCt++;
+            }
+          }
+        }
+        if(ct>0){
+          aliV.div(ct).setMag(this.maxSpeed).sub(this.vel).limit(this.maxForce);
+          cohV.div(ct).sub(this.pos).setMag(this.maxSpeed).sub(this.vel).limit(this.maxForce);
+        }
+        if(sCt>0) sepV.div(sCt).setMag(this.maxSpeed).sub(this.vel).limit(this.maxForce);
+        sepV.mult(sep);aliV.mult(ali);cohV.mult(coh);
+        this.acc.add(sepV).add(aliV).add(cohV);
+      }
+      update(){
+        this.vel.add(this.acc).limit(this.maxSpeed);
+        this.pos.add(this.vel);
+        this.acc.mult(0);
+        if(this.pos.x<0)this.pos.x=p.width;if(this.pos.x>p.width)this.pos.x=0;
+        if(this.pos.y<0)this.pos.y=p.height;if(this.pos.y>p.height)this.pos.y=0;
+      }
+      draw(){
+        p.push();
+        p.translate(this.pos.x,this.pos.y);
+        p.rotate(this.vel.heading());
+        p.fill('#6C5CE7');p.noStroke();
+        p.triangle(-5,-3,-5,3,8,0);
+        p.pop();
+      }
+    }
+    p.setup=()=>{
+      const wrap = document.getElementById('bd-wrap');
+      const cnv = p.createCanvas(wrap.clientWidth||500, 360);
+      cnv.parent('bd-wrap');
+      for(let i=0;i<80;i++)boids.push(new Boid(p.random(p.width),p.random(p.height)));
+    };
+    p.windowResized=()=>{
+      const wrap = document.getElementById('bd-wrap');
+      p.resizeCanvas(wrap.clientWidth||500,360);
+    };
+    p.draw=()=>{
+      p.background(255);
+      for(const b of boids){b.flock(boids);b.update();b.draw();}
+    };
+    document.getElementById('bd-add').addEventListener('click',()=>{
+      for(let i=0;i<30;i++)boids.push(new Boid(p.random(p.width),p.random(p.height)));
+    });
+  };
+  new p5(sketch);
+})();
+
+/* =========================================================
+   8 · MANDELBROT
+   ========================================================= */
+(function(){
+  const cv = document.getElementById('mb-canvas');
+  const ctx = cv.getContext('2d');
+  const coord = document.getElementById('mb-coord');
+  let view = {xmin:-2.2, xmax:1.0, ymin:-1.2, ymax:1.2};
+  const history=[];
+  let dragStart=null, dragCur=null;
+
+  function render(){
+    const W=cv.width,H=cv.height;
+    const img=ctx.createImageData(W,H);
+    const d=img.data;
+    const maxIter=140;
+    for(let py=0;py<H;py++){
+      const y0 = view.ymin + (py/H)*(view.ymax-view.ymin);
+      for(let px=0;px<W;px++){
+        const x0 = view.xmin + (px/W)*(view.xmax-view.xmin);
+        let x=0,y=0,i=0;
+        while(x*x+y*y<=4 && i<maxIter){
+          const xt=x*x-y*y+x0;
+          y=2*x*y+y0;
+          x=xt;i++;
+        }
+        const o=(py*W+px)*4;
+        if(i===maxIter){d[o]=26;d[o+1]=27;d[o+2]=58;d[o+3]=255;}
+        else{
+          const t=i/maxIter;
+          d[o]  =Math.floor(255*Math.abs(Math.sin(6.28*t+0.0)));
+          d[o+1]=Math.floor(180*Math.abs(Math.sin(6.28*t+1.8)));
+          d[o+2]=Math.floor(230*Math.abs(Math.sin(6.28*t+3.3)));
+          d[o+3]=255;
+        }
+      }
+    }
+    ctx.putImageData(img,0,0);
+    coord.textContent=`x:[${view.xmin.toFixed(4)}, ${view.xmax.toFixed(4)}]`;
+  }
+
+  function toCoord(e){
+    const r=cv.getBoundingClientRect();
+    return {
+      x:(e.clientX-r.left)*cv.width/r.width,
+      y:(e.clientY-r.top)*cv.height/r.height
+    };
+  }
+  cv.addEventListener('mousedown',e=>{dragStart=toCoord(e);dragCur=dragStart;});
+  cv.addEventListener('mousemove',e=>{
+    if(!dragStart)return;
+    dragCur=toCoord(e);
+    render();
+    ctx.strokeStyle='#FF6B9D';ctx.lineWidth=2;ctx.setLineDash([4,3]);
+    ctx.strokeRect(dragStart.x,dragStart.y,dragCur.x-dragStart.x,dragCur.y-dragStart.y);
+    ctx.setLineDash([]);
+  });
+  cv.addEventListener('mouseup',e=>{
+    if(!dragStart)return;
+    const s=dragStart,f=toCoord(e);dragStart=null;
+    if(Math.abs(f.x-s.x)<5||Math.abs(f.y-s.y)<5){render();return;}
+    history.push({...view});
+    const x1=Math.min(s.x,f.x)/cv.width, x2=Math.max(s.x,f.x)/cv.width;
+    const y1=Math.min(s.y,f.y)/cv.height, y2=Math.max(s.y,f.y)/cv.height;
+    const xr=view.xmax-view.xmin, yr=view.ymax-view.ymin;
+    view={
+      xmin:view.xmin+x1*xr, xmax:view.xmin+x2*xr,
+      ymin:view.ymin+y1*yr, ymax:view.ymin+y2*yr
+    };
+    render();
+  });
+  document.getElementById('mb-reset').addEventListener('click',()=>{history.length=0;view={xmin:-2.2,xmax:1.0,ymin:-1.2,ymax:1.2};render();});
+  document.getElementById('mb-back').addEventListener('click',()=>{if(history.length){view=history.pop();render();}});
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Composición Compleja — Taller Lúdico Universitario · 12 Sesiones</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Paleta híbrida — papel disciplinado */
+      --paper: #F5EFE4;
+      --paper-deep: #EDE5D5;
+      --paper-card: #FBF6EC;
+      --ink: #1F1810;
+      --ink-mid: #5A4D40;
+      --ink-muted: #8A7E6F;
+      --border: rgba(31,24,16,0.14);
+
+      /* Fase I — Índigo/lavanda */
+      --f1: #4A3590; --f1-light: #6B54B5; --f1-pale: #9B85D4;
+      --f1-dim: rgba(74,53,144,0.08); --f1-border: rgba(74,53,144,0.28); --f1-card: #F0EAFA;
+
+      /* Fase II — Teal/cedro */
+      --f2: #1F5E68; --f2-light: #3E8898; --f2-pale: #6BAAB8;
+      --f2-dim: rgba(31,94,104,0.08); --f2-border: rgba(31,94,104,0.28); --f2-card: #E6F1F3;
+
+      /* Fase III — Vino/terracota */
+      --f3: #8A2A42; --f3-light: #B24C64; --f3-pale: #D48798;
+      --f3-dim: rgba(138,42,66,0.08); --f3-border: rgba(138,42,66,0.28); --f3-card: #F6E3E7;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.78;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* Textura de papel sutil */
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:1000; opacity:0.15; mix-blend-mode:multiply;
+    }
+
+    header {
+      position:fixed; top:0; left:0; right:0; z-index:500;
+      height:52px; display:flex; align-items:center;
+      padding:0 3rem; justify-content:space-between;
+      border-bottom:1px solid var(--border);
+      background:rgba(245,239,228,0.94); backdrop-filter:blur(14px);
+    }
+    .brand { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--f1); text-decoration:none; }
+    .header-phases { display:flex; gap:0.4rem; }
+    .hphase { font-family:'Space Mono',monospace; font-size:7.5px; letter-spacing:0.08em; text-transform:uppercase; padding:0.25rem 0.65rem; border:1px solid; cursor:pointer; transition:all 0.2s; text-decoration:none; border-radius:2px; }
+    .hphase.f1{color:var(--f1);border-color:var(--f1-border);} .hphase.f1:hover,.hphase.f1.on{background:var(--f1);color:var(--paper);border-color:var(--f1);}
+    .hphase.f2{color:var(--f2);border-color:var(--f2-border);} .hphase.f2:hover,.hphase.f2.on{background:var(--f2);color:var(--paper);border-color:var(--f2);}
+    .hphase.f3{color:var(--f3);border-color:var(--f3-border);} .hphase.f3:hover,.hphase.f3.on{background:var(--f3);color:var(--paper);border-color:var(--f3);}
+    .header-nav { display:flex; gap:1.8rem; }
+    .header-nav a { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); text-decoration:none; transition:color 0.2s; }
+    .header-nav a:hover { color:var(--ink); }
+
+    .lbl { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; display:flex; align-items:center; gap:1rem; }
+    .lbl::before { content:''; display:block; width:24px; height:1px; }
+    .lbl.f1{color:var(--f1);} .lbl.f1::before{background:var(--f1);}
+    .lbl.f2{color:var(--f2);} .lbl.f2::before{background:var(--f2);}
+    .lbl.f3{color:var(--f3);} .lbl.f3::before{background:var(--f3);}
+    .lbl.muted{color:var(--ink-muted);} .lbl.muted::before{background:var(--ink-muted);}
+
+    h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,4vw,3.2rem); font-weight:400; line-height:1.12; color:var(--ink); }
+    h2 em { font-style:italic; }
+
+    hr.div { border:none; border-top:1px solid var(--border); }
+    .fi { opacity:0; transform:translateY(16px); transition:opacity 0.6s ease,transform 0.6s ease; }
+    .fi.v { opacity:1; transform:none; }
+    .fi.d1{transition-delay:.1s} .fi.d2{transition-delay:.22s} .fi.d3{transition-delay:.35s}
+
+    /* HERO */
+    .hero-wrap { position:relative; min-height:100vh; overflow:hidden; background:var(--paper-deep); }
+    #wave-canvas { position:absolute; inset:0; width:100%; height:100%; opacity:0.55; }
+    .hero-content {
+      position:relative; z-index:2;
+      max-width:1080px; margin:0 auto;
+      padding:140px 4rem 8rem;
+      display:flex; flex-direction:column; justify-content:flex-end;
+      min-height:100vh;
+    }
+    .hero-kicker { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:var(--f1); margin-bottom:2rem; display:flex; align-items:center; gap:1rem; }
+    .hero-kicker::before { content:''; display:block; width:20px; height:1px; background:var(--f1); }
+    h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(3.8rem,7.5vw,7rem); font-weight:300; line-height:0.98; letter-spacing:-0.025em; margin-bottom:2rem; }
+    h1 .w1 { display:block; color:var(--ink); }
+    h1 .w2 { display:block; color:var(--f1); font-style:italic; }
+    h1 .w3 { display:block; font-size:0.5em; color:var(--f2); font-weight:300; margin-top:0.4em; letter-spacing:0.005em; line-height:1.2; }
+    .hero-cols { display:grid; grid-template-columns:1fr 1fr; gap:4rem; margin-bottom:2.5rem; }
+    .hero-desc { font-size:1.05rem; color:var(--ink-mid); line-height:1.78; }
+    .hero-manifest { border-left:2px solid var(--f1); padding:1.2rem 1.6rem; background:var(--f1-dim); }
+    .hero-manifest p { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.25rem; color:var(--f1); line-height:1.55; }
+    .hero-specs { display:flex; gap:2rem; flex-wrap:wrap; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:var(--ink-muted); padding-top:1.5rem; border-top:1px solid var(--border); }
+    .hero-specs span strong { color:var(--ink); font-weight:700; }
+    .hero-scroll { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); display:flex; align-items:center; gap:0.75rem; animation:blink 2.4s infinite; margin-top:2rem; }
+    .hero-scroll::after { content:'↓'; font-size:12px; }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.35}}
+
+    /* FILOSOFÍA — Spread editorial de 7 ideas */
+    .filosofia-bg { background:var(--paper); }
+    .filosofia-inner { max-width:1080px; margin:0 auto; padding:6rem 4rem 2rem; }
+
+    /* Índice sticky */
+    .prin-index {
+      position:sticky; top:52px; z-index:80;
+      background:rgba(245,239,228,0.94); backdrop-filter:blur(14px);
+      border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+      margin:3rem -4rem 0; padding:0.85rem 4rem;
+      display:flex; gap:0.5rem; overflow-x:auto;
+      scrollbar-width:none;
+    }
+    .prin-index::-webkit-scrollbar { display:none; }
+    .prin-chip {
+      flex:0 0 auto;
+      display:flex; align-items:baseline; gap:0.55rem;
+      padding:0.45rem 0.9rem; border:1px solid var(--border);
+      background:var(--paper-card); cursor:pointer;
+      text-decoration:none; transition:all 0.25s;
+      border-radius:2px;
+      font-family:'Space Mono',monospace;
+      font-size:7.5px; letter-spacing:0.12em; text-transform:uppercase; color:var(--ink-muted);
+      white-space:nowrap;
+    }
+    .prin-chip b { color:var(--ink); font-weight:700; font-size:9px; }
+    .prin-chip em { font-family:'EB Garamond',serif; font-style:italic; font-size:0.88rem; text-transform:none; letter-spacing:0; color:var(--ink-mid); }
+    .prin-chip:hover { background:var(--paper); border-color:var(--ink-muted); color:var(--ink); }
+    .prin-chip.on { background:var(--ink); color:var(--paper); border-color:var(--ink); }
+    .prin-chip.on b, .prin-chip.on em { color:var(--paper); }
+
+    /* Plates */
+    .prin-spread { display:flex; flex-direction:column; margin-top:1.5rem; }
+    .prin-plate {
+      display:grid; grid-template-columns:150px 1fr;
+      gap:3rem; padding:4rem 0;
+      border-top:1px solid var(--border);
+      scroll-margin-top:132px;
+    }
+    .prin-plate:last-child { border-bottom:1px solid var(--border); }
+    .prin-num-col {
+      position:sticky; top:130px; align-self:start;
+      padding-top:0.3rem;
+    }
+    .prin-num {
+      font-family:'Cormorant Garamond',serif;
+      font-weight:300; font-size:7rem; line-height:0.88;
+      letter-spacing:-0.035em; display:block;
+    }
+    .prin-num::after {
+      content:''; display:block; width:42px; height:2px;
+      background:currentColor; margin-top:1rem; opacity:0.55;
+    }
+    .prin-lbl {
+      font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.14em;
+      text-transform:uppercase; color:var(--ink-muted);
+      margin-top:0.85rem; line-height:1.55;
+    }
+    .prin-title {
+      font-family:'Cormorant Garamond',serif;
+      font-weight:400; font-size:clamp(2.2rem,4.2vw,3.4rem);
+      line-height:1.02; letter-spacing:-0.02em;
+      color:var(--ink); margin-bottom:0.55rem;
+    }
+    .prin-metafora {
+      font-family:'Cormorant Garamond',serif; font-style:italic;
+      font-size:clamp(1.2rem,1.9vw,1.55rem); line-height:1.32;
+      margin-bottom:2.2rem;
+    }
+    .prin-cols {
+      display:grid; grid-template-columns:1fr 1fr; gap:3rem;
+      margin-bottom:2rem;
+    }
+    .prin-col-lbl {
+      font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.16em;
+      text-transform:uppercase;
+      margin-bottom:0.85rem; display:flex; align-items:center; gap:0.7rem;
+    }
+    .prin-col-lbl::before { content:''; width:22px; height:1px; background:currentColor; }
+    .prin-col-txt {
+      font-family:'EB Garamond',serif;
+      font-size:1.02rem; color:var(--ink-mid); line-height:1.75;
+    }
+    .prin-col-txt.idea { font-style:italic; color:var(--ink); }
+    .prin-ejercicio {
+      padding:1.3rem 1.7rem; border-left:3px solid;
+      font-size:0.96rem; color:var(--ink-mid); line-height:1.72;
+    }
+    .prin-ej-lbl {
+      font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.16em;
+      text-transform:uppercase; margin-bottom:0.55rem; display:flex;
+      align-items:center; gap:0.55rem;
+    }
+    .prin-ej-lbl::before { content:'▸'; }
+
+    /* MAPA */
+    .mapa-bg { background:var(--paper-deep); }
+    .mapa-inner { max-width:1080px; margin:0 auto; padding:6rem 4rem; }
+    .fases-timeline { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); margin-top:3rem; border:1px solid var(--border); }
+    .fase-tile { padding:2.2rem 2rem; cursor:pointer; transition:filter 0.2s,background 0.2s; position:relative; overflow:hidden; }
+    .fase-tile::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; }
+    .fase-tile.f1t{background:var(--f1-card);} .fase-tile.f1t::after{background:var(--f1);}
+    .fase-tile.f2t{background:var(--f2-card);} .fase-tile.f2t::after{background:var(--f2);}
+    .fase-tile.f3t{background:var(--f3-card);} .fase-tile.f3t::after{background:var(--f3);}
+    .fase-tile:hover { filter:brightness(1.04); }
+    .ft-num { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem; }
+    .ft-num.f1t{color:var(--f1);} .ft-num.f2t{color:var(--f2);} .ft-num.f3t{color:var(--f3);}
+    .ft-title { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:400; line-height:1.18; margin-bottom:0.4rem; color:var(--ink); }
+    .ft-sesiones { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.06em; text-transform:uppercase; margin-bottom:0.85rem; }
+    .ft-sesiones.f1t{color:var(--f1);} .ft-sesiones.f2t{color:var(--f2);} .ft-sesiones.f3t{color:var(--f3);}
+    .ft-desc { font-size:0.92rem; color:var(--ink-mid); line-height:1.68; }
+    .ft-concepto { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; margin-top:0.85rem; }
+    .ft-concepto.f1t{color:var(--f1);} .ft-concepto.f2t{color:var(--f2);} .ft-concepto.f3t{color:var(--f3);}
+
+    /* SESIONES */
+    .sesiones-bg { background:var(--paper); }
+    .sesiones-inner { max-width:1080px; margin:0 auto; padding:4rem 4rem 6rem; }
+    .fase-header { padding:3rem 0 1.5rem; display:flex; align-items:flex-end; gap:2rem; border-top:1px solid var(--border); }
+    .fh-num { font-family:'Cormorant Garamond',serif; font-size:5rem; font-weight:300; line-height:1; opacity:0.22; }
+    .fh-lbl { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:0.4rem; }
+    .fh-title { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:400; line-height:1.15; color:var(--ink); }
+    .fh-sub { font-size:1rem; color:var(--ink-muted); font-style:italic; margin-top:0.2rem; }
+    .sesiones-grid { display:grid; grid-template-columns:repeat(2,1fr); grid-auto-flow:row dense; gap:1px; background:var(--border); border:1px solid var(--border); }
+    .sesion-card { cursor:pointer; transition:filter 0.2s; position:relative; overflow:hidden; }
+    .sesion-card:hover { filter:brightness(1.02); }
+    .sc-front { padding:1.9rem 2rem; }
+    .sc-n { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.65rem; }
+    .sc-title { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:500; line-height:1.18; color:var(--ink); margin-bottom:0.35rem; }
+    .sc-metafora { font-size:0.95rem; font-style:italic; color:var(--ink-mid); margin-bottom:0.85rem; line-height:1.5; }
+    .sc-juego { display:flex; align-items:center; gap:0.5rem; font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-muted); margin-bottom:0.75rem; }
+    .sc-juego-name { font-family:'EB Garamond',serif; font-size:0.92rem; font-style:italic; text-transform:none; letter-spacing:0; color:var(--ink); }
+    .sc-tags { display:flex; gap:0.35rem; flex-wrap:wrap; }
+    .sc-tag { font-family:'Space Mono',monospace; font-size:7px; letter-spacing:0.06em; text-transform:uppercase; padding:0.18rem 0.55rem; border:1px solid var(--border); color:var(--ink-muted); border-radius:2px; }
+    .sc-arrow { position:absolute; top:1.4rem; right:1.6rem; font-size:1rem; color:var(--ink-muted); transition:transform 0.2s; }
+    .sesion-expanded { display:none; grid-column:1/-1; border-top:1px solid var(--border); }
+    .sesion-expanded.open { display:grid; grid-template-columns:1fr 1fr; }
+    .se-left { padding:2.5rem; border-right:1px solid var(--border); }
+    .se-right { padding:2.5rem; }
+    .se-lbl { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.85rem; display:flex; align-items:center; gap:0.5rem; }
+    .se-lbl::before { content:''; display:block; width:14px; height:1px; }
+    .se-lead { font-size:1rem; color:var(--ink-mid); line-height:1.72; margin-bottom:1.2rem; font-style:italic; }
+    .se-partes { display:flex; flex-direction:column; gap:0.9rem; }
+    .se-parte { padding:0.85rem 1rem; background:var(--paper-deep); border-left:2px solid; border-radius:0 2px 2px 0; }
+    .se-parte-head { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.3rem; }
+    .se-parte-txt { font-size:0.92rem; color:var(--ink-mid); line-height:1.62; }
+    .se-meta { display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1.3rem; padding-top:1.3rem; border-top:1px solid var(--border); }
+    .se-meta-block { font-size:0.85rem; color:var(--ink-mid); line-height:1.6; }
+    .se-meta-lbl { font-family:'Space Mono',monospace; font-size:7.5px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.35rem; }
+    .se-variante { margin-top:1.2rem; padding:0.9rem 1.2rem; border:1px dashed; font-size:0.88rem; color:var(--ink-mid); line-height:1.6; border-radius:2px; }
+    .se-principio { margin-top:1.3rem; padding:1rem 1.3rem; background:var(--paper-deep); border:1px solid var(--border); }
+    .se-p-lbl { font-family:'Space Mono',monospace; font-size:7.5px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.35rem; }
+    .se-p-txt { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.05rem; color:var(--ink); line-height:1.55; }
+    .se-observar { margin-top:1.2rem; }
+    .se-obs-lbl { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.5rem; }
+    .se-obs-item { font-size:0.88rem; color:var(--ink-mid); line-height:1.6; padding-left:1rem; position:relative; margin-bottom:0.3rem; }
+    .se-obs-item::before { content:'›'; position:absolute; left:0; color:var(--ink-muted); }
+
+    /* MATERIALES */
+    .mat-bg { background:var(--paper-deep); }
+    .mat-inner { max-width:1080px; margin:0 auto; padding:6rem 4rem; }
+    .mat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); margin-top:3rem; border:1px solid var(--border); }
+    .mat-card { background:var(--paper-card); padding:2rem 1.8rem; transition:background 0.2s; }
+    .mat-card:hover { background:var(--paper); }
+    .mat-icon { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.9rem; }
+    .mat-title { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:500; color:var(--ink); margin-bottom:0.5rem; line-height:1.2; }
+    .mat-txt { font-size:0.9rem; color:var(--ink-mid); line-height:1.65; }
+
+    /* FACILITADOR */
+    .fac-bg { background:var(--paper); }
+    .fac-inner { max-width:1080px; margin:0 auto; padding:6rem 4rem; }
+    .fac-grid { display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-top:3rem; }
+    .fac-card { padding:2rem 2.3rem; border:1px solid var(--border); background:var(--paper-card); }
+    .fac-card.destacado { background:var(--f1-dim); border-color:var(--f1-border); border-left:3px solid var(--f1); }
+    .fc-lbl { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.85rem; }
+    .fc-title { font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:500; color:var(--ink); margin-bottom:0.5rem; line-height:1.2; }
+    .fc-txt { font-size:0.92rem; color:var(--ink-mid); line-height:1.72; }
+    .fc-txt+.fc-txt { margin-top:0.85rem; }
+    .fc-cita { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.08rem; color:var(--ink); line-height:1.55; border-left:2px solid var(--f1); padding:0.9rem 1.3rem; margin-top:1.2rem; background:var(--f1-dim); }
+    .fc-cita cite { font-family:'Space Mono',monospace; font-style:normal; font-size:7.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-muted); display:block; margin-top:0.4rem; }
+
+    footer { border-top:1px solid var(--border); padding:3rem 4rem; max-width:1080px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; background:var(--paper); }
+    .f-title { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--ink-muted); font-style:italic; }
+    .f-meta { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-muted); text-align:right; line-height:1.9; }
+
+    @media(max-width:980px){
+      .hero-content,.filosofia-inner,.mapa-inner,.sesiones-inner,.mat-inner,.fac-inner,footer{padding-left:1.5rem;padding-right:1.5rem;}
+      header{padding:0 1.5rem;}
+      .hero-cols,.fases-timeline,.fac-grid{grid-template-columns:1fr;}
+      .sesiones-grid{grid-template-columns:1fr;}
+      .sesion-expanded.open{grid-template-columns:1fr;}
+      .se-left{border-right:none;border-bottom:1px solid var(--border);}
+      .mat-grid{grid-template-columns:1fr 1fr;}
+      .header-nav{display:none;}
+      .header-phases{gap:0.3rem;}
+      footer{flex-direction:column;gap:1rem;text-align:center;}
+      .f-meta{text-align:center;}
+      .prin-index{margin-left:-1.5rem;margin-right:-1.5rem;padding-left:1.5rem;padding-right:1.5rem;}
+      .prin-plate{grid-template-columns:90px 1fr;gap:1.5rem;padding:2.8rem 0;}
+      .prin-num{font-size:4.4rem;}
+      .prin-num-col{position:static;}
+      .prin-cols{grid-template-columns:1fr;gap:1.6rem;}
+    }
+    @media(max-width:600px){
+      .mat-grid{grid-template-columns:1fr;}
+      .se-meta{grid-template-columns:1fr;}
+      h1{font-size:clamp(2.8rem,10vw,4.5rem);}
+      .prin-plate{grid-template-columns:1fr;gap:1rem;}
+      .prin-num-col{display:flex;align-items:baseline;gap:1.2rem;}
+      .prin-num::after{display:none;}
+      .prin-lbl{margin-top:0;}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="#" class="brand">Composición Compleja · 12</a>
+  <div class="header-phases">
+    <a href="#fase1" class="hphase f1">I · Escuchar</a>
+    <a href="#fase2" class="hphase f2">II · Organizar</a>
+    <a href="#fase3" class="hphase f3">III · Crear</a>
+  </div>
+  <nav class="header-nav">
+    <a href="#filosofia">Principios</a>
+    <a href="#sesiones">Sesiones</a>
+    <a href="#facilitador">Docente</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <canvas id="wave-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-kicker">Taller lúdico · Composición musical · Pensamiento complejo · 12 sesiones · Cero solfeo</div>
+    <h1>
+      <span class="w1">Componer</span>
+      <span class="w2">jugando.</span>
+      <span class="w3">Un taller para universitarios donde la música se aprende como se aprende a nadar: tirándose al agua. El salvavidas teórico viene después —si queda tiempo.</span>
+    </h1>
+    <div class="hero-cols">
+      <p class="hero-desc">
+        Este taller no exige saber leer partituras ni tocar un instrumento.
+        Exige curiosidad por el sonido y cierta disposición al ridículo, que es
+        —nos guste o no— la puerta de entrada a cualquier aprendizaje real.
+        Durante doce sesiones vamos a entender cómo funciona la música
+        usando juegos que, de paso, explican también cómo funciona un cardumen,
+        una conversación incómoda y un grupo de WhatsApp cuando alguien dice algo imprudente.
+        La música es la excusa. El premio es aprender a pensar
+        en sistemas —lo cual, además, queda muy bien en el CV.
+      </p>
+      <div class="hero-manifest">
+        <p>«Componer no es llenar un papel con notas. Es diseñar las condiciones para que algo emerja. Y lo que emerja siempre va a ser más interesante que lo que tenías planeado —lo cual puede resultar ligeramente ofensivo para el ego del compositor.»</p>
+      </div>
+    </div>
+    <div class="hero-specs">
+      <span><strong>12 sesiones</strong> · 90 min c/u</span>
+      <span><strong>3 fases</strong> · Escuchar, Organizar, Crear</span>
+      <span><strong>Requisitos:</strong> ninguno · <em>ninguno de verdad</em></span>
+      <span><strong>Público:</strong> universitarios con oído y sin vergüenza</span>
+    </div>
+    <div class="hero-scroll">Empezar el juego</div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- FILOSOFÍA — Siete ideas, spread editorial -->
+<div class="filosofia-bg" id="filosofia">
+  <div class="filosofia-inner">
+    <div class="lbl f1 fi">Ideas que vamos a jugar</div>
+    <h2 class="fi d1" style="margin:1rem 0 0.5rem;">Siete ideas, <em>en palabras sencillas</em></h2>
+    <p class="fi d2" style="font-size:1.05rem;color:var(--ink-mid);max-width:720px;line-height:1.78;">
+      Estas son siete ideas del pensamiento complejo — la escuela de Edgar Morin, que pensó mucho para que nosotros tengamos que pensar un poco. No hay que memorizarlas: se viven en los juegos. Aquí están en palabras de todos los días, sin la jerga académica que, seamos honestos, a veces parece diseñada para espantar curiosos.
+    </p>
+
+    <nav class="prin-index fi d2" id="prin-index" aria-label="Índice de principios"></nav>
+    <div class="prin-spread fi d2" id="prin-spread"></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- MAPA -->
+<div class="mapa-bg" id="mapa">
+  <div class="mapa-inner">
+    <div class="lbl muted fi">Cómo está organizado el taller</div>
+    <h2 class="fi d1" style="margin:1rem 0 0.5rem;">Tres fases, <em>doce sesiones</em></h2>
+    <p class="fi d2" style="font-size:1.05rem;color:var(--ink-mid);max-width:640px;line-height:1.78;margin-bottom:0;">
+      El taller avanza como una conversación que se va complicando —como las mejores: primero aprendemos a escuchar (lo cual, sospechamos, casi nadie hace del todo), después a poner orden en lo escuchado, y al final a inventar lo propio. Cada fase incluye a las anteriores: nunca se abandona lo aprendido, se expande. Si funciona, saldrás del taller con más preguntas que al entrar. Eso es éxito, no fracaso.
+    </p>
+    <div class="fases-timeline fi d2">
+      <div class="fase-tile f1t" onclick="document.getElementById('fase1').scrollIntoView({behavior:'smooth'})">
+        <div class="ft-num f1t">Fase I · Sesiones 1–4</div>
+        <div class="ft-title">Escuchar</div>
+        <div class="ft-sesiones f1t">4 sesiones · 6 horas</div>
+        <div class="ft-desc">Antes de hacer música, aprender a escucharla. Y antes de escucharla, descubrir que el silencio nunca es silencio (lástima para los monjes). El sonido como material primero: silencio, semilla, ritmo, color. Ninguna teoría — solo atención, que resulta ser la habilidad más escasa del siglo.</div>
+        <div class="ft-concepto f1t">«Lo que no escuchas, no puedes componer»</div>
+      </div>
+      <div class="fase-tile f2t" onclick="document.getElementById('fase2').scrollIntoView({behavior:'smooth'})">
+        <div class="ft-num f2t">Fase II · Sesiones 5–8</div>
+        <div class="ft-title">Organizar</div>
+        <div class="ft-sesiones f2t">4 sesiones · 6 horas</div>
+        <div class="ft-desc">Con el oído despierto, empezamos a jugar con cómo se organizan los sonidos: tensión y descanso, repetición y variación, armonía, diálogo entre voces. La forma aparece —spoiler— cuando menos se la busca. Las mejores piezas, como las mejores ideas, rara vez se obedecen la planilla inicial.</div>
+        <div class="ft-concepto f2t">«Ordenar sin mandar»</div>
+      </div>
+      <div class="fase-tile f3t" onclick="document.getElementById('fase3').scrollIntoView({behavior:'smooth'})">
+        <div class="ft-num f3t">Fase III · Sesiones 9–12</div>
+        <div class="ft-title">Crear</div>
+        <div class="ft-sesiones f3t">4 sesiones · 6 horas</div>
+        <div class="ft-desc">Lo propio empieza a aparecer —casi siempre, cuando ya se había abandonado el proyecto de encontrarlo. Improvisación, restricciones que liberan (paradoja central del arte), la crisis del bloqueo y su salida, y el estreno donde otros escuchan lo tuyo. No hay nota — hay conversación. Si quieres nota, búscate otro taller.</div>
+        <div class="ft-concepto f3t">«Lo tuyo aparece cuando dejas de buscarlo»</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SESIONES -->
+<div class="sesiones-bg" id="sesiones">
+  <div class="sesiones-inner">
+    <div class="fase-header" id="fase1">
+      <div class="fh-num" style="color:var(--f1);">I</div>
+      <div>
+        <div class="fh-lbl" style="color:var(--f1);">Fase I · Sesiones 1 a 4</div>
+        <div class="fh-title">Escuchar</div>
+        <div class="fh-sub">«Lo que no escuchas, no puedes componer»</div>
+      </div>
+    </div>
+    <div class="sesiones-grid" id="grid-f1"></div>
+
+    <div class="fase-header" id="fase2" style="margin-top:3rem;">
+      <div class="fh-num" style="color:var(--f2);">II</div>
+      <div>
+        <div class="fh-lbl" style="color:var(--f2);">Fase II · Sesiones 5 a 8</div>
+        <div class="fh-title">Organizar</div>
+        <div class="fh-sub">«Ordenar sin mandar»</div>
+      </div>
+    </div>
+    <div class="sesiones-grid" id="grid-f2"></div>
+
+    <div class="fase-header" id="fase3" style="margin-top:3rem;">
+      <div class="fh-num" style="color:var(--f3);">III</div>
+      <div>
+        <div class="fh-lbl" style="color:var(--f3);">Fase III · Sesiones 9 a 12</div>
+        <div class="fh-title">Crear</div>
+        <div class="fh-sub">«Lo tuyo aparece cuando dejas de buscarlo»</div>
+      </div>
+    </div>
+    <div class="sesiones-grid" id="grid-f3"></div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- MATERIALES -->
+<div class="mat-bg" id="materiales">
+  <div class="mat-inner">
+    <div class="lbl f2 fi">Lo que hay que traer</div>
+    <h2 class="fi d1" style="margin:1rem 0 0.5rem;">Materiales <em>mínimos</em></h2>
+    <p class="fi d2" style="font-size:1.05rem;color:var(--ink-mid);max-width:640px;line-height:1.78;">
+      Este taller no necesita instrumentos caros ni conocimientos previos. Si querías una excusa para comprarte un sintetizador modular, mala suerte: vas a tener que seguir esperando. La regla es simple: cualquier objeto puede sonar, cualquier voz puede cantar, cualquier cuaderno puede ser partitura. Y sí, esto también significa que no hay excusas.
+
+    </p>
+    <div class="mat-grid fi d2">
+      <div class="mat-card">
+        <div class="mat-icon" style="color:var(--f1);">Esencial · 01</div>
+        <div class="mat-title">Cuaderno y lápiz</div>
+        <div class="mat-txt">Un cuaderno cualquiera, para anotar lo que escuchas, lo que descubres, las preguntas que te aparecen. No es para pentagramas — es para pensar. Al final del taller, tu cuaderno será más valioso que cualquier pieza compuesta.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon" style="color:var(--f1);">Esencial · 02</div>
+        <div class="mat-title">Teléfono con grabadora</div>
+        <div class="mat-txt">Todos tenemos uno (por desgracia o por fortuna, según el día). La grabadora de voz del celular alcanza y sobra. Sirve para capturar improvisaciones, ruidos que te llaman la atención en la calle, tus propias ideas antes de que se escapen. Las ideas musicales son como sueños: se olvidan rápido, y quien dice "me acuerdo perfecto" nunca se acuerda.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon" style="color:var(--f1);">Esencial · 03</div>
+        <div class="mat-title">Auriculares</div>
+        <div class="mat-txt">Cualquier auricular decente. Para escuchar con atención sin el ruido del mundo. Muchos de los juegos del taller requieren escucha concentrada — y la escucha atenta no se puede fingir: necesita condiciones.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon" style="color:var(--f2);">Opcional · 01</div>
+        <div class="mat-title">Un instrumento</div>
+        <div class="mat-txt">Si tienes uno — guitarra, teclado, flauta, cualquier cosa — tráelo. Si no, no importa: la voz es un instrumento y los objetos del aula también. Un vaso golpeado con un lápiz puede ser suficiente para varias sesiones.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon" style="color:var(--f2);">Opcional · 02</div>
+        <div class="mat-title">Una app gratuita</div>
+        <div class="mat-txt">MuseScore (notación, gratis), GarageBand (si tienes Mac o iPhone, gratis —si no, la vida es injusta), Soundtrap (en el navegador). No son obligatorias. Sirven para escuchar rápido lo que escribes. Pero no reemplazan al oído: son un espejo. Y hay que mirarse al espejo con cierta sospecha, como todos sabemos.</div>
+      </div>
+      <div class="mat-card">
+        <div class="mat-icon" style="color:var(--f3);">Lo más raro</div>
+        <div class="mat-title">Tiempo que no es tiempo</div>
+        <div class="mat-txt">Entre clase y clase, la composición sigue trabajando sola —aunque tú estés haciendo scroll. Un paseo, una ducha, un viaje en autobús. Las ideas buenas aparecen cuando no las buscas; casi nunca frente a una pantalla iluminada. Dejar tiempo para aburrirse es parte del taller, aunque en la universidad suene a insulto y en el CV no quede bien.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- FACILITADOR -->
+<div class="fac-bg" id="facilitador">
+  <div class="fac-inner">
+    <div class="lbl muted fi">Notas para quien conduce</div>
+    <h2 class="fi d1" style="margin:1rem 0 0.5rem;">Para el <em>docente</em></h2>
+    <p class="fi d2" style="font-size:1.05rem;color:var(--ink-mid);max-width:640px;line-height:1.78;">
+      Este taller no se da en modo "profesor que sabe y alumnos que absorben" —un formato que goza de sorprendente buena salud a pesar de décadas de evidencia en contra. El docente diseña condiciones para que cada estudiante descubra algo que nadie puede enseñarle: su propio modo de escuchar y de inventar. Lo cual, dicho sea de paso, es más difícil que dar una clase magistral —pero también más entretenido.
+    </p>
+    <div class="fac-grid fi d2">
+      <div class="fac-card destacado">
+        <div class="fc-lbl" style="color:var(--f1);">El rol</div>
+        <div class="fc-title">Diseñas condiciones, no das respuestas</div>
+        <div class="fc-txt">El instinto del docente es corregir: "eso no está bien, hazlo así". Es un instinto noble, adictivo y —en este taller— contraproducente. Resístelo. Cuando un estudiante produce algo extraño, la pregunta no es "¿está bien?" (pregunta aburrida, pregunta de contador) sino "¿qué está intentando hacer? ¿qué condiciones le faltan?".</div>
+        <div class="fc-txt">Las reglas clásicas de la composición son herramientas, no leyes divinas. El estudiante tiene que descubrir cuándo le sirven y cuándo no —por la vía del juego, no por la vía del dogma. El dogma, además, ya tiene quien lo enseñe con pasión en otros talleres.</div>
+        <div class="fc-cita">«En composición no hay notas correctas o incorrectas — hay notas que el contexto puede o no puede integrar. Una nota "mala" en un lugar puede ser exactamente la correcta en otro.»<cite>— Adaptado de Toru Takemitsu</cite></div>
+      </div>
+      <div class="fac-card">
+        <div class="fc-lbl" style="color:var(--f2);">Ritmo de la sesión</div>
+        <div class="fc-title">El molde de los 90 minutos</div>
+        <div class="fc-txt"><strong style="color:var(--ink);">15 min — Entrada (escucha o calentamiento):</strong> Un fragmento musical, un video, un ejercicio breve de atención. Crear ambiente. Ganas de explicar todo, cero: aguantar.</div>
+        <div class="fc-txt"><strong style="color:var(--ink);">10 min — Concepto:</strong> La idea de la sesión, con la metáfora de todos los días. Breve. Con ejemplos concretos, no definiciones enciclopédicas. Si quieres leer Morin en voz alta, hazlo en tu casa.</div>
+        <div class="fc-txt"><strong style="color:var(--ink);">50 min — El juego:</strong> El núcleo. El docente observa, escucha, hace preguntas. No interrumpe con "teoría" (tentación casi irresistible: contarla igual). Solo interviene si el juego se traba de verdad —no si simplemente no va como esperabas.</div>
+        <div class="fc-txt"><strong style="color:var(--ink);">15 min — Cierre colectivo:</strong> Qué escucharon, qué les sorprendió, qué pregunta quedó abierta. Nunca "¿quién lo hizo mejor?" (pregunta letal, se contagia rápido). Siempre "¿qué pasó aquí que no esperábamos?".</div>
+      </div>
+      <div class="fac-card">
+        <div class="fc-lbl" style="color:var(--f3);">El error</div>
+        <div class="fc-title">La nota "mala" como información del sistema</div>
+        <div class="fc-txt">Cuando un estudiante hace algo que "no suena bien", no corrijas (lo sabemos, el dedo tiembla). Haz que lo escuche de nuevo. Pregúntale dónde exactamente siente que algo se quiebra. Explora con él qué cambio mínimo haría que el sistema integre ese momento. Spoiler: muchas veces el estudiante ya lo sabe, solo no se atreve a escucharlo.</div>
+        <div class="fc-txt">Este proceso enseña algo que la corrección directa jamás puede: diagnosticarse a uno mismo. El compositor que sale del taller sabiendo leer sus propios pasajes problemáticos adquirió una habilidad que le va a durar toda la vida. El que solo aprende a evitar errores queda siempre dependiendo de alguien que se los señale —un destino incómodo, especialmente en un arte donde los "señaladores" suelen cobrar caro.</div>
+      </div>
+      <div class="fac-card">
+        <div class="fc-lbl" style="color:var(--f1);">Evaluación</div>
+        <div class="fc-title">Evaluar la escucha, no el producto</div>
+        <div class="fc-txt">Si la institución te obliga a poner nota (la mayoría lo hace, qué le vamos a hacer), no evalúes "qué tan buena es la pieza final". Evalúa cuánto creció la capacidad del estudiante para escuchar —la suya y la del resto. Algunos criterios: participación en las audiciones colectivas, riqueza del cuaderno de proceso, disposición a probar cosas incómodas, claridad para hablar de lo que intenta hacer. Rúbricas: las mínimas. Observación real: la máxima.</div>
+        <div class="fc-txt">La pieza final importa — pero importa más la pregunta con la que el estudiante sale del taller. Si sale con más preguntas que respuestas, el taller funcionó. Si sale con un "ahora sí entendí todo", revisa tu metodología: algo falló.</div>
+      </div>
+      <div class="fac-card">
+        <div class="fc-lbl" style="color:var(--f2);">El grupo como sistema</div>
+        <div class="fc-title">La clase es un organismo</div>
+        <div class="fc-txt">Un grupo de estudiantes que se escuchan mutuamente durante 12 sesiones se va convirtiendo en un sistema con su propia cultura. Desarrolla sus bromas internas, sus referencias, sus maneras de hablar de la música. Ese organismo colectivo es uno de los productos más valiosos del taller — y no se planifica, se cuida.</div>
+        <div class="fc-txt">Lee la dinámica del grupo como leerías una partitura: quién escucha a quién, quién se esconde, quién arriesga, dónde aparece un bloqueo colectivo. La intervención del docente en el grupo es oblicua: cambiar las condiciones, no los comportamientos.</div>
+      </div>
+      <div class="fac-card">
+        <div class="fc-lbl" style="color:var(--f3);">La crisis</div>
+        <div class="fc-title">Entre la sesión 7 y la 10 todos odian lo que hacen</div>
+        <div class="fc-txt">Va a pasar. Apuéstalo. En algún momento de la fase II o comienzo de la III, la mayoría de los estudiantes va a sentir que todo lo que compone es mediocre. Que las herramientas viejas ya no les sirven y las nuevas todavía no llegan. No es fracaso: es transición de fase, el mismo nombre que le da la física al agua cuando pasa a vapor. Se ve feo —pero algo interesante está pasando.</div>
+        <div class="fc-txt">Nómbralo desde el primer día: "En algún momento del taller van a odiar lo que hacen. Ese es el momento exacto en que algo está a punto de aparecer. No paren. Sigan jugando aunque no les guste lo que producen." Es casi una profecía autocumplida al revés: anunciar la crisis alivia la crisis. El bloqueo tiene duración finita. Del otro lado, casi siempre, hay un salto cualitativo. La palabra "casi" la dejamos por honestidad epistemológica.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="div">
+<footer>
+  <div class="f-title">Composición Compleja · Taller lúdico para universitarios · 12 sesiones · Cero solfeo, mucha escucha</div>
+  <div class="f-meta">Versión condensada, irónica pero sincera · Basado en el taller de 24 sesiones<br>Edgar Morin · John Cage · Pensamiento complejo · Pedagogía lúdica · Risas opcionales</div>
+</footer>
+
+<script>
+// SCROLL FADE
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+}, { threshold: 0.05 });
+document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+// ══════════════════════════════════
+// HERO — ONDAS LIGERAS SOBRE PAPEL
+// ══════════════════════════════════
+const wC = document.getElementById('wave-canvas');
+const wCtx = wC.getContext('2d');
+function resW() { wC.width = window.innerWidth; wC.height = window.innerHeight; }
+resW(); window.addEventListener('resize', resW);
+
+const WAVES = [
+  { freq: 0.010, amp: 0.06, phase: 0, col: [74,53,144], alpha: 0.22, speed: 0.8 },
+  { freq: 0.018, amp: 0.035, phase: 1.2, col: [31,94,104], alpha: 0.2, speed: 1.2 },
+  { freq: 0.028, amp: 0.02, phase: 2.5, col: [138,42,66], alpha: 0.14, speed: 1.7 },
+  { freq: 0.008, amp: 0.08, phase: 0.6, col: [107,84,181], alpha: 0.16, speed: 0.5 },
+];
+
+const PARTICLES = Array.from({ length: 40 }, () => ({
+  xFrac: Math.random(),
+  waveIdx: Math.floor(Math.random() * WAVES.length),
+  size: Math.random() * 1.8 + 0.5,
+  speed: (Math.random() * 0.0007 + 0.0003) * (Math.random() < 0.5 ? 1 : -1),
+}));
+
+let wT = 0;
+function drawWave() {
+  wCtx.clearRect(0, 0, wC.width, wC.height);
+  wT += 0.009;
+  const W = wC.width, H = wC.height;
+
+  // Fondo crema
+  wCtx.fillStyle = '#EDE5D5';
+  wCtx.fillRect(0, 0, W, H);
+
+  // Líneas de onda principales
+  WAVES.forEach(wave => {
+    const [R, G, B] = wave.col;
+    [-0.25, 0, 0.25].forEach(offset => {
+      wCtx.beginPath();
+      for (let x = 0; x <= W; x += 2) {
+        const y = H * (0.55 + offset * 0.18) +
+          Math.sin(x * wave.freq + wT * wave.speed + wave.phase) * H * wave.amp +
+          Math.sin(x * wave.freq * 2.1 + wT * wave.speed * 1.95 + wave.phase + 1) * H * wave.amp * 0.3;
+        x === 0 ? wCtx.moveTo(x, y) : wCtx.lineTo(x, y);
+      }
+      wCtx.strokeStyle = `rgba(${R},${G},${B},${wave.alpha * (1 - Math.abs(offset))})`;
+      wCtx.lineWidth = offset === 0 ? 1.1 : 0.45;
+      wCtx.stroke();
+    });
+  });
+
+  // Partículas
+  PARTICLES.forEach(p => {
+    p.xFrac += p.speed;
+    if (p.xFrac > 1.02) p.xFrac = -0.02;
+    if (p.xFrac < -0.02) p.xFrac = 1.02;
+    const wave = WAVES[p.waveIdx];
+    const px = p.xFrac * W;
+    const py = H * 0.55 +
+      Math.sin(px * wave.freq + wT * wave.speed + wave.phase) * H * wave.amp;
+    const [R, G, B] = wave.col;
+    const pulse = Math.sin(wT * 1.8 + p.xFrac * 10) * 0.5 + 0.5;
+    wCtx.beginPath();
+    wCtx.arc(px, py, p.size * (1 + pulse * 0.4), 0, Math.PI * 2);
+    wCtx.fillStyle = `rgba(${R},${G},${B},${0.4 + pulse * 0.3})`;
+    wCtx.fill();
+  });
+
+  // Viñeta sutil (gradiente hacia bordes)
+  const vg = wCtx.createRadialGradient(W/2, H*0.55, H*0.25, W/2, H*0.55, W*0.8);
+  vg.addColorStop(0, 'rgba(245,239,228,0)');
+  vg.addColorStop(1, 'rgba(245,239,228,0.55)');
+  wCtx.fillStyle = vg;
+  wCtx.fillRect(0, 0, W, H);
+
+  requestAnimationFrame(drawWave);
+}
+drawWave();
+
+// ══════════════════════════════════
+// PRINCIPIOS — RUEDA
+// ══════════════════════════════════
+const PRINCIPIOS = [
+  {
+    num:'01', title:'Emergencia',
+    metafora:'«El todo es más raro que la suma de sus partes»',
+    complejidad:'Cuando juntas cosas, a veces nace algo que ninguna tenía por separado. Y también —seamos justos— algo peor. Pero lo interesante es lo primero.',
+    musica:'Un equipo de fútbol no son once personas corriendo (si lo fuera, perderían menos). Es un equipo, que es otra cosa. Una melodía no son notas, es un gesto que aparece entre las notas. La música vive en lo que aparece "entre" los sonidos, no en los sonidos mismos. Igual que una buena conversación: lo importante nunca son las palabras sueltas.',
+    ejercicio:'Pruébalo: toca una nota. Después dos. Después tres. ¿En qué momento dejó de ser "notas" y se volvió "un acorde"? Ese instante —cuando aparece algo nuevo que no estaba en ninguna de las notas por separado— es emergencia. Es también el momento en que un profesor de armonía tradicional empezaría a explicarte reglas. Nosotros, no.',
+    color:[74,53,144],
+  },
+  {
+    num:'02', title:'Auto-organización',
+    metafora:'«Lo que nadie planeó, todos hicimos»',
+    complejidad:'Hay un orden que aparece sin que nadie lo mande. Lo cual es una excelente noticia para quienes desconfían de los directores, y una mala noticia para quienes creen que sin jefe no se hace nada.',
+    musica:'Un cardumen de peces se mueve como si tuviera director, pero no lo tiene: cada pez sigue tres reglas simples (no chocar, mirar al vecino, acercarse al grupo). En una jam session de jazz pasa lo mismo. Nadie ordena, pero suena algo que parece dirigido. Los peces, además, no tuvieron que leer a Morin. Nosotros sí —pero solo lo justo.',
+    ejercicio:'El grupo camina por el aula a distintas velocidades sin hablar. Después de dos minutos, ¿qué pasa con el ritmo del grupo? ¿Aparece un pulso colectivo que nadie estableció? (Spoiler: casi siempre sí. Pero no lo arruinemos diciéndolo antes.)',
+    color:[31,94,104],
+  },
+  {
+    num:'03', title:'Dialógica',
+    metafora:'«Los opuestos no se eligen — se necesitan (aunque se lleven pésimo)»',
+    complejidad:'No todo contrario se elimina: a veces, los opuestos se necesitan para que algo exista. La lógica binaria "o esto o lo otro" funciona para elegir entre marcas de café, no para pensar sistemas complejos.',
+    musica:'Silencio y sonido, tensión y calma, disonancia y consonancia. Una pieza que es solo bonita aburre en tres minutos (el pop comercial lleva décadas demostrándolo). Una que es solo fea se vacía el auditorio (cierto arte contemporáneo también). La música vive en la tensión entre esos dos extremos. No hay que elegir uno — hay que aprender a hacerlos convivir, lo cual es, además, bastante entrenamiento para el resto de la vida.',
+    ejercicio:'Toca una disonancia extrema (dos notas muy cerca, fuertes). Sosténla 10 segundos —sí, van a parecer eternos. Después resuélvela a un acorde consonante. ¿Qué efecto produce la consonancia cuando viene después de la disonancia? ¿Y qué pasa si tocas solo consonancia desde el principio? (Respuesta corta: nada. Respuesta larga: nada interesante.)',
+    color:[138,42,66],
+  },
+  {
+    num:'04', title:'Recursividad',
+    metafora:'«Lo que hago me está haciendo»',
+    complejidad:'No hay causa que no sea también efecto de lo que produjo. Noticia ligeramente incómoda para quienes buscan "la razón" de algo —resulta que es, al mismo tiempo, su consecuencia.',
+    musica:'Cuando tocas una pieza, la pieza te cambia a ti. Y ese tú cambiado toca la siguiente nota distinto. Como en una conversación: lo que dices cambia lo que el otro dirá, que cambia lo que tú dirás después —por eso las discusiones con la familia nunca terminan donde empezaron. Beethoven usa cuatro notas en la 5ª que, media hora después, se reconocen transformadas pero son las mismas. Un truco mejor que casi todo Hollywood.',
+    ejercicio:'Toma un motivo de dos compases. Haz cuatro variaciones: invertido, al revés, más lento, más rápido. Compáralas. ¿Qué sobrevive en todas? Eso es la "identidad" del motivo viajando por sus propias transformaciones. Sí, es también una buena metáfora de uno mismo a los 18, a los 30 y a los 60.',
+    color:[144,112,32],
+  },
+  {
+    num:'05', title:'Hologramática',
+    metafora:'«La semilla ya es el árbol» — spoiler: también eres así',
+    complejidad:'La parte contiene información sobre el todo. El todo está, de algún modo, en cada parte. Lo cual explica por qué un gesto mínimo de alguien puede revelar más que su discurso preparado.',
+    musica:'Las primeras cuatro notas de una gran obra muchas veces ya contienen la obra entera en potencia. Como una semilla: no parece gran cosa, pero adentro tiene el árbol completo, sus raíces, y hasta el señor que va a sentarse bajo su sombra. Estudiar un motivo bien es saber anticipar lo que la obra puede llegar a ser. (También es por eso que una primera cita revela más de lo que quisiéramos.)',
+    ejercicio:'Escucha los primeros diez segundos de una pieza que te guste. Pausa antes de que tu cerebro complete la memoria. ¿Qué puedes anticipar sobre el resto? ¿Qué estado de ánimo? ¿Qué energía? La semilla ya te dijo bastante — siempre que hayas escuchado de verdad.',
+    color:[107,84,181],
+  },
+  {
+    num:'06', title:'Incertidumbre',
+    metafora:'«No saber también es saber» (frase que tu ansiedad va a detestar)',
+    complejidad:'La incertidumbre no es falta de conocimiento que algún día se llenará: es parte constitutiva de cómo son los sistemas complejos. Las universidades gastan años enseñando a "no saber" con elegancia, y la mitad de los egresados lo reemplaza por opinar con seguridad. Este taller va a contrapelo.',
+    musica:'El compositor que necesita saber cómo termina la pieza antes de empezarla no puede crear nada vivo. La nota que sorprende —la que viola la expectativa que la propia música estableció— es el momento de máxima energía. Componer es aprender a estar bien sin saber todavía. Lo cual, además, también viene bien para casi cualquier otra cosa.',
+    ejercicio:'Siéntate al instrumento y toca sin planear nada durante cinco minutos. Prohibido borrar, prohibido volver atrás, prohibido juzgar mientras tocas (esta última es la más difícil). Al terminar, escucha la grabación. ¿Qué hiciste que no habrías planeado? Casi siempre es lo mejor del día.',
+    color:[62,136,152],
+  },
+  {
+    num:'07', title:'Complejidad reflexiva',
+    metafora:'«Escucharte ya te cambió» — y sí, mirarte en el espejo también',
+    complejidad:'El que observa un sistema complejo forma parte del sistema que observa. No hay posición de afuera, por mucho que el método científico haya prometido esa silla cómoda durante tres siglos.',
+    musica:'Cuando escuchas tu propia música te conviertes en alguien distinto —y ese tú distinto es quien va a tomar las siguientes decisiones. No existe una posición exterior desde donde componer "objetivamente". La partitura es el resultado de escucharla mientras la escribes. Cualquiera que diga lo contrario probablemente esté vendiendo un método.',
+    ejercicio:'Graba hoy un fragmento tuyo. No lo escuches durante una semana. Después escúchalo como si fuera de alguien que no conoces —es más fácil si finges un poco de desprecio inicial, después se acomoda. ¿Qué escuchas que no escuchabas al escribirlo? Esa distancia es, honestamente, uno de los pocos superpoderes disponibles sin suscripción mensual.',
+    color:[178,76,100],
+  },
+];
+
+// Render de plates + índice sticky sincronizado por IntersectionObserver
+(function renderPrincipios(){
+  const index = document.getElementById('prin-index');
+  const spread = document.getElementById('prin-spread');
+  const chips = [], plates = [];
+
+  PRINCIPIOS.forEach((p,i) => {
+    const [R,G,B] = p.color;
+    const accent = `rgb(${R},${G},${B})`;
+    const accentDim = `rgba(${R},${G},${B},0.07)`;
+
+    const chip = document.createElement('a');
+    chip.href = '#prin-'+p.num;
+    chip.className = 'prin-chip';
+    chip.dataset.idx = i;
+    chip.innerHTML = `<b>${p.num}</b> <em>${p.title}</em>`;
+    chip.addEventListener('click', e => {
+      e.preventDefault();
+      document.getElementById('prin-'+p.num).scrollIntoView({behavior:'smooth',block:'start'});
+    });
+    index.appendChild(chip);
+    chips.push(chip);
+
+    const plate = document.createElement('article');
+    plate.className = 'prin-plate';
+    plate.id = 'prin-'+p.num;
+    plate.dataset.idx = i;
+    plate.innerHTML = `
+      <div class="prin-num-col">
+        <div class="prin-num" style="color:${accent}">${p.num}</div>
+        <div class="prin-lbl">Idea ${p.num}<br>Operador<br>moriniano</div>
+      </div>
+      <div class="prin-body">
+        <h3 class="prin-title">${p.title}</h3>
+        <p class="prin-metafora" style="color:${accent}">${p.metafora}</p>
+        <div class="prin-cols">
+          <div>
+            <div class="prin-col-lbl" style="color:${accent}">La idea</div>
+            <p class="prin-col-txt idea">${p.complejidad}</p>
+          </div>
+          <div>
+            <div class="prin-col-lbl" style="color:${accent}">En música</div>
+            <p class="prin-col-txt">${p.musica}</p>
+          </div>
+        </div>
+        <div class="prin-ejercicio" style="border-color:${accent};background:${accentDim}">
+          <div class="prin-ej-lbl" style="color:${accent}">Pruébalo · ejercicio de 5 minutos</div>
+          ${p.ejercicio}
+        </div>
+      </div>
+    `;
+    spread.appendChild(plate);
+    plates.push(plate);
+  });
+
+  // Chip activo según scroll
+  const activeObs = new IntersectionObserver(entries => {
+    entries.forEach(en => {
+      if (en.isIntersecting) {
+        const idx = parseInt(en.target.dataset.idx, 10);
+        chips.forEach((c,i) => c.classList.toggle('on', i===idx));
+        const chip = chips[idx];
+        if (chip) {
+          const parent = chip.parentElement;
+          const target = chip.offsetLeft - parent.offsetLeft - 40;
+          parent.scrollTo({left: Math.max(0, target), behavior:'smooth'});
+        }
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+  plates.forEach(pl => activeObs.observe(pl));
+  chips[0].classList.add('on');
+})();
+
+// ══════════════════════════════════
+// LAS 12 SESIONES
+// ══════════════════════════════════
+const SESIONES = [
+  // FASE I — ESCUCHAR
+  {n:'01',fase:1,title:'Escuchar el silencio',metafora:'Antes de sonar, hay silencio. Y el silencio —oh sorpresa— ya suena.',juego:'La caza del sonido + 4\'33" colectivo',tags:['silencio','escucha','Cage'],
+    lead:'Antes de componer hay que escuchar. Y antes de escuchar el sonido, hay que encontrarse con el silencio —que, resulta, nunca es silencio del todo. Lamentamos informar que 4\'33" de Cage no era una broma para esnobs: era literal.',
+    partes:[
+      {head:'15 min · Entrada silenciosa',txt:'El docente pide silencio absoluto durante 5 minutos. Cada estudiante anota TODOS los sonidos que identifica, por pequeños que sean: un aire acondicionado, una respiración, un crujido. Lista colectiva en pizarra al final.'},
+      {head:'20 min · 4\'33" colectivo',txt:'Se ve un video de 4\'33" de John Cage interpretado por una orquesta. Se discute: ¿es música? ¿por qué la gente aplaudió? ¿qué intentó decir Cage? Sin respuestas cerradas.'},
+      {head:'40 min · El juego — "Paisaje con silencios"',txt:'En grupos de 3-4, componer una pieza de 2 minutos donde los silencios sean TAN importantes como los sonidos. Pueden usar voz, objetos, aplausos, chasquidos. Los silencios deben estar marcados, pensados, cronometrados.'},
+      {head:'15 min · Audición colectiva',txt:'Cada grupo presenta. El grupo que escucha no habla durante la pieza. Al final, una sola pregunta por grupo: "¿qué hizo el silencio que los sonidos no podían hacer?"'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Cuaderno y lápiz para cada estudiante · Acceso a video de 4\'33" (hay varias versiones en YouTube) · Reloj o cronómetro · Objetos del aula para sonar · Pizarra',
+    variante:'Tarea entre clases — "El paisaje sonoro de tu cuarto": cada estudiante graba 3 minutos del ambiente sonoro de su habitación, sin agregar nada. Se comparten al inicio de la sesión siguiente.',
+    observar:['Quién se incomoda con el silencio prolongado (spoiler: casi todos)','Quién tiene el impulso de llenar los silencios con ruido —ese alumno es oro, aunque él no lo sepa','Quién descubre sonidos que otros no notaron, y se convierte por dos minutos en la persona más interesante del aula','Cómo cada grupo negocia el "quién empieza" cuando nadie quiere romper el silencio (más revelador que un test de personalidad)'],
+
+    principio:'Dialógica',
+    principioTxt:'Silencio y sonido no son opuestos excluyentes: se necesitan. El silencio le da sentido al sonido que aparece. Sin silencio, la música sería una sola masa que no dice nada.'},
+
+  {n:'02',fase:1,title:'La semilla musical',metafora:'Cuatro notas pueden contener una sinfonía. Beethoven no bromeaba.',juego:'Germinar una célula + Telefónico motívico',tags:['motivo','célula','Beethoven'],
+    lead:'Una pequeña unidad sonora —dos, tres, cuatro notas— puede generar toda una pieza si se la trabaja bien. El secreto no es tener ideas grandes (esas son baratas, internet está lleno), sino saber cultivar las pequeñas. Noticia para emprendedores: aplica también ahí.',
+    partes:[
+      {head:'15 min · Entrada — Beethoven',txt:'Se escuchan los primeros 30 segundos de la 5ª Sinfonía de Beethoven. Se identifica el motivo de 4 notas. El docente muestra (en pizarra o en teclado) cómo ese motivo reaparece en la obra transformado 10, 20, 100 veces.'},
+      {head:'10 min · Concepto — la semilla',txt:'Analogía: un árbol de 30 metros salió de una semilla de 1 cm. El ADN de una célula tuya contiene la información de todo tu cuerpo. En música funciona igual: una célula mínima puede contener una obra grande. Eso es hologramática.'},
+      {head:'25 min · Crear tu célula',txt:'Cada estudiante compone una célula propia de 2 a 4 sonidos. Puede ser cantada, tocada en un instrumento, o producida con objetos. Se graban todas las células en teléfono.'},
+      {head:'25 min · Juego — Telefónico motívico',txt:'Las células circulan. Cada estudiante recibe la de un compañero y la TRANSFORMA (más rápida, más lenta, invertida, en otro timbre, con silencios). Luego la pasa al siguiente, que transforma la transformación. Tres pases en total.'},
+      {head:'15 min · Cierre',txt:'Se escucha la cadena de cada célula: original + 3 transformaciones. Discusión: ¿qué sobrevivió de la célula original al tercer pase? ¿Qué es lo "esencial" de un motivo?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Grabación de los primeros compases de la 5ª Sinfonía de Beethoven · Teclado o guitarra en el aula (o ninguno — se puede hacer solo con voces) · Teléfonos para grabar · Cuaderno',
+    variante:'Versión corta: trabajar solo con células rítmicas (solo palmas, sin altura de notas). Es más accesible para quienes nunca tocaron un instrumento y revela el mismo principio.',
+    observar:['Quién trata la célula del compañero con respeto y quién la destruye con sádica eficiencia','Quién inventa transformaciones originales y quién simplemente "decora" (eso también es información sobre el estudiante)','En qué momento de la cadena la célula se vuelve irreconocible — y si alguien, sin quererlo, la devuelve al original'],
+    principio:'Hologramática',
+    principioTxt:'Una semilla contiene el árbol completo. Una célula musical de cuatro notas puede contener una pieza de treinta minutos. Aprender a cultivar lo pequeño vale más que inventar constantemente lo grande.'},
+
+  {n:'03',fase:1,title:'Ritmo de grupo',metafora:'El pulso que nadie marca, pero al que todos —milagrosamente— se suman.',juego:'Polirritmia corporal + El pulso que nadie marca',tags:['ritmo','pulso','polirritmia'],
+    lead:'El ritmo no es la métrica (que es lo que se le enseña a la gente que confunde música con matemática aburrida). Es algo que emerge cuando un grupo se sintoniza sin que nadie lo dirija. Uno de los ejemplos más puros de auto-organización, y un golpe bajo para quienes creen que sin jerarquía no hay orden.',
+    partes:[
+      {head:'15 min · Calentamiento rítmico',txt:'Todos en círculo. Palmas a pulso regular durante dos minutos. Atención: la mente empieza sola a agrupar los pulsos en grupos de 2, 3, 4. Nadie lo pidió. Discusión breve: ¿qué pasa ahí?'},
+      {head:'10 min · Concepto — auto-organización',txt:'Analogía: un cardumen de peces se mueve como si tuviera líder pero no lo tiene. Reglas simples → estructura compleja. Ejemplo sonoro: en una jam session nadie manda pero todo suena coordinado.'},
+      {head:'30 min · Juego — Polirritmia corporal',txt:'El grupo se divide en tres subgrupos. A palmea en 3, B en 2, C en 4. Arrancan al mismo tiempo. Se escucha el patrón emergente. Luego rotan roles. Variante: mismo juego con pies, manos y boca simultáneamente — un solo estudiante hace las tres capas.'},
+      {head:'25 min · Juego — El pulso que nadie marca',txt:'El grupo camina por el aula en silencio, a velocidades distintas, sin hablar ni hacer señas. Durante 3-4 minutos. ¿Aparece un pulso grupal? ¿El grupo se sincroniza solo?'},
+      {head:'10 min · Cierre',txt:'Reflexión: ¿qué hiciste para sincronizarte con el resto sin que nadie te lo indicara? ¿Qué información estabas leyendo del grupo?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Solo el aula y los cuerpos · Opcional: percusiones simples (cajón, tambor, shaker) · Metrónomo para la primera parte · Aula con espacio para caminar',
+    variante:'Si hay poco espacio, el "Pulso que nadie marca" se puede hacer sentados golpeando el piso con los pies a distintas velocidades. El principio es el mismo: ¿emerge una sincronización espontánea?',
+    observar:['Quién intenta liderar el grupo sin haber sido designado (normalmente el mismo que en los trabajos grupales)','Quién sigue a los demás sin aportar —y si eso es ahorrar energía o miedo a equivocarse','En qué momento el grupo encuentra un pulso colectivo — y si lo pierde después porque alguien decidió "corregirlo"'],
+    principio:'Auto-organización',
+    principioTxt:'El ritmo colectivo no se impone desde afuera: emerge del acuerdo tácito entre quienes participan. Cada uno siguiendo reglas locales (mirar al vecino, sentir el pulso) produce un orden global que ningún individuo diseñó.'},
+
+  {n:'04',fase:1,title:'Color sin música',metafora:'Cualquier objeto puede ser un instrumento. Cualquier ruido puede ser música. Lamentamos las consecuencias.',juego:'La orquesta imposible',tags:['timbre','textura','objetos'],
+    lead:'La "música" y el "ruido" no son dos cosas distintas. La diferencia está en cómo se organizan los sonidos, no en los sonidos mismos —un secreto que los padres descubren cuando sus hijos aprenden a tocar la flauta dulce. Un vaso puede ser tan expresivo como un violín; la diferencia es que nadie pagó tres años de clases para golpearlo con un lápiz.',
+    partes:[
+      {head:'15 min · Entrada — el sonido de las cosas',txt:'Cada estudiante recorre el aula durante 5 minutos buscando 3 objetos que produzcan sonidos interesantes. Al volver, cada quien demuestra los sonidos de sus objetos. Se bautizan: "mi vaso golpeado con lápiz es el grillo de cristal".'},
+      {head:'10 min · Concepto — timbre como identidad',txt:'El timbre es la "personalidad" de un sonido. La misma melodía en violín, en flauta, en guitarra eléctrica, no dice lo mismo. El timbre no es decoración — es identidad.'},
+      {head:'50 min · Juego — La orquesta imposible',txt:'Grupos de 5 estudiantes. Cada grupo tiene los 15 objetos aportados por sus integrantes. Composición colectiva de una pieza de 2 minutos. Roles: uno "dirige" con gestos (sin hablar), los demás responden. La pieza debe tener inicio, tensión, resolución. Ensayar dos veces, no más.'},
+      {head:'15 min · Estreno + escucha',txt:'Cada grupo presenta. El grupo que escucha cierra los ojos para no ver los objetos. Al final: ¿qué textura predominaba? ¿Qué objeto se volvió protagonista sin planearlo? ¿Qué objeto "desapareció" aunque estaba sonando?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Objetos cotidianos del aula y de cada estudiante — lápices, vasos, papeles, llaves, monedas, botellas con agua a distintos niveles, cajas, tijeras, sillas · No hace falta ningún instrumento tradicional',
+    variante:'Versión "gesto sonoro": en lugar de que un estudiante dirija con gestos, todos se dirigen entre sí con señas acordadas previamente — una seña por "más fuerte", una por "más lento", una por "silencio", etc. La pieza es una coreografía de señas.',
+    observar:['El objeto que todos descartaron al inicio y termina siendo el protagonista (moraleja menor)','Quién respeta el silencio cuando otro está sonando — y quién no, que es casi siempre el mismo que interrumpe en las reuniones','Cómo se construye la jerarquía sonora sin director — espectáculo más fascinante que la mayoría de series de streaming'],
+    principio:'Emergencia',
+    principioTxt:'La textura musical — lo que "suena" en conjunto — no es la suma de los sonidos individuales. Es lo que emerge de su modo específico de interactuar. Cambiar un solo objeto cambia toda la ecología sonora.'},
+
+  // FASE II — ORGANIZAR
+  {n:'05',fase:2,title:'Tirar de la cuerda',metafora:'Toda música es tensión y soltada. Sin una de las dos, no hay música —solo ambientación de ascensor.',juego:'La cuerda invisible + Mapa de la curva',tags:['tensión','resolución','armonía'],
+    lead:'La música no es un objeto bonito que se pone en una vitrina: es un viaje de tensión y descanso. La disonancia y la consonancia no son buenas ni malas —son herramientas para generar movimiento. Quienes pretenden componer "solo con lo bonito" son los mismos que, en general, escriben novelas donde no pasa nada y lo llaman "sutileza".',
+    partes:[
+      {head:'10 min · Entrada corporal',txt:'Dos estudiantes voluntarios tiran de una cuerda (real) durante 15 segundos. Sostienen la tensión. Sueltan. Todos sienten — en el cuerpo de los dos — el paso de tensión a reposo. Esa es la dinámica básica de la música.'},
+      {head:'15 min · Experiencia — disonancia y resolución',txt:'El docente (o un voluntario) toca en el teclado una disonancia fuerte (dos notas muy juntas, fortísimo). La sostiene 10 segundos. Todos cantan juntos una nota de "resolución" que sientan que calma esa tensión. Se prueban varias resoluciones. ¿Todas funcionan? ¿Por qué algunas sí y otras no?'},
+      {head:'50 min · Juego — Mapa de la curva',txt:'En parejas: (1) dibujar en un papel una curva durante 30 segundos (la curva de tensión de su pieza futura); (2) componer una pieza de 2 minutos que siga esa curva, usando cualquier instrumento o voz; (3) ensayar dos veces. Se graba.'},
+      {head:'15 min · Audición con mapa visible',txt:'Cada pareja presenta: muestran la curva antes de tocar, tocan, y el grupo escucha. Discusión: ¿la curva coincidió con lo que escuchamos? ¿Dónde estaba el pico? ¿Se sintió la resolución?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Una cuerda real · Teclado o piano · Papeles grandes y marcadores · Instrumentos o voces · Grabadora',
+    variante:'Si no hay teclado, se hace todo con voces. La disonancia se produce con dos grupos cantando notas muy cercanas simultáneamente. Es incluso más efectivo — el cuerpo siente la disonancia.',
+    observar:['Quién evita la disonancia por incomodidad y busca consonancias todo el tiempo (lo cual es también un diagnóstico de vida, pero no se los digas todavía)','Quién sostiene la tensión más tiempo del esperable — generalmente el que después hace mejores obras','Cómo cada pareja construye —o no— la arquitectura de tensión. El "o no" suele ser más pedagógico que el "sí"'],
+    principio:'Dialógica',
+    principioTxt:'Tensión y reposo no son alternativas a elegir: son un par que necesita mantenerse en juego. Una pieza sin tensión muere de aburrimiento. Una pieza sin resolución cansa. La música vive en la oscilación entre ambas.'},
+
+  {n:'06',fase:2,title:'Teléfono descompuesto',metafora:'Variar es pensar. Repetir igual es olvidar —o un podcast que ya duró demasiadas temporadas.',juego:'Telefónico musical + Cadena de variaciones',tags:['variación','desarrollo','identidad'],
+    lead:'Una idea repetida exactamente igual se apaga (ver: la mayoría de las columnas de opinión). Una idea que viaja por transformaciones se enciende, porque cada versión ilumina algo que las otras no mostraban. Bach pasó buena parte de su vida demostrándolo; a cambio, recibió poco reconocimiento y muchos hijos.',
+    partes:[
+      {head:'15 min · Entrada — Bach y las Goldberg',txt:'Se escucha el aria inicial de las Variaciones Goldberg de Bach (30 segundos), luego la variación 1 (30 seg), luego la variación 5 (30 seg). El aria original está en todas, pero casi no se la reconoce. ¿Cómo lo hizo Bach?'},
+      {head:'10 min · Concepto — variación como pensamiento',txt:'Una serie de variaciones no es repetir. Es pensar "en voz alta" sobre el mismo tema, mirándolo desde ángulos distintos. Cada variación hace una pregunta que la siguiente intenta responder.'},
+      {head:'45 min · Juego — Telefónico musical en cadena',txt:'El grupo en círculo. Un estudiante canta o toca una frase de 8 segundos (motivo base). El siguiente la repite TRANSFORMADA (más rápida, más lenta, con silencios, diferente timbre, invertida). El siguiente transforma la transformación. Y así hasta dar la vuelta completa al círculo. Todo se graba en secuencia.'},
+      {head:'20 min · Escucha de la cadena + discusión',txt:'Se escucha la grabación entera: motivo original + N variaciones sucesivas. Discusión: ¿en qué variación dejaste de reconocer el original? ¿Qué tipo de transformación "conserva más" del original? ¿Qué tipo lo "destruye"?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Grabación del aria y variaciones 1 y 5 de las Variaciones Goldberg de Bach · Instrumentos o voces · Grabadora para registrar la cadena completa · Sillas en círculo',
+    variante:'Versión con paradas: en vez de ir seguido, al final de cada variación se pausa y el grupo discute brevemente qué cambió. Más lento pero más pedagógico.',
+    observar:['Quién conserva demasiado (apenas varía —por miedo) y quién traiciona demasiado (el que siempre quiere "hacer lo suyo" aunque le toque transformar lo ajeno)','Qué tipo de transformaciones aparecen más (temporales, tímbricas, direccionales) — a veces revela más de la clase que de Bach','El momento del círculo donde el motivo se rompe — y quién es el "responsable". Sin juicios, solo diagnóstico'],
+    principio:'Recursividad',
+    principioTxt:'El motivo original genera las variaciones, y las variaciones — al final — iluminan al motivo original con significados que no tenía al empezar. No es una cadena lineal: es un bucle en el que lo posterior le da sentido a lo anterior.'},
+
+  {n:'07',fase:2,title:'El jardín de acordes',metafora:'Con los mismos ingredientes pueden salir cinco platos distintos. O un desastre, también posible.',juego:'Cinco melodías sobre el mismo jardín',tags:['armonía','melodía','acordes'],
+    lead:'La armonía es el "jardín" donde la melodía crece. Mismo jardín, distintas plantas —y alguna maleza. La armonía no dicta la melodía: la invita a crecer de mil maneras posibles. (La industria pop lleva décadas trabajando con cuatro acordes. El resultado, como se sabe, varía.)',
+    partes:[
+      {head:'15 min · Entrada — tres acordes que todos conocen',txt:'El docente toca tres acordes simples (por ejemplo Do - Fa - Sol, o La menor - Fa - Sol) en loop durante un minuto. El grupo escucha. Luego canta una melodía colectiva sobre el loop. Se repite con una diferente progresión (por ejemplo Do - La menor - Re menor - Sol).'},
+      {head:'10 min · Concepto — armonía como ecosistema',txt:'Cada acorde es como un clima. La tónica es "casa", el lugar al que volvemos. La dominante es "tensión", el lugar que empuja al regreso. La subdominante es "paseo", un rodeo. La música tonal es volver a casa después de un viaje.'},
+      {head:'40 min · Juego — Cinco melodías sobre un jardín',txt:'Se fija una progresión de 4 acordes (el docente la elige o el grupo vota). En loop constante (grabación, piano, guitarra). Cinco estudiantes voluntarios escriben cada uno una melodía distinta sobre la misma base, en 20 minutos. Las melodías pueden ser cantadas, tocadas o silbadas.'},
+      {head:'25 min · Las cinco en fila',txt:'Se tocan las cinco melodías una después de la otra sobre la misma base armónica. Discusión: ¿qué hace distinto a cada una? ¿Una empieza alta, otra baja? ¿Una se mueve por grados, otra por saltos? ¿Cuál es la "lógica" de cada compositor?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Teclado, guitarra o grabación de la progresión en loop · Pizarra para anotar las notas de la progresión · Cuadernos para cada compositor voluntario · Instrumento o voz para cantar las melodías',
+    variante:'Si no se consiguen cinco voluntarios compositores, trabajar en parejas: cada pareja compone una melodía, se obtienen 4-5 melodías distintas sobre el mismo jardín.',
+    observar:['Quién se pega a las notas del acorde —el "alumno aplicado", cuyo trabajo será siempre correcto y casi siempre olvidable','Quién empieza por la nota fundamental y quién por una inesperada — esta segunda categoría suele incluir a los que después se hacen compositores','Qué se repite en todas las melodías: son las respuestas obvias al jardín. Útiles como diagnóstico de qué hábitos arrastra el grupo'],
+    principio:'Emergencia',
+    principioTxt:'La melodía no está "contenida" en la armonía — emerge de ella. Las mismas restricciones (el jardín) producen resultados completamente distintos según las decisiones del compositor. Las restricciones son campo de posibilidades, no prisión.'},
+
+  {n:'08',fase:2,title:'Diálogo a dos voces',metafora:'Dos que se escuchan producen algo que ninguno habría hecho solo. Dos que no se escuchan producen redes sociales.',juego:'El diálogo con reglas',tags:['contrapunto','diálogo','dos voces'],
+    lead:'Cuando dos voces se escuchan mutuamente y siguen reglas simples, aparece una cosa que ninguna de las dos contenía por separado. Eso es contrapunto, y es el laboratorio más puro de la emergencia. También se aplica, en formatos más ruidosos, a cualquier reunión de trabajo bien llevada —si existen.',
+    partes:[
+      {head:'15 min · Entrada — Bach a dos voces',txt:'Se escucha la Invención nº 1 en Do mayor de Bach (1 minuto). Primero se escucha entera. Después el docente aísla la voz de arriba (tarareándola o con un instrumento). Después la voz de abajo. Después las dos juntas. ¿Qué aparece en las dos juntas que no estaba en ninguna?'},
+      {head:'10 min · Concepto — reglas locales, estructura global',txt:'Las reglas del contrapunto son simples y locales: no tocar la misma nota al mismo tiempo, no subir o bajar ambas voces en paralelo, resolver las disonancias por grado conjunto. Cada voz sigue esas reglas escuchando a la otra. El resultado — una estructura global coherente — no fue diseñado por nadie.'},
+      {head:'50 min · Juego — Diálogo con reglas',txt:'Parejas de estudiantes. Cada pareja elige dos voces — pueden ser dos instrumentos, dos voces humanas, dos objetos. REGLAS: (1) cuando una sube, la otra baja o se queda; (2) nunca tocar la misma nota al mismo tiempo; (3) el diálogo dura 2 minutos exactos; (4) la pieza debe tener un momento en que se "encuentran" (cadencia). Se ensaya dos veces. Se graba.'},
+      {head:'15 min · Audición + análisis',txt:'Se escuchan 3-4 parejas. El grupo comenta: ¿quién lleva la conversación? ¿Se escuchan o solo hablan paralelos? ¿Hubo un momento de encuentro real?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Grabación de la Invención nº 1 de Bach en Do mayor · Instrumentos o voces diversas · Grabadora · Cronómetro',
+    variante:'Versión con tres voces: trabajos en tríos en lugar de parejas. El desafío aumenta — con tres voces el principio de "no todos a la vez" es más sutil. Buen segundo pase si sobra tiempo en otra sesión.',
+    observar:['La pareja en que una voz domina a la otra: no hay diálogo, hay podio. Pedagógicamente útil, musicalmente triste','La pareja que solo hace paralelismos: se escuchan pero no conversan —como esas cenas de matrimonio de larga data','El momento del "encuentro": ¿cómo lo construyen sin hablar entre sí? Si lo logran, aprendieron más en 90 minutos que en un semestre de gestión de equipos'],
+    principio:'Auto-organización',
+    principioTxt:'En el contrapunto, dos agentes independientes siguiendo reglas locales producen una estructura global coherente que ninguno planeó. Es el modelo más claro de cómo el orden complejo puede aparecer sin un director central.'},
+
+  // FASE III — CREAR
+  {n:'09',fase:3,title:'Sí, y...',metafora:'Improvisar es pensar en vivo sin poder borrar — el único modo verdaderamente peligroso de pensar.',juego:'Sí, y musical (del teatro de impro)',tags:['improvisación','escucha','tiempo real'],
+    lead:'Improvisar no es "tocar cualquier cosa que se te ocurra mientras finges concentración". Es el modo más honesto de componer: decidir en tiempo real, sin poder volver atrás, respondiendo a lo que el otro acaba de hacer. Es escucha en estado puro —lo cual explica por qué a mucha gente le da pánico.',
+    partes:[
+      {head:'15 min · Entrada — el principio del teatro de impro',txt:'Explicación del "Sí, y" del teatro de improvisación: nunca negar lo que propone el otro, siempre construir sobre eso. Ejemplo (no musical): si alguien dice "estamos en el polo norte", no dices "no, estamos en la playa" — dices "sí, y los pingüinos nos están mirando". El "sí, y" es la regla que hace posible que la improvisación avance.'},
+      {head:'5 min · Traducción a la música',txt:'En música, el "sí, y" suena así: lo que el otro tocó es válido. No lo corrijo. Lo continúo, lo amplío, le respondo. No es "tocar lo que se me ocurra sin escuchar" — es exactamente lo contrario: tocar a partir de lo que acabo de escuchar.'},
+      {head:'50 min · Juego — círculo del Sí, y',txt:'Sillas en círculo. Un estudiante toca/canta una frase breve (4-5 segundos). El siguiente continúa — SIN juzgar, SIN corregir, SIN repetir literal. Tiene que construir sobre lo que acaba de escuchar. Dos vueltas completas al círculo. Todo se graba.'},
+      {head:'20 min · Audición de la cadena + variante',txt:'Se escucha la grabación entera. Discusión: ¿quiénes "mataron" la propuesta del anterior? ¿Quiénes la transformaron sin traicionarla? Variante final: dúos simultáneos de 3 minutos en modo Sí, y.'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Instrumentos o voces · Sillas en círculo · Grabadora · Opcional: un backing track armónico simple que toque de fondo durante el círculo',
+    variante:'Versión con restricción de timbre: todos tienen que usar el mismo tipo de sonido (todas voces, o todos lápices golpeando). Elimina una variable y fuerza la escucha a concentrarse en el contenido musical.',
+    observar:['Quién hace bloqueos involuntarios —toca como si no hubiera escuchado al anterior. Nueve veces de cada diez, es exactamente eso','Quién copia literal (no transforma): la copia fiel es también una forma de no escuchar, curiosamente','El momento de verdadero diálogo: cuando dos turnos seguidos parecen haber sido compuestos por la misma cabeza. Ese instante justifica los 90 minutos'],
+    principio:'Incertidumbre',
+    principioTxt:'La improvisación es el laboratorio de la incertidumbre: no puedes saber qué viene porque depende de lo que acabas de hacer y de lo que el otro va a responder. Aprender a estar bien sin saber — y a seguir tocando — es la competencia central.'},
+
+  {n:'10',fase:3,title:'La caja de limitaciones',metafora:'Las reglas bien diseñadas no limitan: liberan. Las mal diseñadas se llaman burocracia.',juego:'La caja + El azar como compositor',tags:['restricciones','azar','Xenakis'],
+    lead:'Una página en blanco es aterradora —por eso existe Netflix. Una página con una limitación, en cambio, es una invitación. Las restricciones bien diseñadas sacan al compositor de sus hábitos y lo obligan a inventar soluciones que nunca habría imaginado. Reich, Xenakis, Cage: tres señores que hicieron carrera demostrándolo. Vale la pena creerles.',
+    partes:[
+      {head:'10 min · Entrada — Reich y la limitación productiva',txt:'Se escucha Clapping Music de Steve Reich (1 minuto). Toda la pieza usa solo palmas y un único patrón rítmico desplazado. UNA restricción produce 4 minutos de música hipnótica. ¿Cómo?'},
+      {head:'10 min · Concepto — la restricción generativa',txt:'Una restricción bien elegida sirve para salir de los propios hábitos de compositor (lo que el pensamiento complejo llama "atractores" del sistema). Lo que parecía limitación se convierte en mapa de tesoros que no sabías que existían.'},
+      {head:'15 min · Las restricciones al azar',txt:'Una caja con papeles doblados. Cada papel tiene una restricción. Ejemplos: "solo tres notas", "sin silencios", "solo notas largas", "un solo timbre", "pianísimo todo el tiempo", "solo gestos agudos", "repetición obligatoria cada 5 segundos", "sin nota tónica", "solo ruidos, no notas". Cada estudiante saca una al azar. No se puede cambiar.'},
+      {head:'35 min · Compongo con mi restricción',txt:'Cada estudiante compone un fragmento de 1-2 minutos respetando ESTRICTAMENTE la restricción que le tocó. Puede usar el instrumento que quiera, voz, objetos. No se puede violar la restricción.'},
+      {head:'20 min · Audición + diagnóstico',txt:'Se escucha una muestra (4-5 piezas). El grupo intenta adivinar la restricción de cada una. Discusión: ¿qué liberó la restricción que la libertad no habría liberado? ¿Alguien quiso romperla? ¿Por qué?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Grabación de Clapping Music de Steve Reich · Una caja con ~20 papeles de restricciones · Instrumentos y voces · Grabadora',
+    variante:'Versión "restricción por grupo": en lugar de individual, grupos de 3 sacan una restricción colectiva y componen juntos. La negociación bajo la restricción revela dinámicas de grupo.',
+    observar:['Quién se frustra con la restricción y quién la convierte en trampolín — predice bastante bien cómo enfrentan los obstáculos de la vida','Quién hace trampa pequeña ("violo un poquito, nadie lo nota") y quién la respeta fanáticamente. Ambos estilos son revelación','La pieza inesperadamente interesante: casi siempre sale de la restricción que parecía "imposible". Fenómeno reproducible, casi ofensivo'],
+    principio:'Incertidumbre',
+    principioTxt:'La restricción bien diseñada es el opuesto de lo que parece: en lugar de cerrar, abre. Te obliga a buscar soluciones en regiones donde no habrías mirado por ti mismo. El azar que determina la restricción es un socio compositor.'},
+
+  {n:'11',fase:3,title:'Carta al pasaje roto',metafora:'Cuando nada funciona, el sistema te está hablando. La mala noticia: habla bajito. La buena: dice la verdad.',juego:'Carta al pasaje + Doctor del otro',tags:['crisis','revisión','diagnóstico'],
+    lead:'En algún momento del taller —estadísticamente, aquí— todo lo que haces te parece mediocre. Bienvenidos. Eso no es fracaso: es un sistema que está a punto de reorganizarse a un nivel nuevo. La crisis no se resuelve rápido, se habita. Quien diga lo contrario, o nunca compuso, o está vendiéndote algo.',
+    partes:[
+      {head:'15 min · Nombrar la crisis',txt:'El docente nombra abiertamente lo que probablemente muchos están sintiendo: "lo que compongo no me gusta, las herramientas que usaba ya no me sirven, pero no sé qué viene". Eso no es fracaso: es transición de fase. En física se llama así al punto donde el agua pasa a vapor — el sistema se reorganiza a un nivel superior.'},
+      {head:'20 min · Juego 1 — Carta al pasaje',txt:'Cada estudiante elige un pasaje propio de una sesión anterior que "no funciona". Le escribe una carta de 10 líneas dirigida al pasaje: "querido pasaje, ¿qué estás intentando hacer? ¿qué te hace falta? ¿qué te está impidiendo lograrlo?". La carta es sincera, no técnica.'},
+      {head:'30 min · Juego 2 — Doctor del otro',txt:'Intercambio en parejas: cada estudiante le pasa su pasaje y su carta al compañero. El compañero se vuelve "doctor": no corrige — diagnostica. En 10 minutos escribe una respuesta que empiece así: "lo que tu pasaje te está diciendo es…". El diagnóstico debe ser compasivo y concreto.'},
+      {head:'20 min · Regreso al pasaje con diagnóstico',txt:'Cada estudiante vuelve a su pasaje con la lectura del otro. Hace UNA modificación mínima basada en el diagnóstico. No lo reescribe entero. Prueba. Escucha. ¿Cambió algo?'},
+      {head:'5 min · Cierre',txt:'Reflexión breve: ¿qué es más difícil, juzgar lo propio o diagnosticar lo ajeno? ¿Por qué?'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Trabajos producidos en sesiones anteriores (grabaciones o partituras) · Papel y lápiz · Instrumentos para probar modificaciones',
+    variante:'Versión grupal: una pieza problemática de un estudiante se "diagnostica" en grupo entero, no en parejas. Es más vulnerable pero también más revelador.',
+    observar:['Quién no puede nombrar lo "malo" de lo propio (defensas —todos las tenemos, incluso el docente)','Quién diagnostica lo ajeno con enorme claridad pero es ciego a lo suyo: el deporte universal','El momento en que alguien reconoce en el diagnóstico del otro algo que ya sospechaba —y fingía no ver. Esos son los momentos de oro del taller'],
+    principio:'Complejidad reflexiva',
+    principioTxt:'No puedes leer bien tu propio sistema desde adentro — necesitas distancia. La mirada del otro no te corrige: te da acceso a información sobre ti mismo que tu posición no permite ver. Revisar es volver con más información.'},
+
+  {n:'12',fase:3,title:'Estreno y nota de otro',metafora:'La obra no termina cuando la dejas — termina cuando alguien la escucha. Y casi nunca escucha lo que pensabas.',juego:'Estreno + Nota de programa por el otro',tags:['estreno','recepción','cierre'],
+    lead:'Última sesión. Se estrenan los proyectos —con los nervios previsibles. Pero el ejercicio clave es otro: cada compositor descubre qué escuchó otro en su pieza que él ni sabía que había puesto. Esa diferencia entre intención y recepción es la música real, y también la cura más efectiva contra la vanidad artística. Si sobrevives a este ejercicio, probablemente sobrevivas a todo lo demás.',
+    partes:[
+      {head:'45 min · Estreno de los proyectos',txt:'Cada estudiante presenta su proyecto final (2-3 minutos de música cada uno, preparado en las últimas sesiones). Escucha total del grupo. No se aplaude entre piezas — solo al final de todas las presentaciones. Silencio activo entre una y otra.'},
+      {head:'5 min · Sorteo',txt:'Cada compositor recibe (al azar) la pieza de otro para comentar. Se sortea en papeles doblados.'},
+      {head:'20 min · Juego — Nota de programa por el otro',txt:'Cada estudiante escribe la nota de programa (máximo 100 palabras) de la pieza del otro que le tocó. La nota debe responder: ¿qué intentó hacer esta música? ¿qué logró? ¿qué dejó abierto? Sin juicios — solo lectura.'},
+      {head:'15 min · Lectura cruzada',txt:'Cada compositor lee en voz alta la nota escrita sobre su pieza por el otro. Escucha lo que otro percibió. No responde ni se defiende. Solo escucha.'},
+      {head:'5 min · Cierre — la pregunta abierta',txt:'Última tarea: cada estudiante escribe UNA sola frase en su cuaderno. La pregunta que el taller le dejó abierta. No es un resumen — es un punto de partida para lo que sigue.'}
+    ],
+    duracion:'90 minutos',
+    materiales:'Sistema de sonido para reproducir los proyectos · Papeles para sortear · Papel y lápiz para las notas de programa · Una silla por estudiante, en semicírculo',
+    variante:'Si el grupo es pequeño (menos de 8), cada pieza recibe DOS notas de programa de dos estudiantes distintos. Las discrepancias entre las dos lecturas son oro.',
+    observar:['El momento en que un compositor escucha su pieza descrita por otro y reconoce algo que no sabía que había puesto — mejor que cualquier nota de examen','Las intenciones que no se cumplieron (el compositor quería X, el oyente escuchó Y). A veces Y es más interesante que X. Orgullo, sostente','La frase de cierre de cada uno — donde aparece la dirección futura. Guardarlas: sirven de evaluación más honesta que cualquier rúbrica'],
+    principio:'Complejidad reflexiva',
+    principioTxt:'La obra no se completa con el compositor: se completa con quien la escucha. El oyente no es externo al sistema que observa — participa en la producción de sentido. Tu pieza es diferente cada vez que alguien la escucha. Esa apertura es la condición de que la música siga viva.'},
+];
+
+// ══════════════════════════════════
+// RENDER DE SESIONES
+// ══════════════════════════════════
+const FASE_COLS = {
+  1:{col:'--f1',light:'--f1-light',pale:'--f1-pale',dim:'--f1-dim',border:'--f1-border',card:'--f1-card'},
+  2:{col:'--f2',light:'--f2-light',pale:'--f2-pale',dim:'--f2-dim',border:'--f2-border',card:'--f2-card'},
+  3:{col:'--f3',light:'--f3-light',pale:'--f3-pale',dim:'--f3-dim',border:'--f3-border',card:'--f3-card'},
+};
+
+function renderSessions() {
+  [1,2,3].forEach(f => {
+    const grid = document.getElementById('grid-f'+f);
+    const fc = FASE_COLS[f];
+    const sesiones = SESIONES.filter(s=>s.fase===f);
+    let html = '';
+    sesiones.forEach((s,idx) => {
+      html += `<div class="sesion-card" style="background:var(${fc.card});" onclick="toggleSession('${s.n}')">
+        <div class="sc-front">
+          <div class="sc-n" style="color:var(${fc.col})">Sesión ${s.n}</div>
+          <div class="sc-title">${s.title}</div>
+          <div class="sc-metafora">${s.metafora}</div>
+          <div class="sc-juego"><span>Juego:</span><span class="sc-juego-name">${s.juego}</span></div>
+          <div class="sc-tags">${s.tags.map(t=>`<span class="sc-tag">${t}</span>`).join('')}</div>
+          <div class="sc-arrow" id="arr-${s.n}">+</div>
+        </div>
+      </div>`;
+      // Expansor inmediatamente después de cada tarjeta (mismo grid, se muestra al abrir)
+      html += `<div class="sesion-expanded" id="exp-${s.n}" style="background:var(${fc.card});">
+        <div class="se-left">
+          <div class="se-lbl" style="color:var(${fc.col});">Desarrollo de la sesión (90 min)</div>
+          <div class="se-lead">${s.lead}</div>
+          <div class="se-partes">
+            ${s.partes.map(p=>`<div class="se-parte" style="border-color:var(${fc.col});"><div class="se-parte-head" style="color:var(${fc.col});">${p.head}</div><div class="se-parte-txt">${p.txt}</div></div>`).join('')}
+          </div>
+          ${s.variante ? `<div class="se-variante" style="border-color:var(${fc.border});color:var(${fc.light});background:var(${fc.dim});"><strong>Variante / Tarea:</strong> ${s.variante}</div>` : ''}
+        </div>
+        <div class="se-right">
+          <div class="se-lbl" style="color:var(${fc.col});">Ficha del juego</div>
+          <div class="se-meta">
+            <div class="se-meta-block"><div class="se-meta-lbl" style="color:var(${fc.col});">Duración</div>${s.duracion}</div>
+            <div class="se-meta-block"><div class="se-meta-lbl" style="color:var(${fc.col});">Nombre del juego</div>${s.juego}</div>
+          </div>
+          <div class="se-meta-block" style="margin-top:1.2rem;"><div class="se-meta-lbl" style="color:var(${fc.col});">Materiales</div>${s.materiales}</div>
+          <div class="se-observar">
+            <div class="se-obs-lbl" style="color:var(${fc.col});">Qué observar el docente</div>
+            ${s.observar.map(o=>`<div class="se-obs-item">${o}</div>`).join('')}
+          </div>
+          <div class="se-principio" style="border-color:var(${fc.border});background:var(${fc.dim});">
+            <div class="se-p-lbl" style="color:var(${fc.col});">Idea que se juega · ${s.principio}</div>
+            <div class="se-p-txt">${s.principioTxt}</div>
+          </div>
+        </div>
+      </div>`;
+    });
+    grid.innerHTML = html;
+  });
+}
+renderSessions();
+
+let openSession = null;
+function toggleSession(n) {
+  const exp = document.getElementById('exp-'+n);
+  const arr = document.getElementById('arr-'+n);
+  if (!exp) return;
+  if (openSession===n) {
+    exp.classList.remove('open'); arr.textContent='+'; openSession=null;
+  } else {
+    if (openSession) {
+      const prev = document.getElementById('exp-'+openSession);
+      const prevArr = document.getElementById('arr-'+openSession);
+      if (prev) prev.classList.remove('open');
+      if (prevArr) prevArr.textContent='+';
+    }
+    exp.classList.add('open'); arr.textContent='−'; openSession=n;
+    setTimeout(()=>exp.scrollIntoView({behavior:'smooth',block:'nearest'}),50);
+  }
+}
+
+</script>
+</body>
+</html>
