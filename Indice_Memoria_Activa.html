@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Memoria Activa del Pensamiento Complejo — Índice</title>
 <style>
   :root {
@@ -400,12 +401,71 @@
   #eje-7 { --eje-color: var(--eje-7); }
   #eje-8 { --eje-color: var(--eje-8); }
 
-  @media (max-width: 700px) {
-    .container { padding: 40px 22px 80px; }
-    h1 { font-size: 32px; }
-    h2 { font-size: 24px; }
-    .work { padding: 22px; }
-    .nav { padding: 10px 16px; font-size: 12px; }
+  /* Tablets y mobiles intermedios */
+  @media (max-width: 720px) {
+    .container { padding: 32px 18px 60px; }
+
+    /* Hero */
+    h1 { font-size: 28px; line-height: 1.15; }
+    .subtitle { font-size: 16px; }
+    .intro { font-size: 15px; margin-top: 28px; }
+    .intro p { margin-bottom: 12px; }
+
+    /* Nav sticky */
+    .nav { padding: 10px 14px; font-size: 12px; }
+    .nav-inner { gap: 4px 12px; }
+    .nav-title { font-size: 13px; margin-right: 8px; }
+    .back-link { font-size: 11px; padding: 3px 8px; margin-right: 8px; }
+
+    /* Ejes */
+    section.eje { margin-top: 56px; }
+    .eje-header { gap: 12px; padding-bottom: 10px; }
+    .eje-num { font-size: 11px; }
+    h2 { font-size: 22px; }
+    .eje-blurb { font-size: 14px; margin: 14px 0 24px; }
+
+    /* Work cards */
+    .work { padding: 20px 18px; margin-bottom: 16px; }
+    .work-title { font-size: 19px; line-height: 1.25; }
+    .work-meta { font-size: 11px; line-height: 1.5; }
+    .work-meta .file { font-size: 10px; word-break: break-all; }
+    .field-label { font-size: 9px; letter-spacing: 0.16em; }
+    .field-body { font-size: 14px; }
+    .conceptos { gap: 5px; }
+    .conceptos li { font-size: 11px; padding: 2px 8px; }
+    .puente { font-size: 13px; padding-left: 12px; }
+    .puente strong { font-size: 14px; }
+    .recursos { gap: 6px; }
+    .recurso-link { font-size: 11px; padding: 4px 10px; }
+
+    /* Masthead */
+    header.masthead { margin-bottom: 50px; padding-bottom: 32px; }
+    .kicker { font-size: 10px; margin-bottom: 14px; }
+
+    /* Constelación */
+    .constelacion { margin-top: 60px; padding-top: 30px; }
+    .constelacion h2 { font-size: 22px; }
+    .constelacion .subtitle-small { margin-bottom: 28px; font-size: 13px; padding: 0 8px; }
+    .puentes-grid { gap: 14px; grid-template-columns: 1fr; }
+    .puente-card { padding: 16px 18px; }
+    .puente-card .term { font-size: 17px; }
+    .puente-card .links { font-size: 13px; }
+
+    footer { font-size: 11px; padding-top: 24px; margin-top: 70px; }
+  }
+
+  /* Móviles estrechos (≤ 420px: iPhone SE, etc.) */
+  @media (max-width: 420px) {
+    .container { padding: 22px 14px 48px; }
+    h1 { font-size: 24px; }
+    .subtitle { font-size: 15px; }
+    h2 { font-size: 20px; }
+    .work { padding: 16px 14px; }
+    .work-title { font-size: 17px; }
+    .field-body { font-size: 13.5px; }
+    .puente-card { padding: 14px 16px; }
+    .puente-card .term { font-size: 16px; }
+    .nav-inner { gap: 3px 10px; }
   }
 </style>
 </head>
