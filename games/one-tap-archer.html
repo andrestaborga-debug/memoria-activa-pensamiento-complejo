@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0f2027">
+<title>One-Tap Archer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: #0f2027;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #eee;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    overscroll-behavior: none;
+  }
+  #game {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+  }
+  #hud {
+    position: fixed;
+    top: env(safe-area-inset-top, 0px);
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+    pointer-events: none;
+    padding-top: 12px;
+  }
+  #hud .stat {
+    background: rgba(0,0,0,0.35);
+    padding: 6px 12px;
+    border-radius: 999px;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    letter-spacing: 0.02em;
+  }
+  #hint {
+    position: fixed;
+    bottom: env(safe-area-inset-bottom, 0px);
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 12px;
+    opacity: 0.55;
+    padding-bottom: 16px;
+    pointer-events: none;
+    letter-spacing: 0.04em;
+  }
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 32, 39, 0.88);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    text-align: center;
+    padding: 24px;
+  }
+  #overlay h1 {
+    font-size: 34px;
+    margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  #overlay p {
+    opacity: 0.8;
+    margin-bottom: 28px;
+    max-width: 340px;
+    line-height: 1.55;
+    font-size: 15px;
+  }
+  #overlay button {
+    background: linear-gradient(135deg, #ff7e5f, #feb47b);
+    color: #1a1a2e;
+    border: 0;
+    padding: 14px 42px;
+    border-radius: 999px;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(255, 126, 95, 0.35);
+  }
+  #overlay button:active { transform: translateY(1px); }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<div id="hud">
+  <span class="stat">Nivel <span id="level">1</span></span>
+  <span class="stat">Puntos <span id="score">0</span></span>
+  <span class="stat">Vidas <span id="lives">3</span></span>
+</div>
+<div id="hint">mantén para apuntar · suelta para disparar</div>
+<div id="overlay">
+  <h1>One-Tap Archer</h1>
+  <p>La mira oscila sola. Mantené el dedo apretado para fijar el ángulo y cargar fuerza. Soltá para disparar.</p>
+  <button id="start">JUGAR</button>
+</div>
+<script>
+(() => {
+  const canvas = document.getElementById('game');
+  const ctx = canvas.getContext('2d');
+  const ui = {
+    level: document.getElementById('level'),
+    score: document.getElementById('score'),
+    lives: document.getElementById('lives'),
+    overlay: document.getElementById('overlay'),
+    overlayTitle: document.querySelector('#overlay h1'),
+    overlayText: document.querySelector('#overlay p'),
+    start: document.getElementById('start'),
+  };
+
+  let W, H, DPR;
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    canvas.width = Math.floor(W * DPR);
+    canvas.height = Math.floor(H * DPR);
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const groundY = () => H - Math.max(70, H * 0.12);
+  const archerX = () => Math.max(60, W * 0.1);
+  const archerY = () => groundY() - 30;
+
+  const GRAVITY = 760;
+
+  const state = {
+    running: false,
+    level: 1,
+    score: 0,
+    lives: 3,
+    aimAngle: -Math.PI / 4,
+    aimDir: 1,
+    aimSpeed: 1.5,
+    holding: false,
+    power: 0,
+    powerRate: 1.3,
+    arrows: [],
+    target: null,
+    wind: 0,
+    particles: [],
+    shake: 0,
+    flash: 0,
+    advancing: false,
+    bgStars: [],
+  };
+
+  function initStars() {
+    state.bgStars = [];
+    for (let i = 0; i < 60; i++) {
+      state.bgStars.push({
+        x: Math.random() * W,
+        y: Math.random() * H * 0.7,
+        r: Math.random() * 1.4 + 0.3,
+        a: Math.random() * 0.5 + 0.2,
+      });
+    }
+  }
+  initStars();
+  window.addEventListener('resize', initStars);
+
+  function newTarget() {
+    const minX = Math.max(W * 0.45, archerX() + 200);
+    const maxX = W - 80;
+    const x = Math.min(maxX, minX + Math.random() * Math.max(40, maxX - minX));
+    const heightSpread = Math.min(0.45, 0.2 + state.level * 0.02);
+    const baseY = groundY() - 50 - Math.random() * (H * heightSpread);
+    const radius = Math.max(26, 56 - state.level * 1.8);
+    const moves = state.level >= 3;
+    const windOn = state.level >= 5;
+    state.wind = windOn ? (Math.random() * 2 - 1) * (40 + state.level * 5) : 0;
+    state.target = {
+      x, y: baseY, baseY,
+      r: radius,
+      vy: moves ? 50 + state.level * 6 : 0,
+      dir: Math.random() < 0.5 ? -1 : 1,
+      range: moves ? 35 + state.level * 4 : 0,
+    };
+  }
+
+  function shoot() {
+    const speed = 380 + state.power * 540;
+    const ax = archerX(), ay = archerY();
+    state.arrows.push({
+      x: ax + Math.cos(state.aimAngle) * 34,
+      y: ay + Math.sin(state.aimAngle) * 34,
+      vx: Math.cos(state.aimAngle) * speed,
+      vy: Math.sin(state.aimAngle) * speed,
+      stuck: false,
+      life: 0,
+      dead: false,
+    });
+    state.power = 0;
+    state.holding = false;
+  }
+
+  function spawnParticles(x, y, color, n = 14) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2;
+      const s = 80 + Math.random() * 200;
+      state.particles.push({
+        x, y,
+        vx: Math.cos(a) * s,
+        vy: Math.sin(a) * s,
+        life: 0.5 + Math.random() * 0.5,
+        age: 0,
+        color,
+      });
+    }
+  }
+
+  function updateUI() {
+    ui.level.textContent = state.level;
+    ui.score.textContent = state.score;
+    ui.lives.textContent = state.lives;
+  }
+
+  function loseLife() {
+    if (state.advancing) return;
+    state.lives -= 1;
+    state.shake = 10;
+    updateUI();
+    if (state.lives <= 0) {
+      gameOver();
+    }
+  }
+
+  function gameOver() {
+    state.running = false;
+    ui.overlay.classList.remove('hidden');
+    ui.overlayTitle.textContent = 'Fin del juego';
+    ui.overlayText.textContent = `Puntaje final: ${state.score} · Llegaste al nivel ${state.level}`;
+    ui.start.textContent = 'OTRA VEZ';
+  }
+
+  function startGame() {
+    state.running = true;
+    state.advancing = false;
+    state.level = 1;
+    state.score = 0;
+    state.lives = 3;
+    state.arrows = [];
+    state.particles = [];
+    state.power = 0;
+    state.holding = false;
+    state.aimAngle = -Math.PI / 4;
+    state.aimDir = 1;
+    newTarget();
+    updateUI();
+    ui.overlay.classList.add('hidden');
+  }
+
+  ui.start.addEventListener('click', startGame);
+
+  function pointerDown(e) {
+    if (!state.running) return;
+    e.preventDefault();
+    state.holding = true;
+    state.power = 0;
+  }
+  function pointerUp(e) {
+    if (!state.running) return;
+    e.preventDefault();
+    if (state.holding) shoot();
+  }
+  canvas.addEventListener('pointerdown', pointerDown);
+  canvas.addEventListener('pointerup', pointerUp);
+  canvas.addEventListener('pointercancel', pointerUp);
+  canvas.addEventListener('pointerleave', pointerUp);
+
+  let lastT = performance.now();
+  function loop(now) {
+    const dt = Math.min(0.05, (now - lastT) / 1000);
+    lastT = now;
+    if (state.running) update(dt);
+    draw();
+    requestAnimationFrame(loop);
+  }
+
+  function update(dt) {
+    if (!state.holding) {
+      state.aimAngle += state.aimDir * state.aimSpeed * dt;
+      if (state.aimAngle < -Math.PI * 0.49) state.aimDir = 1;
+      if (state.aimAngle > -Math.PI * 0.03) state.aimDir = -1;
+    } else {
+      state.power = Math.min(1, state.power + state.powerRate * dt);
+    }
+
+    if (state.target && state.target.range > 0) {
+      const t = state.target;
+      t.y += t.vy * t.dir * dt;
+      if (t.y > t.baseY + t.range) { t.y = t.baseY + t.range; t.dir = -1; }
+      if (t.y < t.baseY - t.range) { t.y = t.baseY - t.range; t.dir = 1; }
+    }
+
+    let didHit = false;
+    for (const a of state.arrows) {
+      if (a.stuck) { a.life += dt; continue; }
+      a.vy += GRAVITY * dt;
+      a.vx += state.wind * dt;
+      a.x += a.vx * dt;
+      a.y += a.vy * dt;
+
+      if (state.target) {
+        const dx = a.x - state.target.x;
+        const dy = a.y - state.target.y;
+        const d = Math.hypot(dx, dy);
+        if (d < state.target.r) {
+          a.stuck = true;
+          a.stickAngle = Math.atan2(a.vy, a.vx);
+          a.stickOffsetX = dx;
+          a.stickOffsetY = dy;
+          const ringPoints = d < state.target.r * 0.25 ? 100
+                            : d < state.target.r * 0.55 ? 50
+                            : 25;
+          state.score += ringPoints + state.level * 5;
+          spawnParticles(a.x, a.y, ringPoints === 100 ? '#ffcf5e' : '#ff7e5f', ringPoints === 100 ? 22 : 14);
+          state.shake = 5;
+          state.flash = 0.25;
+          didHit = true;
+          updateUI();
+          break;
+        }
+      }
+
+      if (a.y > groundY() || a.x < -40 || a.x > W + 60) {
+        a.dead = true;
+      }
+    }
+
+    if (didHit && !state.advancing) {
+      state.advancing = true;
+      setTimeout(() => {
+        if (!state.running) return;
+        state.level += 1;
+        state.arrows = [];
+        state.advancing = false;
+        newTarget();
+        updateUI();
+      }, 700);
+    }
+
+    if (!state.advancing && state.arrows.length > 0) {
+      const anyAlive = state.arrows.some(a => !a.dead && !a.stuck);
+      const anyStuck = state.arrows.some(a => a.stuck);
+      if (!anyAlive && !anyStuck) {
+        state.arrows = [];
+        loseLife();
+      }
+    }
+
+    state.arrows = state.arrows.filter(a => !(a.dead && !a.stuck) && a.life < 1.6);
+
+    for (const p of state.particles) {
+      p.age += dt;
+      p.vy += GRAVITY * 0.5 * dt;
+      p.x += p.vx * dt;
+      p.y += p.vy * dt;
+    }
+    state.particles = state.particles.filter(p => p.age < p.life);
+
+    if (state.shake > 0) state.shake = Math.max(0, state.shake - dt * 30);
+    if (state.flash > 0) state.flash = Math.max(0, state.flash - dt);
+  }
+
+  function draw() {
+    // Background sky gradient
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#2c5364');
+    g.addColorStop(0.6, '#203a43');
+    g.addColorStop(1, '#0f2027');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    // Stars
+    for (const s of state.bgStars) {
+      ctx.globalAlpha = s.a;
+      ctx.fillStyle = '#cfe';
+      ctx.fillRect(s.x, s.y, s.r, s.r);
+    }
+    ctx.globalAlpha = 1;
+
+    // Distant mountains
+    ctx.fillStyle = 'rgba(20, 40, 50, 0.7)';
+    ctx.beginPath();
+    ctx.moveTo(0, groundY());
+    const peaks = 6;
+    for (let i = 0; i <= peaks; i++) {
+      const x = (W / peaks) * i;
+      const y = groundY() - 60 - ((i % 2) * 40);
+      ctx.lineTo(x, y);
+    }
+    ctx.lineTo(W, groundY());
+    ctx.closePath();
+    ctx.fill();
+
+    ctx.save();
+    if (state.shake > 0) {
+      ctx.translate((Math.random()-0.5)*state.shake, (Math.random()-0.5)*state.shake);
+    }
+
+    // Ground
+    ctx.fillStyle = '#1d3b3a';
+    ctx.fillRect(0, groundY(), W, H);
+    ctx.fillStyle = '#2a5453';
+    for (let x = 0; x < W; x += 22) {
+      ctx.fillRect(x, groundY() - 2, 12, 2);
+    }
+
+    // Wind indicator
+    if (state.wind !== 0) {
+      ctx.save();
+      ctx.globalAlpha = 0.55;
+      ctx.strokeStyle = '#7fd';
+      ctx.lineWidth = 2;
+      const cx = W / 2, cy = 70;
+      const dir = Math.sign(state.wind);
+      const mag = Math.min(50, 12 + Math.abs(state.wind) / 2);
+      ctx.beginPath();
+      ctx.moveTo(cx - mag * dir, cy);
+      ctx.lineTo(cx + mag * dir, cy);
+      ctx.lineTo(cx + (mag - 8) * dir, cy - 6);
+      ctx.moveTo(cx + mag * dir, cy);
+      ctx.lineTo(cx + (mag - 8) * dir, cy + 6);
+      ctx.stroke();
+      ctx.font = '11px sans-serif';
+      ctx.fillStyle = '#7fd';
+      ctx.textAlign = 'center';
+      ctx.fillText('viento', cx, cy - 12);
+      ctx.restore();
+    }
+
+    // Target
+    if (state.target) {
+      const t = state.target;
+      ctx.fillStyle = '#6b4423';
+      ctx.fillRect(t.x - 4, t.y, 8, groundY() - t.y);
+      const rings = ['#fff', '#222', '#3b6cd1', '#d13b3b', '#ffcf5e'];
+      const sizes = [1, 0.78, 0.6, 0.4, 0.22];
+      for (let i = 0; i < rings.length; i++) {
+        ctx.fillStyle = rings[i];
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, t.r * sizes[i], 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.strokeStyle = 'rgba(0,0,0,0.4)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(t.x, t.y, t.r, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+
+    drawArcher();
+
+    // Arrows
+    for (const a of state.arrows) {
+      let drawX, drawY, ang;
+      if (a.stuck && state.target) {
+        drawX = state.target.x + a.stickOffsetX;
+        drawY = state.target.y + a.stickOffsetY;
+        ang = a.stickAngle;
+      } else {
+        drawX = a.x; drawY = a.y;
+        ang = Math.atan2(a.vy, a.vx);
+      }
+      ctx.save();
+      ctx.translate(drawX, drawY);
+      ctx.rotate(ang);
+      ctx.fillStyle = '#ddd';
+      ctx.fillRect(-24, -1.5, 26, 3);
+      ctx.fillStyle = '#aaa';
+      ctx.beginPath();
+      ctx.moveTo(4, 0);
+      ctx.lineTo(-4, -4);
+      ctx.lineTo(-4, 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.fillStyle = '#ff7e5f';
+      ctx.beginPath();
+      ctx.moveTo(-24, 0);
+      ctx.lineTo(-30, -4);
+      ctx.lineTo(-26, 0);
+      ctx.lineTo(-30, 4);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Particles
+    for (const p of state.particles) {
+      const a = 1 - p.age / p.life;
+      ctx.globalAlpha = a;
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
+    }
+    ctx.globalAlpha = 1;
+
+    ctx.restore();
+
+    // Flash
+    if (state.flash > 0) {
+      ctx.fillStyle = `rgba(255,255,255,${state.flash * 0.4})`;
+      ctx.fillRect(0, 0, W, H);
+    }
+  }
+
+  function drawArcher() {
+    const ax = archerX(), ay = archerY();
+
+    // Trajectory preview (faint when not holding, brighter when holding)
+    ctx.save();
+    ctx.globalAlpha = state.holding ? 0.7 : 0.22;
+    ctx.strokeStyle = '#7fd';
+    ctx.setLineDash([4, 6]);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    const previewPower = state.holding ? state.power : 0.5;
+    const speed = 380 + previewPower * 540;
+    let px = ax + Math.cos(state.aimAngle) * 34;
+    let py = ay + Math.sin(state.aimAngle) * 34;
+    let pvx = Math.cos(state.aimAngle) * speed;
+    let pvy = Math.sin(state.aimAngle) * speed;
+    ctx.moveTo(px, py);
+    const step = 0.04;
+    for (let i = 0; i < 40; i++) {
+      pvy += GRAVITY * step;
+      pvx += state.wind * step;
+      px += pvx * step;
+      py += pvy * step;
+      ctx.lineTo(px, py);
+      if (py > groundY() || px > W + 40 || px < -40) break;
+    }
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.restore();
+
+    // Body
+    ctx.strokeStyle = '#eee';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(ax, ay + 26);
+    ctx.lineTo(ax, ay - 6);
+    ctx.stroke();
+    // Head
+    ctx.fillStyle = '#eee';
+    ctx.beginPath();
+    ctx.arc(ax, ay - 14, 8, 0, Math.PI * 2);
+    ctx.fill();
+    // Legs
+    ctx.beginPath();
+    ctx.moveTo(ax, ay + 26);
+    ctx.lineTo(ax - 8, ay + 40);
+    ctx.moveTo(ax, ay + 26);
+    ctx.lineTo(ax + 8, ay + 40);
+    ctx.stroke();
+
+    // Bow
+    const bowAng = state.aimAngle;
+    ctx.strokeStyle = '#c08040';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(ax, ay, 18, bowAng - 1.0, bowAng + 1.0);
+    ctx.stroke();
+    // String
+    const sx1 = ax + Math.cos(bowAng - 1.0) * 18;
+    const sy1 = ay + Math.sin(bowAng - 1.0) * 18;
+    const sx2 = ax + Math.cos(bowAng + 1.0) * 18;
+    const sy2 = ay + Math.sin(bowAng + 1.0) * 18;
+    const pull = state.holding ? state.power * 12 : 0;
+    const mx = ax + Math.cos(bowAng) * (18 - pull);
+    const my = ay + Math.sin(bowAng) * (18 - pull);
+    ctx.strokeStyle = 'rgba(255,255,255,0.85)';
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.moveTo(sx1, sy1);
+    ctx.lineTo(mx, my);
+    ctx.lineTo(sx2, sy2);
+    ctx.stroke();
+
+    // Nocked arrow while drawing
+    if (state.holding) {
+      ctx.save();
+      ctx.translate(mx, my);
+      ctx.rotate(bowAng);
+      ctx.fillStyle = '#ddd';
+      ctx.fillRect(-4, -1.2, 22, 2.4);
+      ctx.fillStyle = '#aaa';
+      ctx.beginPath();
+      ctx.moveTo(20, 0);
+      ctx.lineTo(14, -3);
+      ctx.lineTo(14, 3);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Power bar
+    if (state.holding) {
+      const barW = 72, barH = 6;
+      const bx = ax - barW / 2, by = ay + 56;
+      ctx.fillStyle = 'rgba(0,0,0,0.45)';
+      ctx.fillRect(bx, by, barW, barH);
+      const pw = barW * state.power;
+      const grad = ctx.createLinearGradient(bx, by, bx + barW, by);
+      grad.addColorStop(0, '#7fd');
+      grad.addColorStop(0.7, '#ffcf5e');
+      grad.addColorStop(1, '#ff5e5e');
+      ctx.fillStyle = grad;
+      ctx.fillRect(bx, by, pw, barH);
+    }
+  }
+
+  requestAnimationFrame((t) => { lastT = t; loop(t); });
+})();
+</script>
+</body>
+</html>
