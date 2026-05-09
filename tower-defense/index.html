@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <meta name="theme-color" content="#0b1020" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <title>Nebula Defense</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="game"></canvas>
+
+    <!-- Top HUD -->
+    <div id="hud" class="hidden">
+      <div class="hud-cell"><span class="hud-label">LIVES</span><span id="hud-lives">20</span></div>
+      <div class="hud-cell"><span class="hud-label">CREDITS</span><span id="hud-money">$ 0</span></div>
+      <div class="hud-cell"><span class="hud-label">WAVE</span><span id="hud-wave">0 / 0</span></div>
+      <div class="hud-cell hud-map" id="hud-map">—</div>
+      <button id="btn-pause" class="hud-btn" aria-label="Pause">⏸</button>
+    </div>
+
+    <!-- Bottom action bar -->
+    <div id="actions" class="hidden">
+      <button id="btn-speed" class="action-btn">▶ 1×</button>
+      <button id="btn-wave" class="action-btn primary">START WAVE</button>
+    </div>
+
+    <!-- Tower picker -->
+    <div id="tower-picker" class="sheet hidden">
+      <div class="sheet-title">Build tower</div>
+      <div id="tower-list" class="tower-list"></div>
+      <button class="sheet-close" data-close="tower-picker">Cancel</button>
+    </div>
+
+    <!-- Tower details / upgrade -->
+    <div id="tower-menu" class="sheet hidden">
+      <div class="sheet-title" id="tm-name">Tower</div>
+      <div id="tm-stats" class="tm-stats"></div>
+      <div id="tm-upgrades" class="tm-upgrades"></div>
+      <div class="tm-row">
+        <button id="tm-target" class="action-btn">Target: First</button>
+        <button id="tm-sell" class="action-btn warn">Sell</button>
+      </div>
+      <button class="sheet-close" data-close="tower-menu">Close</button>
+    </div>
+
+    <!-- Main menu -->
+    <div id="menu" class="overlay">
+      <div class="menu-card">
+        <h1>Nebula Defense</h1>
+        <p class="tagline">Hold the line. Tap to build. Survive 20 waves.</p>
+        <div class="map-grid" id="map-grid"></div>
+        <div class="menu-row">
+          <button id="btn-continue" class="action-btn primary">Continue</button>
+          <button id="btn-reset" class="action-btn warn">Reset save</button>
+        </div>
+        <p class="hint">Tip: rotate to landscape on small phones for a wider view.</p>
+      </div>
+    </div>
+
+    <!-- Pause overlay -->
+    <div id="pause" class="overlay hidden">
+      <div class="menu-card">
+        <h2>Paused</h2>
+        <button id="btn-resume" class="action-btn primary">Resume</button>
+        <button id="btn-to-menu" class="action-btn">Back to menu</button>
+      </div>
+    </div>
+
+    <!-- End overlay -->
+    <div id="end" class="overlay hidden">
+      <div class="menu-card">
+        <h2 id="end-title">Defeat</h2>
+        <p id="end-sub" class="tagline">The core was overrun.</p>
+        <button id="btn-retry" class="action-btn primary">Retry</button>
+        <button id="btn-end-menu" class="action-btn">Back to menu</button>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden"></div>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
