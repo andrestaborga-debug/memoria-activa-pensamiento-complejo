@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/Enemy.gd" id="1_enemy"]
+
+[node name="Enemy" type="PathFollow2D"]
+rotates = false
+loop = false
+script = ExtResource("1_enemy")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+visible = false
+
+[node name="AnimatedSprite" type="AnimatedSprite2D" parent="."]
+visible = false

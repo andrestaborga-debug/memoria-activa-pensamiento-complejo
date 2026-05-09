@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/Tower.gd" id="1_tower"]
+
+[node name="Tower" type="Node2D"]
+script = ExtResource("1_tower")
+
+[node name="Glow" type="PointLight2D" parent="."]
+energy = 0.85
+texture_scale = 1.2
+
+[node name="BaseSprite" type="Sprite2D" parent="."]
+visible = false
+
+[node name="TurretPivot" type="Node2D" parent="."]
+
+[node name="TurretSprite" type="Sprite2D" parent="TurretPivot"]
+visible = false

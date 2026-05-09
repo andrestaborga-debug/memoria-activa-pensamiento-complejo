@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/Game.gd" id="1_game"]
+[ext_resource type="Script" path="res://scripts/PlacementPreview.gd" id="2_preview"]
+[ext_resource type="Script" path="res://scripts/HUD.gd" id="3_hud"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_game")
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Gradient" type="ColorRect" parent="Background"]
+size = Vector2(1920, 1080)
+mouse_filter = 2
+
+[node name="Stars" type="GPUParticles2D" parent="Background"]
+visible = false
+
+[node name="Paths" type="Node2D" parent="."]
+
+[node name="Towers" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Projectiles" type="Node2D" parent="."]
+
+[node name="FX" type="Node2D" parent="."]
+
+[node name="Preview" type="Node2D" parent="."]
+script = ExtResource("2_preview")
+
+[node name="HUD" type="CanvasLayer" parent="."]
+script = ExtResource("3_hud")
