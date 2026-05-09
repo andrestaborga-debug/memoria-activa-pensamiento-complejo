@@ -36,6 +36,7 @@
     text-shadow: 0 1px 2px rgba(0,0,0,0.6);
     pointer-events: none;
     padding-top: 12px;
+    z-index: 5;
   }
   #hud .stat {
     background: rgba(0,0,0,0.35);
@@ -109,10 +110,10 @@
   <span class="stat">Puntos <span id="score">0</span></span>
   <span class="stat">Vidas <span id="lives">3</span></span>
 </div>
-<div id="hint">mantén para apuntar · suelta para disparar</div>
+<div id="hint">mantén para frenar y cargar · suelta para disparar</div>
 <div id="overlay">
   <h1>One-Tap Archer</h1>
-  <p>La mira oscila sola. Mantené el dedo apretado para fijar el ángulo y cargar fuerza. Soltá para disparar.</p>
+  <p>El arquero se desliza solo de un lado al otro. Mantené apretado para frenarlo y cargar fuerza, soltá para disparar al blanco que cuelga arriba.</p>
   <button id="start">JUGAR</button>
 </div>
 <script>
@@ -144,19 +145,20 @@
   resize();
 
   const groundY = () => H - Math.max(70, H * 0.12);
-  const archerX = () => Math.max(60, W * 0.1);
   const archerY = () => groundY() - 30;
-
-  const GRAVITY = 760;
+  const baseSpeed = () => H * 0.85;
+  const speedRange = () => H * 1.05;
+  const gravity = () => H * 1.4;
+  const AIM = -Math.PI / 2; // straight up
 
   const state = {
     running: false,
     level: 1,
     score: 0,
     lives: 3,
-    aimAngle: -Math.PI / 4,
-    aimDir: 1,
-    aimSpeed: 1.5,
+    archerX: 0,
+    archerDir: 1,
+    archerSpeed: 0,
     holding: false,
     power: 0,
     powerRate: 1.3,
@@ -175,7 +177,7 @@
     for (let i = 0; i < 60; i++) {
       state.bgStars.push({
         x: Math.random() * W,
-        y: Math.random() * H * 0.7,
+        y: Math.random() * H * 0.5,
         r: Math.random() * 1.4 + 0.3,
         a: Math.random() * 0.5 + 0.2,
       });
@@ -185,32 +187,33 @@
   window.addEventListener('resize', initStars);
 
   function newTarget() {
-    const minX = Math.max(W * 0.45, archerX() + 200);
-    const maxX = W - 80;
-    const x = Math.min(maxX, minX + Math.random() * Math.max(40, maxX - minX));
-    const heightSpread = Math.min(0.45, 0.2 + state.level * 0.02);
-    const baseY = groundY() - 50 - Math.random() * (H * heightSpread);
-    const radius = Math.max(26, 56 - state.level * 1.8);
+    const minX = 60;
+    const maxX = W - 60;
+    const radius = Math.max(28, 56 - state.level * 1.8);
+    const baseX = minX + Math.random() * (maxX - minX);
+    const y = Math.max(70, H * 0.12) + Math.random() * Math.min(70, H * 0.08);
     const moves = state.level >= 3;
     const windOn = state.level >= 5;
-    state.wind = windOn ? (Math.random() * 2 - 1) * (40 + state.level * 5) : 0;
+    state.wind = windOn ? (Math.random() * 2 - 1) * (60 + state.level * 6) : 0;
     state.target = {
-      x, y: baseY, baseY,
+      x: baseX, y,
+      baseX,
       r: radius,
-      vy: moves ? 50 + state.level * 6 : 0,
+      vx: moves ? 80 + state.level * 10 : 0,
       dir: Math.random() < 0.5 ? -1 : 1,
-      range: moves ? 35 + state.level * 4 : 0,
+      range: moves ? Math.min((maxX - minX) / 2 - radius, 60 + state.level * 14) : 0,
     };
+    state.archerSpeed = Math.min(W * 0.9, W * 0.35 + state.level * W * 0.025);
   }
 
   function shoot() {
-    const speed = 380 + state.power * 540;
-    const ax = archerX(), ay = archerY();
+    const speed = baseSpeed() + state.power * speedRange();
+    const ax = state.archerX, ay = archerY();
     state.arrows.push({
-      x: ax + Math.cos(state.aimAngle) * 34,
-      y: ay + Math.sin(state.aimAngle) * 34,
-      vx: Math.cos(state.aimAngle) * speed,
-      vy: Math.sin(state.aimAngle) * speed,
+      x: ax + Math.cos(AIM) * 34,
+      y: ay + Math.sin(AIM) * 34,
+      vx: Math.cos(AIM) * speed,
+      vy: Math.sin(AIM) * speed,
       stuck: false,
       life: 0,
       dead: false,
@@ -245,9 +248,7 @@
     state.lives -= 1;
     state.shake = 10;
     updateUI();
-    if (state.lives <= 0) {
-      gameOver();
-    }
+    if (state.lives <= 0) gameOver();
   }
 
   function gameOver() {
@@ -268,8 +269,8 @@
     state.particles = [];
     state.power = 0;
     state.holding = false;
-    state.aimAngle = -Math.PI / 4;
-    state.aimDir = 1;
+    state.archerX = W / 2;
+    state.archerDir = Math.random() < 0.5 ? -1 : 1;
     newTarget();
     updateUI();
     ui.overlay.classList.add('hidden');
@@ -304,24 +305,24 @@
 
   function update(dt) {
     if (!state.holding) {
-      state.aimAngle += state.aimDir * state.aimSpeed * dt;
-      if (state.aimAngle < -Math.PI * 0.49) state.aimDir = 1;
-      if (state.aimAngle > -Math.PI * 0.03) state.aimDir = -1;
+      state.archerX += state.archerDir * state.archerSpeed * dt;
+      if (state.archerX < 50) { state.archerX = 50; state.archerDir = 1; }
+      if (state.archerX > W - 50) { state.archerX = W - 50; state.archerDir = -1; }
     } else {
       state.power = Math.min(1, state.power + state.powerRate * dt);
     }
 
     if (state.target && state.target.range > 0) {
       const t = state.target;
-      t.y += t.vy * t.dir * dt;
-      if (t.y > t.baseY + t.range) { t.y = t.baseY + t.range; t.dir = -1; }
-      if (t.y < t.baseY - t.range) { t.y = t.baseY - t.range; t.dir = 1; }
+      t.x += t.vx * t.dir * dt;
+      if (t.x > t.baseX + t.range) { t.x = t.baseX + t.range; t.dir = -1; }
+      if (t.x < t.baseX - t.range) { t.x = t.baseX - t.range; t.dir = 1; }
     }
 
     let didHit = false;
     for (const a of state.arrows) {
       if (a.stuck) { a.life += dt; continue; }
-      a.vy += GRAVITY * dt;
+      a.vy += gravity() * dt;
       a.vx += state.wind * dt;
       a.x += a.vx * dt;
       a.y += a.vy * dt;
@@ -348,7 +349,7 @@
         }
       }
 
-      if (a.y > groundY() || a.x < -40 || a.x > W + 60) {
+      if (a.y > groundY() || a.y < -120 || a.x < -40 || a.x > W + 40) {
         a.dead = true;
       }
     }
@@ -378,7 +379,7 @@
 
     for (const p of state.particles) {
       p.age += dt;
-      p.vy += GRAVITY * 0.5 * dt;
+      p.vy += gravity() * 0.5 * dt;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
     }
@@ -389,7 +390,6 @@
   }
 
   function draw() {
-    // Background sky gradient
     const g = ctx.createLinearGradient(0, 0, 0, H);
     g.addColorStop(0, '#2c5364');
     g.addColorStop(0.6, '#203a43');
@@ -397,7 +397,6 @@
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
 
-    // Stars
     for (const s of state.bgStars) {
       ctx.globalAlpha = s.a;
       ctx.fillStyle = '#cfe';
@@ -405,7 +404,6 @@
     }
     ctx.globalAlpha = 1;
 
-    // Distant mountains
     ctx.fillStyle = 'rgba(20, 40, 50, 0.7)';
     ctx.beginPath();
     ctx.moveTo(0, groundY());
@@ -424,7 +422,6 @@
       ctx.translate((Math.random()-0.5)*state.shake, (Math.random()-0.5)*state.shake);
     }
 
-    // Ground
     ctx.fillStyle = '#1d3b3a';
     ctx.fillRect(0, groundY(), W, H);
     ctx.fillStyle = '#2a5453';
@@ -432,34 +429,15 @@
       ctx.fillRect(x, groundY() - 2, 12, 2);
     }
 
-    // Wind indicator
-    if (state.wind !== 0) {
-      ctx.save();
-      ctx.globalAlpha = 0.55;
-      ctx.strokeStyle = '#7fd';
-      ctx.lineWidth = 2;
-      const cx = W / 2, cy = 70;
-      const dir = Math.sign(state.wind);
-      const mag = Math.min(50, 12 + Math.abs(state.wind) / 2);
-      ctx.beginPath();
-      ctx.moveTo(cx - mag * dir, cy);
-      ctx.lineTo(cx + mag * dir, cy);
-      ctx.lineTo(cx + (mag - 8) * dir, cy - 6);
-      ctx.moveTo(cx + mag * dir, cy);
-      ctx.lineTo(cx + (mag - 8) * dir, cy + 6);
-      ctx.stroke();
-      ctx.font = '11px sans-serif';
-      ctx.fillStyle = '#7fd';
-      ctx.textAlign = 'center';
-      ctx.fillText('viento', cx, cy - 12);
-      ctx.restore();
-    }
-
-    // Target
+    // Target hanging from top
     if (state.target) {
       const t = state.target;
-      ctx.fillStyle = '#6b4423';
-      ctx.fillRect(t.x - 4, t.y, 8, groundY() - t.y);
+      ctx.strokeStyle = 'rgba(180, 180, 180, 0.5)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(t.x, 0);
+      ctx.lineTo(t.x, t.y - t.r);
+      ctx.stroke();
       const rings = ['#fff', '#222', '#3b6cd1', '#d13b3b', '#ffcf5e'];
       const sizes = [1, 0.78, 0.6, 0.4, 0.22];
       for (let i = 0; i < rings.length; i++) {
@@ -477,7 +455,28 @@
 
     drawArcher();
 
-    // Arrows
+    if (state.wind !== 0) {
+      const cx = state.archerX, cy = archerY() - 80;
+      const dir = Math.sign(state.wind);
+      const mag = Math.min(40, 12 + Math.abs(state.wind) / 3);
+      ctx.save();
+      ctx.globalAlpha = 0.65;
+      ctx.strokeStyle = '#7fd';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(cx - mag * dir, cy);
+      ctx.lineTo(cx + mag * dir, cy);
+      ctx.lineTo(cx + (mag - 8) * dir, cy - 6);
+      ctx.moveTo(cx + mag * dir, cy);
+      ctx.lineTo(cx + (mag - 8) * dir, cy + 6);
+      ctx.stroke();
+      ctx.font = '10px sans-serif';
+      ctx.fillStyle = '#7fd';
+      ctx.textAlign = 'center';
+      ctx.fillText('viento', cx, cy - 10);
+      ctx.restore();
+    }
+
     for (const a of state.arrows) {
       let drawX, drawY, ang;
       if (a.stuck && state.target) {
@@ -511,7 +510,6 @@
       ctx.restore();
     }
 
-    // Particles
     for (const p of state.particles) {
       const a = 1 - p.age / p.life;
       ctx.globalAlpha = a;
@@ -522,7 +520,6 @@
 
     ctx.restore();
 
-    // Flash
     if (state.flash > 0) {
       ctx.fillStyle = `rgba(255,255,255,${state.flash * 0.4})`;
       ctx.fillRect(0, 0, W, H);
@@ -530,9 +527,9 @@
   }
 
   function drawArcher() {
-    const ax = archerX(), ay = archerY();
+    const ax = state.archerX, ay = archerY();
 
-    // Trajectory preview (faint when not holding, brighter when holding)
+    // Trajectory preview
     ctx.save();
     ctx.globalAlpha = state.holding ? 0.7 : 0.22;
     ctx.strokeStyle = '#7fd';
@@ -540,15 +537,15 @@
     ctx.lineWidth = 2;
     ctx.beginPath();
     const previewPower = state.holding ? state.power : 0.5;
-    const speed = 380 + previewPower * 540;
-    let px = ax + Math.cos(state.aimAngle) * 34;
-    let py = ay + Math.sin(state.aimAngle) * 34;
-    let pvx = Math.cos(state.aimAngle) * speed;
-    let pvy = Math.sin(state.aimAngle) * speed;
+    const speed = baseSpeed() + previewPower * speedRange();
+    let px = ax + Math.cos(AIM) * 34;
+    let py = ay + Math.sin(AIM) * 34;
+    let pvx = Math.cos(AIM) * speed;
+    let pvy = Math.sin(AIM) * speed;
     ctx.moveTo(px, py);
     const step = 0.04;
-    for (let i = 0; i < 40; i++) {
-      pvy += GRAVITY * step;
+    for (let i = 0; i < 60; i++) {
+      pvy += gravity() * step;
       pvx += state.wind * step;
       px += pvx * step;
       py += pvy * step;
@@ -566,12 +563,10 @@
     ctx.moveTo(ax, ay + 26);
     ctx.lineTo(ax, ay - 6);
     ctx.stroke();
-    // Head
     ctx.fillStyle = '#eee';
     ctx.beginPath();
     ctx.arc(ax, ay - 14, 8, 0, Math.PI * 2);
     ctx.fill();
-    // Legs
     ctx.beginPath();
     ctx.moveTo(ax, ay + 26);
     ctx.lineTo(ax - 8, ay + 40);
@@ -579,14 +574,13 @@
     ctx.lineTo(ax + 8, ay + 40);
     ctx.stroke();
 
-    // Bow
-    const bowAng = state.aimAngle;
+    // Bow pointing up
+    const bowAng = AIM;
     ctx.strokeStyle = '#c08040';
     ctx.lineWidth = 4;
     ctx.beginPath();
     ctx.arc(ax, ay, 18, bowAng - 1.0, bowAng + 1.0);
     ctx.stroke();
-    // String
     const sx1 = ax + Math.cos(bowAng - 1.0) * 18;
     const sy1 = ay + Math.sin(bowAng - 1.0) * 18;
     const sx2 = ax + Math.cos(bowAng + 1.0) * 18;
@@ -602,7 +596,6 @@
     ctx.lineTo(sx2, sy2);
     ctx.stroke();
 
-    // Nocked arrow while drawing
     if (state.holding) {
       ctx.save();
       ctx.translate(mx, my);
@@ -619,7 +612,6 @@
       ctx.restore();
     }
 
-    // Power bar
     if (state.holding) {
       const barW = 72, barH = 6;
       const bx = ax - barW / 2, by = ay + 56;
