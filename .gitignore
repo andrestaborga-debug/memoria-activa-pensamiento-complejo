@@ -18,3 +18,9 @@ desktop.ini
 # Archivos temporales del pipeline OCR (Tesseract + Poppler)
 _*_text.txt
 *.tmp
+
+# Estado local de Obsidian (UI / workspace) — el resto de .obsidian/ sí se trackea
+Obsidian Vault/.obsidian/workspace.json
+Obsidian Vault/.obsidian/workspace-mobile.json
+Obsidian Vault/.obsidian/cache
+Obsidian Vault/.trash/

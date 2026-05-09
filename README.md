@@ -42,6 +42,20 @@ Vistas disponibles: alfabética · por tradición · por autor · por tema. Bús
 - `composicion-compleja-12.html` y variantes — Taller universitario lúdico de 12 sesiones
 - `ciencia-compleja.html` — Recorrido jugable por la ciencia compleja
 
+### 🕸️ Vault de Obsidian — `Obsidian Vault/`
+
+Versión paralela del corpus en formato [Obsidian](https://obsidian.md): las 91 fichas del Glosario + 19 fichas de obra del Índice, cada una en su archivo markdown con frontmatter, referencias cruzadas resueltas como `[[wikilinks]]`, y MOCs por tradición / eje / tema. Pensado para **explorar la red de conceptos** (vista de grafo) y **editar/extender el corpus** cómodamente.
+
+Para abrirlo: instalá Obsidian → *Open folder as vault* → seleccioná `Obsidian Vault/`. Empezá por la nota `00 - Memoria Activa`.
+
+Es un **derivado** del HTML, no la fuente: si editás el vault, los cambios no se reflejan en los HTMLs. Para regenerar el vault desde los HTMLs:
+
+```bash
+python3 scripts/build_vault.py
+```
+
+Ver `Obsidian Vault/README.md` para más detalles.
+
 ## Uso
 
 Abrir cualquier `.html` directamente en un navegador (doble click). Todo es estático, sin dependencias externas. Funciona offline.
