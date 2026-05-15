@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vedānta — Guía de recursos para entender la tradición</title>
+<style>
+  :root {
+    --bg: #f5f1e8;
+    --paper: #fbf8f1;
+    --ink: #2a2620;
+    --ink-soft: #5b5246;
+    --muted: #7a7060;
+    --rule: #d9cfb8;
+    --accent: #8b3a1f;
+    --accent-soft: rgba(139, 58, 31, 0.08);
+    --eje-1: #a44a2a;
+    --eje-2: #4a6b7c;
+    --eje-3: #6b7c4a;
+    --eje-4: #6b3a5c;
+    --eje-5: #b8851f;
+    --eje-6: #3a4a6b;
+    --eje-7: #8b6b3a;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Crimson Pro', 'Crimson Text', Georgia, 'Times New Roman', serif;
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(245, 241, 232, 0.96);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--rule);
+    padding: 14px 32px;
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+    font-size: 13px;
+  }
+  .nav-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    align-items: baseline;
+  }
+  .nav-title {
+    font-weight: 600;
+    color: var(--ink);
+    margin-right: 14px;
+    font-size: 14px;
+  }
+  .back-link {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--accent);
+    text-decoration: none;
+    padding: 4px 10px;
+    margin-right: 10px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    transition: background 0.15s, border-color 0.15s;
+    white-space: nowrap;
+  }
+  .back-link:hover {
+    background: var(--accent-soft);
+    border-color: rgba(139, 58, 31, 0.2);
+  }
+  .nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 2px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .nav a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 60px 36px 120px;
+  }
+
+  .kicker {
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 18px;
+  }
+
+  h1 {
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
+    font-weight: 500;
+    margin: 0 0 14px;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+  h1 em { color: var(--accent); font-style: italic; }
+
+  .lead {
+    font-size: 1.1em;
+    color: var(--ink-soft);
+    margin: 0 0 14px;
+  }
+  .lead em { color: var(--accent); font-style: italic; }
+
+  .subtle {
+    font-size: 0.92em;
+    color: var(--muted);
+    font-style: italic;
+    margin: 0 0 44px;
+  }
+
+  h2 {
+    font-size: 1.7em;
+    font-weight: 500;
+    margin: 64px 0 8px;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 10px;
+  }
+  h2 em { color: var(--accent); font-style: italic; }
+
+  h2 .h2-num {
+    font-family: -apple-system, 'Segoe UI', Inter, sans-serif;
+    font-size: 0.55em;
+    color: var(--muted);
+    letter-spacing: 0.2em;
+    margin-right: 14px;
+    vertical-align: 0.25em;
+    font-weight: 600;
+  }
+
+  h3 {
+    font-size: 1.18em;
+    font-weight: 600;
+    margin: 36px 0 6px;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+  }
+  h3 em { color: var(--accent); font-style: italic; }
+
+  h3 .sanskrit {
+    font-family: 'Crimson Pro', Georgia, serif;
+    font-style: italic;
+    color: var(--ink-soft);
+    font-weight: 500;
+    margin-left: 8px;
+  }
+
+  p { margin: 0 0 14px; }
+
+  .section-intro {
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-size: 1.02em;
+  }
+
+  ul.resources {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0;
+  }
+  ul.resources li {
+    padding: 14px 0 14px 0;
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  ul.resources li:last-child { border-bottom: 1px solid var(--rule); }
+
+  .res-title {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 1.03em;
+  }
+  .res-title em { color: var(--accent); font-style: italic; }
+  .res-author {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 0.96em;
+  }
+  .res-note {
+    color: var(--ink-soft);
+    font-size: 0.95em;
+    line-height: 1.5;
+  }
+  .res-meta {
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .res-tag {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 1px 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    border-radius: 10px;
+    font-weight: 600;
+  }
+
+  blockquote {
+    margin: 24px 0;
+    padding: 14px 22px;
+    border-left: 3px solid var(--accent);
+    background: var(--paper);
+    color: var(--ink-soft);
+    font-style: italic;
+    font-size: 1.02em;
+  }
+  blockquote cite {
+    display: block;
+    margin-top: 8px;
+    font-style: normal;
+    font-size: 0.85em;
+    color: var(--muted);
+    font-family: -apple-system, Inter, sans-serif;
+    letter-spacing: 0.04em;
+  }
+
+  .callout {
+    margin: 28px 0;
+    padding: 18px 24px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--accent);
+    font-size: 0.97em;
+    color: var(--ink-soft);
+  }
+  .callout strong { color: var(--ink); }
+
+  .schools {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .school {
+    padding: 16px 18px;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--eje-2);
+  }
+  .school:nth-child(2) { border-left-color: var(--eje-3); }
+  .school:nth-child(3) { border-left-color: var(--eje-4); }
+  .school:nth-child(4) { border-left-color: var(--eje-5); }
+  .school:nth-child(5) { border-left-color: var(--eje-7); }
+  .school-name {
+    font-weight: 600;
+    color: var(--ink);
+    font-size: 1.02em;
+    margin-bottom: 2px;
+  }
+  .school-name em { color: var(--accent); font-style: italic; }
+  .school-acharya {
+    font-family: -apple-system, Inter, sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .school-desc {
+    font-size: 0.93em;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  ol.path {
+    counter-reset: step;
+    list-style: none;
+    padding: 0;
+    margin: 22px 0 0;
+  }
+  ol.path li {
+    counter-increment: step;
+    padding: 14px 0 14px 56px;
+    position: relative;
+    border-top: 1px solid var(--rule);
+  }
+  ol.path li:last-child { border-bottom: 1px solid var(--rule); }
+  ol.path li::before {
+    content: counter(step);
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: -apple-system, Inter, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .path-title {
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .path-desc {
+    color: var(--ink-soft);
+    font-size: 0.95em;
+  }
+
+  .meta {
+    margin-top: 80px;
+    padding-top: 22px;
+    border-top: 1px solid var(--rule);
+    font-size: 0.86em;
+    color: var(--muted);
+  }
+  .meta a { color: var(--accent); text-decoration: none; }
+  .meta a:hover { text-decoration: underline; }
+
+  a { color: var(--accent); }
+
+  @media (max-width: 600px) {
+    .container { padding: 40px 22px 80px; }
+    h2 { font-size: 1.4em; }
+    .nav { padding: 12px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="back-link" href="index.html">← Inicio</a>
+    <span class="nav-title">Vedānta — Guía de recursos</span>
+    <a href="#que-es">¿Qué es?</a>
+    <a href="#prasthana">Prasthāna-trayī</a>
+    <a href="#escuelas">Escuelas</a>
+    <a href="#clasicos">Clásicos</a>
+    <a href="#academicos">Académicos</a>
+    <a href="#maestros">Maestros vivos</a>
+    <a href="#espanol">En español</a>
+    <a href="#online">En línea</a>
+    <a href="#ruta">Ruta sugerida</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <div class="kicker">Guía de lectura · Vedānta</div>
+  <h1>Recursos para entender el <em>Vedānta</em></h1>
+  <p class="lead">
+    Una cartografía curada para acercarse a una de las tradiciones filosóficas más sostenidas del pensamiento humano: los textos fuente, los comentaristas clásicos, las introducciones académicas, los maestros vivos y los caminos de lectura que abren la puerta sin perderse en el laberinto bibliográfico.
+  </p>
+  <p class="subtle">
+    El Vedānta no es un sistema cerrado sino una familia de escuelas que comparten un mismo corpus fundacional. Esta guía no toma partido: traza el mapa.
+  </p>
+
+  <h2 id="que-es"><span class="h2-num">§ 1</span>¿Qué es el <em>Vedānta</em>?</h2>
+  <p>
+    <em>Vedānta</em> significa literalmente «fin» o «culminación» (<em>anta</em>) <em>de los Veda</em>: el cuerpo de enseñanzas que cierra la tradición védica, articulado en los <strong>Upaniṣad</strong>. Como sistema (<em>darśana</em>), el Vedānta es una de las seis escuelas clásicas de la filosofía india (āstika) y, sin duda, la más viva e influyente hasta hoy: estructura buena parte de la espiritualidad hindú moderna, las corrientes contemporáneas de no-dualidad y los puentes filosóficos entre Oriente y Occidente desde el siglo XIX.
+  </p>
+  <p>
+    Su pregunta central es ontológica y soteriológica a la vez: ¿cuál es la relación entre <em>Brahman</em> (lo absoluto, la realidad última) y <em>Ātman</em> (el sí-mismo, la conciencia)? Y en función de esa relación, ¿qué es la liberación (<em>mokṣa</em>) y cómo se realiza? Las distintas escuelas vedānticas son, en buena medida, distintas respuestas a esa pregunta.
+  </p>
+
+  <blockquote>
+    «Aquello es pleno, esto es pleno; del pleno surge el pleno. Tomando el pleno del pleno, queda el pleno.»
+    <cite>Īśa Upaniṣad, mantra invocatorio (śānti-mantra)</cite>
+  </blockquote>
+
+  <h2 id="prasthana"><span class="h2-num">§ 2</span>La <em>prasthāna-trayī</em> · los tres textos fuente</h2>
+  <p class="section-intro">
+    Toda escuela vedāntica se construye comentando los mismos tres textos canónicos. Quien quiera leer en serio cualquier autor de la tradición, antes o después, vuelve a ellos.
+  </p>
+
+  <h3>Los <em>Upaniṣad</em> <span class="sanskrit">— śruti-prasthāna (vía revelada)</span></h3>
+  <p class="section-intro">
+    Los diálogos místico-filosóficos que cierran el corpus védico. La tradición reconoce diez como principales (los comentados por Śaṅkara) y suele extender a trece. Son la materia prima del Vedānta.</p>
+  <ul class="resources">
+    <li>
+      <span class="res-title">The Principal Upaniṣads</span>
+      <span class="res-author">S. Radhakrishnan (1953) — Harper Collins / Oxford UP</span>
+      <span class="res-note">Edición bilingüe sánscrito-inglés con comentario filosófico. La traducción académica de referencia en lengua inglesa: rigurosa y filosóficamente alerta.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>EN · académico</span>
+    </li>
+    <li>
+      <span class="res-title">The Early Upaniṣads · Annotated Text and Translation</span>
+      <span class="res-author">Patrick Olivelle (1998) — Oxford UP</span>
+      <span class="res-note">El estándar filológico moderno. Olivelle es el indólogo más riguroso del siglo XXI en este campo; su introducción es la mejor entrada histórica al género.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>EN · filológico</span>
+    </li>
+    <li>
+      <span class="res-title">The Upaniṣads (4 vols.)</span>
+      <span class="res-author">Swāmī Nikhilānanda (1949–1959) — Ramakrishna-Vivekananda Center</span>
+      <span class="res-note">Traducción de los principales Upaniṣad <em>desde dentro</em> de la tradición Advaita, con extractos del comentario de Śaṅkara. Equilibrio raro entre fidelidad y accesibilidad.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>EN · tradicional</span>
+    </li>
+  </ul>
+
+  <h3>La <em>Bhagavad Gītā</em> <span class="sanskrit">— smṛti-prasthāna (vía recordada)</span></h3>
+  <p class="section-intro">
+    Episodio del <em>Mahābhārata</em> que condensa, en forma poética, el núcleo práctico del Vedānta: los caminos de la acción (<em>karma</em>), la devoción (<em>bhakti</em>) y el conocimiento (<em>jñāna</em>).</p>
+  <ul class="resources">
+    <li>
+      <span class="res-title">The Bhagavadgītā</span>
+      <span class="res-author">S. Radhakrishnan (1948) — HarperCollins India</span>
+      <span class="res-note">Traducción con sánscrito, transliteración y ensayo introductorio extenso. La síntesis filosófica más cuidada en inglés.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>EN · académico</span>
+    </li>
+    <li>
+      <span class="res-title">The Bhagavad-Gītā with the Commentary of Śrī Śaṅkarācārya</span>
+      <span class="res-author">Trad. A. Mahādeva Śāstry (1897, reimpr. Samata Books)</span>
+      <span class="res-note">El comentario clásico de Śaṅkara, traducción literal verso a verso. Esencial para ver cómo lee el Advaita la Gītā.</span>
+      <span class="res-meta"><span class="res-tag">comentario</span>EN · tradicional</span>
+    </li>
+    <li>
+      <span class="res-title">The Bhagavad Gita</span>
+      <span class="res-author">Eknath Easwaran (1985) — Nilgiri Press</span>
+      <span class="res-note">Traducción literaria, sin sánscrito, con introducción amplia. La puerta de entrada más amable para lectores no especializados.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>EN · introductorio</span>
+    </li>
+  </ul>
+
+  <h3>El <em>Brahma-sūtra</em> <span class="sanskrit">— nyāya-prasthāna (vía lógica)</span></h3>
+  <p class="section-intro">
+    Los 555 aforismos extremadamente densos de Bādarāyaṇa que sistematizan la doctrina upaniṣádica. Imposibles de leer sin comentario: cada escuela del Vedānta nace, técnicamente, como un comentario distinto sobre estos sūtra.</p>
+  <ul class="resources">
+    <li>
+      <span class="res-title">Brahma-Sūtra-Bhāṣya of Śaṅkarācārya</span>
+      <span class="res-author">Trad. Swāmī Gambhīrānanda (1965) — Advaita Ashrama</span>
+      <span class="res-note">Versión inglesa estándar del comentario de Śaṅkara. La gran obra arquitectónica del Advaita.</span>
+      <span class="res-meta"><span class="res-tag">comentario</span>EN · tradicional</span>
+    </li>
+    <li>
+      <span class="res-title">Vedānta Sūtras with the Commentary of Rāmānuja (<em>Śrī-bhāṣya</em>)</span>
+      <span class="res-author">Trad. George Thibaut (1904) — Sacred Books of the East, vol. 48</span>
+      <span class="res-note">El gran comentario rival al de Śaṅkara: misma raíz, lectura opuesta. Leer ambos en paralelo es la mejor manera de captar las articulaciones internas del Vedānta.</span>
+      <span class="res-meta"><span class="res-tag">comentario</span>EN · dominio público</span>
+    </li>
+  </ul>
+
+  <h2 id="escuelas"><span class="h2-num">§ 3</span>Las grandes <em>escuelas</em> vedānticas</h2>
+  <p class="section-intro">
+    El Vedānta no es uno: hablar genéricamente de «Vedānta» suele significar Advaita, pero la familia es más amplia. Estas son las cinco principales tradiciones comentariales, con su <em>ācārya</em> fundacional.
+  </p>
+
+  <div class="schools">
+    <div class="school">
+      <div class="school-name"><em>Advaita</em> · no-dualidad</div>
+      <div class="school-acharya">Ādi Śaṅkara · s. VIII</div>
+      <div class="school-desc">Brahman es la única realidad; el mundo múltiple es <em>māyā</em>, apariencia. Ātman = Brahman. La escuela más influyente en Occidente.</div>
+    </div>
+    <div class="school">
+      <div class="school-name"><em>Viśiṣṭādvaita</em> · no-dualidad cualificada</div>
+      <div class="school-acharya">Rāmānuja · s. XI–XII</div>
+      <div class="school-desc">Brahman (Viṣṇu) es uno, pero contiene en sí las almas y la materia como su cuerpo. Realismo devocional contra el monismo abstracto.</div>
+    </div>
+    <div class="school">
+      <div class="school-name"><em>Dvaita</em> · dualismo</div>
+      <div class="school-acharya">Madhva · s. XIII</div>
+      <div class="school-desc">Dios, las almas y el mundo son real y eternamente distintos. El Vedānta más cercano a la teología monoteísta clásica.</div>
+    </div>
+    <div class="school">
+      <div class="school-name"><em>Śuddhādvaita</em> · no-dualidad pura</div>
+      <div class="school-acharya">Vallabha · s. XV–XVI</div>
+      <div class="school-desc">Todo es Kṛṣṇa-Brahman sin necesidad de postular <em>māyā</em>. Base de la devoción <em>puṣṭi-mārga</em>.</div>
+    </div>
+    <div class="school">
+      <div class="school-name"><em>Acintya-bhedābheda</em> · diferencia y no-diferencia inconcebibles</div>
+      <div class="school-acharya">Caitanya · s. XV–XVI</div>
+      <div class="school-desc">Lo absoluto es simultáneamente uno y distinto del mundo, en un modo que escapa a la razón. Raíz teórica del movimiento Hare Kṛṣṇa.</div>
+    </div>
+  </div>
+
+  <h2 id="clasicos"><span class="h2-num">§ 4</span>Los <em>clásicos</em> de cada escuela</h2>
+  <p class="section-intro">
+    Más allá de los comentarios sobre la <em>prasthāna-trayī</em>, cada gran <em>ācārya</em> escribió tratados autónomos (<em>prakaraṇa</em>) que sintetizan su visión. Son la mejor entrada a cada escuela.
+  </p>
+
+  <ul class="resources">
+    <li>
+      <span class="res-title">Upadeśa Sāhasrī · «Las mil enseñanzas»</span>
+      <span class="res-author">Ādi Śaṅkara (s. VIII) — ed. Sengaku Mayeda, SUNY Press</span>
+      <span class="res-note">El único tratado independiente cuya autoría de Śaṅkara está filológicamente confirmada. Exposición sistemática del Advaita desde la voz misma del fundador.</span>
+      <span class="res-meta"><span class="res-tag">Advaita</span>EN · sánscrito</span>
+    </li>
+    <li>
+      <span class="res-title">Vivekacūḍāmaṇi · «La joya de la discriminación»</span>
+      <span class="res-author">Atribuido a Śaṅkara — múltiples ediciones</span>
+      <span class="res-note">Manual didáctico clásico de Advaita, en 580 versos. Probablemente postśaṅkariano, pero leído como introducción canónica durante siglos.</span>
+      <span class="res-meta"><span class="res-tag">Advaita</span>EN · introductorio</span>
+    </li>
+    <li>
+      <span class="res-title">Pañcadaśī</span>
+      <span class="res-author">Vidyāraṇya (s. XIV) — trad. Swāmī Swāhānanda, Ramakrishna Math</span>
+      <span class="res-note">La summa medieval del Advaita post-Śaṅkara: quince capítulos que cubren ontología, epistemología y práctica. Pieza maestra para profundizar.</span>
+      <span class="res-meta"><span class="res-tag">Advaita</span>EN · avanzado</span>
+    </li>
+    <li>
+      <span class="res-title">Vedārthasaṅgraha · «Compendio del sentido de los Veda»</span>
+      <span class="res-author">Rāmānuja (s. XI–XII) — trad. J. A. B. van Buitenen, Deccan College</span>
+      <span class="res-note">Texto programático del Viśiṣṭādvaita, escrito por el propio Rāmānuja como respuesta directa al Advaita.</span>
+      <span class="res-meta"><span class="res-tag">Viśiṣṭādvaita</span>EN · académico</span>
+    </li>
+    <li>
+      <span class="res-title">Anuvyākhyāna · Comentario al Brahma-sūtra</span>
+      <span class="res-author">Madhva (s. XIII) — varias traducciones</span>
+      <span class="res-note">La voz fundacional del Dvaita. Mucho menos traducida que Śaṅkara o Rāmānuja, pero ineludible para mapear el espectro vedāntico completo.</span>
+      <span class="res-meta"><span class="res-tag">Dvaita</span>EN · especializado</span>
+    </li>
+  </ul>
+
+  <h2 id="academicos"><span class="h2-num">§ 5</span>Introducciones <em>académicas</em> modernas</h2>
+  <p class="section-intro">
+    Libros escritos en el siglo XX–XXI desde la indología, la filosofía comparada y la historia de las ideas. Útiles para leer los textos primarios <em>con</em> aparato crítico.
+  </p>
+  <ul class="resources">
+    <li>
+      <span class="res-title">Advaita Vedānta: A Philosophical Reconstruction</span>
+      <span class="res-author">Eliot Deutsch (1969) — University of Hawaiʻi Press</span>
+      <span class="res-note">El clásico moderno: 120 páginas que reordenan toda la doctrina advaita en categorías filosóficas occidentales sin traicionar el contenido. Si solo se lee un libro de introducción, este.</span>
+      <span class="res-meta"><span class="res-tag">imprescindible</span>EN · filosófico</span>
+    </li>
+    <li>
+      <span class="res-title">Indian Philosophy · vol. II</span>
+      <span class="res-author">Sarvepalli Radhakrishnan (1923) — Oxford UP</span>
+      <span class="res-note">El panorama clásico desde dentro. Capítulos extensos sobre cada escuela vedāntica, con perspectiva histórico-filosófica integrada.</span>
+      <span class="res-meta"><span class="res-tag">panorama</span>EN · denso</span>
+    </li>
+    <li>
+      <span class="res-title">A History of Indian Philosophy · vol. II</span>
+      <span class="res-author">Surendranath Dasgupta (1922–1955) — Cambridge UP</span>
+      <span class="res-note">La gran historia erudita en cinco tomos. El volumen II es íntegramente vedānta. Obra de consulta, no de lectura corrida.</span>
+      <span class="res-meta"><span class="res-tag">referencia</span>EN · erudito</span>
+    </li>
+    <li>
+      <span class="res-title">The Advaita Worldview · God, World, and Humanity</span>
+      <span class="res-author">Anantanand Rambachan (2006) — SUNY Press</span>
+      <span class="res-note">Defensa contemporánea del Advaita como visión integral del mundo, no solo como mística monista. Excelente para discutir prejuicios occidentales sobre el «orientalismo».</span>
+      <span class="res-meta"><span class="res-tag">contemporáneo</span>EN · filosófico</span>
+    </li>
+    <li>
+      <span class="res-title">India and Europe · An Essay in Understanding</span>
+      <span class="res-author">Wilhelm Halbfass (1981/1988) — SUNY Press</span>
+      <span class="res-note">No es un libro de Vedānta, sino sobre cómo se leyó (y se distorsionó) el Vedānta en Occidente desde Schopenhauer hasta hoy. Indispensable para evitar caer en lo mismo.</span>
+      <span class="res-meta"><span class="res-tag">crítico</span>EN · histórico</span>
+    </li>
+    <li>
+      <span class="res-title">Classical Indian Philosophy · A Reader</span>
+      <span class="res-author">Deepak Sarma (ed.) (2011) — Columbia UP</span>
+      <span class="res-note">Antología comentada de fuentes primarias traducidas, con sección amplia de Vedānta. Útil para comparar pasajes paralelos.</span>
+      <span class="res-meta"><span class="res-tag">antología</span>EN · académico</span>
+    </li>
+  </ul>
+
+  <h2 id="maestros"><span class="h2-num">§ 6</span><em>Maestros vivos</em> y testimonios del siglo XX–XXI</h2>
+  <p class="section-intro">
+    El Vedānta es una tradición viva. Estos autores enseñan desde dentro: algunos académicamente entrenados, otros desde la vía contemplativa. Sus libros son ya parte del corpus moderno.
+  </p>
+  <ul class="resources">
+    <li>
+      <span class="res-title">Jñāna-Yoga / Rāja-Yoga / Bhakti-Yoga / Karma-Yoga</span>
+      <span class="res-author">Swāmī Vivekānanda (1893–1900) — Advaita Ashrama</span>
+      <span class="res-note">Las conferencias fundacionales del Vedānta moderno: el primer puente sistemático con Occidente. Históricamente decisivas, retóricamente vibrantes.</span>
+      <span class="res-meta"><span class="res-tag">clásico moderno</span>EN · dominio público</span>
+    </li>
+    <li>
+      <span class="res-title">Introduction to Vedanta · Understanding the Fundamental Problem</span>
+      <span class="res-author">Swāmī Dayānanda Sarasvatī (1989) — Arsha Vidya Gurukulam</span>
+      <span class="res-note">El maestro contemporáneo más riguroso del Advaita tradicional <em>sampradāya</em>. Pedagogía limpia, sin sincretismo. Si se busca un maestro vivo (su linaje, vía Swāmī Paramārthānanda y otros, sigue activo), este es el punto de partida.</span>
+      <span class="res-meta"><span class="res-tag">tradicional</span>EN · contemporáneo</span>
+    </li>
+    <li>
+      <span class="res-title">Talks with Ramana Maharshi · Be As You Are</span>
+      <span class="res-author">Ramana Maharṣi (recopilados 1935–1939; ed. David Godman 1985) — Penguin</span>
+      <span class="res-note">No-dualidad experiencial sin academicismo. <em>Be As You Are</em> es la mejor antología temática: la entrada más directa al <em>vicāra ātmán</em> (indagación del sí-mismo).</span>
+      <span class="res-meta"><span class="res-tag">experiencial</span>EN · esencial</span>
+    </li>
+    <li>
+      <span class="res-title">I Am That · Talks with Nisargadatta Maharaj</span>
+      <span class="res-author">Nisargadatta Mahārāj (1973) — Chetana</span>
+      <span class="res-note">Diálogos crudos, sin compromiso con la cortesía. El Advaita reducido a una pregunta operativa: ¿qué es lo que sabe que «yo soy»?</span>
+      <span class="res-meta"><span class="res-tag">experiencial</span>EN · contemporáneo</span>
+    </li>
+    <li>
+      <span class="res-title">The Nature of Consciousness · Essays on the Unity of Mind and Matter</span>
+      <span class="res-author">Rupert Spira (2017) — Sahaja Publications</span>
+      <span class="res-note">Reformulación contemporánea del Advaita en lenguaje filosófico actual, en diálogo con la fenomenología y la filosofía de la mente. Quizás la mejor puerta para lectores formados en filosofía occidental.</span>
+      <span class="res-meta"><span class="res-tag">contemporáneo</span>EN · puente</span>
+    </li>
+    <li>
+      <span class="res-title">How to Attain Enlightenment · The Vision of Non-Duality</span>
+      <span class="res-author">James Swartz (2010) — Sentient Publications</span>
+      <span class="res-note">Manual práctico del Advaita tradicional para lectores occidentales, en el linaje de Swāmī Dayānanda. Sin misticismo difuso: didáctica clara.</span>
+      <span class="res-meta"><span class="res-tag">tradicional</span>EN · práctico</span>
+    </li>
+  </ul>
+
+  <h2 id="espanol"><span class="h2-num">§ 7</span>Recursos en <em>español</em></h2>
+  <p class="section-intro">
+    La bibliografía castellana sobre Vedānta es menor que la inglesa, pero existen ediciones académicas serias y traducciones de calidad que evitan tener que pasar siempre por el inglés.
+  </p>
+  <ul class="resources">
+    <li>
+      <span class="res-title">Upaniṣad · edición y traducción</span>
+      <span class="res-author">Daniel de Palma (1995) — Siruela, col. «El Árbol del Paraíso»</span>
+      <span class="res-note">Traducción directa del sánscrito de los Upaniṣad principales, con introducción y notas. La versión castellana de referencia.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>ES · académico</span>
+    </li>
+    <li>
+      <span class="res-title">Bhagavad Gītā · texto, traducción y comentario</span>
+      <span class="res-author">Consuelo Martín (1997) — Trotta, col. «Pliegos de Oriente»</span>
+      <span class="res-note">Edición bilingüe sánscrito-castellano con comentario advaita. Probablemente la mejor edición castellana de la Gītā.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>ES · bilingüe</span>
+    </li>
+    <li>
+      <span class="res-title">Conciencia y realidad · Un estudio sobre el Vedānta Advaita</span>
+      <span class="res-author">Consuelo Martín (1998) — Trotta</span>
+      <span class="res-note">Introducción filosófica al Advaita escrita en español, no traducida. Erudita y experiencial a la vez.</span>
+      <span class="res-meta"><span class="res-tag">introducción</span>ES · filosófico</span>
+    </li>
+    <li>
+      <span class="res-title">La experiencia filosófica de la India</span>
+      <span class="res-author">Raimon Panikkar (1997) — Trotta</span>
+      <span class="res-note">Panikkar lee la filosofía india (y el Vedānta) desde una sensibilidad intercultural única. No es introducción técnica, sino interpretación viva.</span>
+      <span class="res-meta"><span class="res-tag">interpretativo</span>ES · filosófico</span>
+    </li>
+    <li>
+      <span class="res-title">Mantra-mañjarī · Antología de los Veda</span>
+      <span class="res-author">Raimon Panikkar (2001) — Atalanta / orig. Motilal Banarsidass</span>
+      <span class="res-note">Antología comentada del corpus védico completo. Contexto imprescindible: qué hay <em>antes</em> del Vedānta.</span>
+      <span class="res-meta"><span class="res-tag">contexto</span>ES · antología</span>
+    </li>
+    <li>
+      <span class="res-title">Bhagavad Gītā</span>
+      <span class="res-author">Trad. Juan Mascaró (1962, ed. española 1988) — Debate / Penguin</span>
+      <span class="res-note">Traducción literaria muy difundida, originalmente al inglés y luego al español. Bella, accesible; menos técnica que la de Consuelo Martín.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>ES · literario</span>
+    </li>
+    <li>
+      <span class="res-title">Escuela Neo-Advaita Vedānta · enseñanzas de Sesha</span>
+      <span class="res-author">Sesha (Carlos Rodríguez) — varios títulos, Kier / Editorial Vedanta</span>
+      <span class="res-note">Maestro contemporáneo hispanohablante. Cursos y libros (<em>Vedanta Advaita</em>, <em>Meditación, teoría y práctica</em>) accesibles para iniciados; estilo claro, vocabulario técnico explicado.</span>
+      <span class="res-meta"><span class="res-tag">contemporáneo</span>ES · práctico</span>
+    </li>
+  </ul>
+
+  <h2 id="online"><span class="h2-num">§ 8</span>Recursos abiertos en <em>línea</em></h2>
+  <p class="section-intro">
+    Buena parte de la mejor pedagogía contemporánea del Vedānta está hoy en video y audio, gratuita. Una selección curada.
+  </p>
+  <ul class="resources">
+    <li>
+      <span class="res-title">Vedanta Society of New York · Swāmī Sarvapriyānanda</span>
+      <span class="res-author">YouTube · cientos de conferencias desde 2017</span>
+      <span class="res-note">Probablemente el mejor expositor vivo del Advaita para audiencias contemporáneas: rigor del Arsha Vidya, claridad pedagógica, diálogo con filosofía de la mente occidental. Empezar por sus series sobre Māṇḍūkya Upaniṣad o Dṛg-dṛśya-viveka.</span>
+      <span class="res-meta"><span class="res-tag">esencial</span>EN · gratis</span>
+    </li>
+    <li>
+      <span class="res-title">Arsha Vidya Gurukulam · archivos de Swāmī Dayānanda</span>
+      <span class="res-author">arshavidya.org · audios y PDFs</span>
+      <span class="res-note">Cursos completos sobre Upaniṣad, Gītā y Brahma-sūtra en el linaje tradicional <em>sampradāya</em>. Material de estudio sistemático, no para divulgación.</span>
+      <span class="res-meta"><span class="res-tag">tradicional</span>EN · gratis</span>
+    </li>
+    <li>
+      <span class="res-title">Shining World · James Swartz</span>
+      <span class="res-author">shiningworld.com · ensayos, audios, satsangs</span>
+      <span class="res-note">Archivo enorme de enseñanza advaita en formato accesible. Útil contrapeso a las versiones diluidas del «neo-advaita» occidental.</span>
+      <span class="res-meta"><span class="res-tag">contemporáneo</span>EN · gratis</span>
+    </li>
+    <li>
+      <span class="res-title">Rupert Spira · canal y conversations</span>
+      <span class="res-author">YouTube · rupertspira.com</span>
+      <span class="res-note">Diálogos largos sobre la naturaleza de la conciencia. Especialmente buenos los encuentros con científicos y filósofos (Bernardo Kastrup, Donald Hoffman, Iain McGilchrist).</span>
+      <span class="res-meta"><span class="res-tag">puente</span>EN · gratis</span>
+    </li>
+    <li>
+      <span class="res-title">Stanford Encyclopedia of Philosophy · entradas sobre Vedānta</span>
+      <span class="res-author">plato.stanford.edu · «Śaṅkara», «Rāmānuja», «Madhva», «Vedānta»</span>
+      <span class="res-note">Entradas escritas por especialistas. La referencia académica más actualizada y de acceso libre. Bibliografías al final de cada entrada.</span>
+      <span class="res-meta"><span class="res-tag">referencia</span>EN · gratis</span>
+    </li>
+    <li>
+      <span class="res-title">Sacred-texts.com · Sacred Books of the East</span>
+      <span class="res-author">sacred-texts.com/hin/</span>
+      <span class="res-note">Traducciones decimonónicas de Max Müller, Thibaut y otros, en dominio público. Filológicamente superadas, pero útiles para lectura rápida y cita libre.</span>
+      <span class="res-meta"><span class="res-tag">primario</span>EN · dominio público</span>
+    </li>
+  </ul>
+
+  <h2 id="ruta"><span class="h2-num">§ 9</span>Ruta de lectura <em>sugerida</em></h2>
+  <p class="section-intro">
+    No hay un único orden, pero esta secuencia ha funcionado para muchos lectores: del panorama al texto fuente, de la introducción al comentario.
+  </p>
+
+  <ol class="path">
+    <li>
+      <div class="path-title">Orientarse</div>
+      <div class="path-desc">Eliot Deutsch, <em>Advaita Vedānta: A Philosophical Reconstruction</em> — o en español, Consuelo Martín, <em>Conciencia y realidad</em>. Una semana de lectura para tener el mapa.</div>
+    </li>
+    <li>
+      <div class="path-title">Leer una Upaniṣad corta entera</div>
+      <div class="path-desc">La <em>Īśa</em> (18 versos) o la <em>Māṇḍūkya</em> (12 versos). Versión bilingüe: Daniel de Palma en español o Olivelle en inglés. Acompañar con la serie de Swāmī Sarvapriyānanda en YouTube.</div>
+    </li>
+    <li>
+      <div class="path-title">Atravesar la <em>Bhagavad Gītā</em></div>
+      <div class="path-desc">Edición de Consuelo Martín en español, o Radhakrishnan en inglés. No se trata de leerla rápido: capítulo por capítulo, dejando reposar.</div>
+    </li>
+    <li>
+      <div class="path-title">Profundizar en una escuela</div>
+      <div class="path-desc">Si Advaita: <em>Upadeśa Sāhasrī</em> de Śaṅkara. Si interesa el contrapunto devocional: <em>Vedārthasaṅgraha</em> de Rāmānuja. Si se quiere ver el espectro completo: Dasgupta vol. II como referencia.</div>
+    </li>
+    <li>
+      <div class="path-title">Encontrar un maestro vivo (libro o video)</div>
+      <div class="path-desc">Ramana Maharṣi, Nisargadatta, Swāmī Dayānanda, Rupert Spira, Sesha en español. La tradición se transmite por escucha: un libro solo no basta.</div>
+    </li>
+    <li>
+      <div class="path-title">Volver a los <em>sūtra</em></div>
+      <div class="path-desc">Con todo lo anterior decantado, los <em>Brahma-sūtra</em> de Bādarāyaṇa <em>con</em> el comentario de Śaṅkara dejan de ser opacos. Es la culminación del recorrido, no el comienzo.</div>
+    </li>
+  </ol>
+
+  <div class="callout">
+    <strong>Una advertencia.</strong> El Vedānta moderno occidental tiende a colapsar todas las escuelas en una versión simplificada del Advaita («todo es uno»). Esa lectura es una <em>de</em> las posibles, no la tradición misma. Leer en serio implica resistir esa simplificación: las diferencias entre Śaṅkara, Rāmānuja y Madhva no son detalles técnicos, son visiones distintas de qué es real. Conservar esa tensión es parte del aprendizaje.
+  </div>
+
+  <blockquote>
+    «<em>Tat tvam asi</em> — Eso eres tú.»
+    <cite>Chāndogya Upaniṣad VI.8.7 — uno de los cuatro <em>mahāvākya</em> o «grandes dichos» del Vedānta</cite>
+  </blockquote>
+
+  <div class="meta">
+    Guía curada en el marco del repositorio <a href="index.html">Memoria Activa del Pensamiento Complejo</a>.
+    Material derivado original bajo <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
+    Las citas textuales pertenecen a sus respectivos editores y se reproducen bajo derecho de cita académico.
+  </div>
+
+</div>
+</body>
+</html>
