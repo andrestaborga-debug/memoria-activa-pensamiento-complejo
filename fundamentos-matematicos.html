@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fundamentos Matemáticos del Pensamiento Complejo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false},{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}],throwOnError:false});"></script>
+  <style>
+    :root {
+      --paper: #F5EFE4;
+      --paper-deep: #EDE5D5;
+      --paper-card: #FBF6EC;
+      --ink: #1F1810;
+      --ink-mid: #5A4D40;
+      --ink-muted: #8A7E6F;
+      --border: rgba(31,24,16,0.14);
+
+      /* Fase I — Caos · Índigo */
+      --f1: #4A3590; --f1-light: #6B54B5; --f1-pale: #9B85D4;
+      --f1-dim: rgba(74,53,144,0.08); --f1-border: rgba(74,53,144,0.28); --f1-card: #F0EAFA;
+
+      /* Fase II — Forma · Teal */
+      --f2: #1F5E68; --f2-light: #3E8898; --f2-pale: #6BAAB8;
+      --f2-dim: rgba(31,94,104,0.08); --f2-border: rgba(31,94,104,0.28); --f2-card: #E6F1F3;
+
+      /* Fase III — Emergencia · Vino */
+      --f3: #8A2A42; --f3-light: #B24C64; --f3-pale: #D48798;
+      --f3-dim: rgba(138,42,66,0.08); --f3-border: rgba(138,42,66,0.28); --f3-card: #F6E3E7;
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 18px;
+      line-height: 1.78;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+      pointer-events:none; z-index:1000; opacity:0.15; mix-blend-mode:multiply;
+    }
+
+    header {
+      position:fixed; top:0; left:0; right:0; z-index:500;
+      height:52px; display:flex; align-items:center;
+      padding:0 3rem; justify-content:space-between;
+      border-bottom:1px solid var(--border);
+      background:rgba(245,239,228,0.94); backdrop-filter:blur(14px);
+    }
+    .brand { font-family:'Space Mono',monospace; font-size:10px; letter-spacing:0.16em; text-transform:uppercase; color:var(--f1); text-decoration:none; }
+    .header-phases { display:flex; gap:0.4rem; }
+    .hphase { font-family:'Space Mono',monospace; font-size:7.5px; letter-spacing:0.08em; text-transform:uppercase; padding:0.25rem 0.65rem; border:1px solid; cursor:pointer; transition:all 0.2s; text-decoration:none; border-radius:2px; }
+    .hphase.f1{color:var(--f1);border-color:var(--f1-border);} .hphase.f1:hover,.hphase.f1.on{background:var(--f1);color:var(--paper);border-color:var(--f1);}
+    .hphase.f2{color:var(--f2);border-color:var(--f2-border);} .hphase.f2:hover,.hphase.f2.on{background:var(--f2);color:var(--paper);border-color:var(--f2);}
+    .hphase.f3{color:var(--f3);border-color:var(--f3-border);} .hphase.f3:hover,.hphase.f3.on{background:var(--f3);color:var(--paper);border-color:var(--f3);}
+    .header-nav { display:flex; gap:1.8rem; }
+    .header-nav a { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); text-decoration:none; transition:color 0.2s; }
+    .header-nav a:hover { color:var(--ink); }
+
+    .lbl { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; display:flex; align-items:center; gap:1rem; }
+    .lbl::before { content:''; display:block; width:24px; height:1px; }
+    .lbl.f1{color:var(--f1);} .lbl.f1::before{background:var(--f1);}
+    .lbl.f2{color:var(--f2);} .lbl.f2::before{background:var(--f2);}
+    .lbl.f3{color:var(--f3);} .lbl.f3::before{background:var(--f3);}
+    .lbl.muted{color:var(--ink-muted);} .lbl.muted::before{background:var(--ink-muted);}
+
+    h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,4vw,3.2rem); font-weight:400; line-height:1.12; color:var(--ink); }
+    h2 em { font-style:italic; }
+
+    hr.div { border:none; border-top:1px solid var(--border); }
+    .fi { opacity:0; transform:translateY(16px); transition:opacity 0.6s ease,transform 0.6s ease; }
+    .fi.v { opacity:1; transform:none; }
+    .fi.d1{transition-delay:.1s} .fi.d2{transition-delay:.22s} .fi.d3{transition-delay:.35s}
+
+    /* HERO */
+    .hero-wrap { position:relative; min-height:100vh; overflow:hidden; background:#0d0a18; }
+    #lorenz-canvas { position:absolute; inset:0; width:100%; height:100%; opacity:0.85; }
+    .hero-content {
+      position:relative; z-index:2;
+      max-width:1080px; margin:0 auto;
+      padding:140px 4rem 8rem;
+      display:flex; flex-direction:column; justify-content:flex-end;
+      min-height:100vh;
+      color:#F5EFE4;
+    }
+    .hero-kicker { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.22em; text-transform:uppercase; color:#D48798; margin-bottom:2rem; display:flex; align-items:center; gap:1rem; }
+    .hero-kicker::before { content:''; display:block; width:20px; height:1px; background:#D48798; }
+    h1 { font-family:'Cormorant Garamond',serif; font-size:clamp(3.4rem,6.8vw,6.4rem); font-weight:300; line-height:0.98; letter-spacing:-0.025em; margin-bottom:2rem; }
+    h1 .w1 { display:block; color:#F5EFE4; }
+    h1 .w2 { display:block; color:#9B85D4; font-style:italic; }
+    h1 .w3 { display:block; font-size:0.42em; color:#BDB39E; font-weight:300; margin-top:0.6em; letter-spacing:0.005em; line-height:1.32; font-style:italic; }
+    .hero-cols { display:grid; grid-template-columns:1fr 1fr; gap:4rem; margin-bottom:2.5rem; }
+    .hero-desc { font-size:1.05rem; color:#D6CDB8; line-height:1.82; }
+    .hero-manifest { border-left:2px solid #9B85D4; padding:1.2rem 1.6rem; background:rgba(155,133,212,0.08); }
+    .hero-manifest p { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.2rem; color:#E6DDD0; line-height:1.55; }
+    .hero-specs { display:flex; gap:2rem; flex-wrap:wrap; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; color:#9D8E7A; padding-top:1.5rem; border-top:1px solid rgba(255,255,255,0.12); }
+    .hero-specs span strong { color:#F5EFE4; font-weight:700; }
+    .hero-scroll { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.1em; text-transform:uppercase; color:#9D8E7A; display:flex; align-items:center; gap:0.75rem; animation:blink 2.4s infinite; margin-top:2rem; }
+    .hero-scroll::after { content:'↓'; font-size:12px; }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.35}}
+
+    /* PRÓLOGO */
+    .prologo-bg { background:var(--paper); }
+    .prologo-inner { max-width:880px; margin:0 auto; padding:6rem 4rem 4rem; }
+    .prologo-lead { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,2.2vw,1.8rem); line-height:1.42; color:var(--ink); font-weight:300; margin:2rem 0; }
+    .prologo-lead em { font-style:italic; color:var(--f1); }
+    .prologo-body { font-size:1.05rem; color:var(--ink-mid); line-height:1.82; margin-bottom:1.4rem; }
+    .prologo-body em { color:var(--ink); font-style:italic; }
+
+    /* MAPA · TRES FASES */
+    .mapa-bg { background:var(--paper-deep); }
+    .mapa-inner { max-width:1080px; margin:0 auto; padding:6rem 4rem; }
+    .fases-timeline { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); margin-top:3rem; border:1px solid var(--border); }
+    .fase-tile { padding:2.4rem 2rem; cursor:pointer; transition:filter 0.2s,background 0.2s; position:relative; overflow:hidden; }
+    .fase-tile::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; }
+    .fase-tile.f1t{background:var(--f1-card);} .fase-tile.f1t::after{background:var(--f1);}
+    .fase-tile.f2t{background:var(--f2-card);} .fase-tile.f2t::after{background:var(--f2);}
+    .fase-tile.f3t{background:var(--f3-card);} .fase-tile.f3t::after{background:var(--f3);}
+    .fase-tile:hover { filter:brightness(1.04); }
+    .ft-num { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:1rem; }
+    .ft-num.f1t{color:var(--f1);} .ft-num.f2t{color:var(--f2);} .ft-num.f3t{color:var(--f3);}
+    .ft-title { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:400; line-height:1.18; margin-bottom:0.4rem; color:var(--ink); }
+    .ft-figuras { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.08em; text-transform:uppercase; margin-bottom:0.85rem; }
+    .ft-figuras.f1t{color:var(--f1);} .ft-figuras.f2t{color:var(--f2);} .ft-figuras.f3t{color:var(--f3);}
+    .ft-desc { font-size:0.94rem; color:var(--ink-mid); line-height:1.7; }
+    .ft-concepto { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.02rem; margin-top:1rem; }
+    .ft-concepto.f1t{color:var(--f1);} .ft-concepto.f2t{color:var(--f2);} .ft-concepto.f3t{color:var(--f3);}
+
+    /* FIGURA — PLATO EDITORIAL */
+    .figura-section { padding:1rem 0; }
+    .figura-bg.f1 { background:var(--paper); }
+    .figura-bg.f2 { background:var(--paper-deep); }
+    .figura-bg.f3 { background:var(--paper); }
+    .figura-inner { max-width:1180px; margin:0 auto; padding:6rem 4rem; }
+
+    .figura-head {
+      display:grid; grid-template-columns:180px 1fr; gap:3rem;
+      padding-bottom:2.6rem; border-bottom:1px solid var(--border);
+      margin-bottom:3rem;
+    }
+    .figura-num { font-family:'Cormorant Garamond',serif; font-weight:300; font-size:7rem; line-height:0.88; letter-spacing:-0.035em; }
+    .figura-num.f1{color:var(--f1);} .figura-num.f2{color:var(--f2);} .figura-num.f3{color:var(--f3);}
+    .figura-num::after { content:''; display:block; width:42px; height:2px; background:currentColor; margin-top:1rem; opacity:0.55; }
+    .figura-kicker { font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.18em; text-transform:uppercase; color:var(--ink-muted); margin-bottom:0.9rem; }
+    .figura-title { font-family:'Cormorant Garamond',serif; font-weight:400; font-size:clamp(2.4rem,4.4vw,3.6rem); line-height:1; letter-spacing:-0.022em; color:var(--ink); margin-bottom:0.4rem; }
+    .figura-title em { font-style:italic; }
+    .figura-subtitle { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:clamp(1.2rem,1.9vw,1.55rem); line-height:1.36; color:var(--ink-mid); margin-bottom:1.5rem; }
+    .figura-subtitle.f1{color:var(--f1-light);} .figura-subtitle.f2{color:var(--f2-light);} .figura-subtitle.f3{color:var(--f3-light);}
+    .figura-bio { display:flex; gap:2rem; flex-wrap:wrap; font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.13em; text-transform:uppercase; color:var(--ink-muted); }
+    .figura-bio span strong { color:var(--ink); font-weight:700; }
+
+    .figura-grid { display:grid; grid-template-columns:1.05fr 0.95fr; gap:3.5rem; align-items:start; }
+
+    .col-text > * + * { margin-top:1.4rem; }
+    .col-text p { font-size:1.02rem; color:var(--ink-mid); line-height:1.82; }
+    .col-text p em { color:var(--ink); font-style:italic; }
+    .col-text p strong { color:var(--ink); font-weight:500; }
+    .col-text h4 {
+      font-family:'Space Mono',monospace; font-size:9px; letter-spacing:0.18em;
+      text-transform:uppercase; color:var(--ink-muted);
+      display:flex; align-items:center; gap:0.7rem;
+      margin-top:2rem;
+    }
+    .col-text h4::before { content:''; width:22px; height:1px; background:currentColor; }
+    .col-text h4.f1{color:var(--f1);} .col-text h4.f2{color:var(--f2);} .col-text h4.f3{color:var(--f3);}
+
+    .eq-block {
+      padding:1.5rem 1.7rem; border:1px solid var(--border);
+      background:var(--paper-card);
+      font-size:1.05rem; color:var(--ink); line-height:1.6;
+      overflow-x:auto;
+    }
+    .eq-block.f1{border-left:3px solid var(--f1);}
+    .eq-block.f2{border-left:3px solid var(--f2);}
+    .eq-block.f3{border-left:3px solid var(--f3);}
+    .eq-caption { font-family:'Space Mono',monospace; font-size:8px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-muted); margin-top:0.8rem; line-height:1.6; }
+
+    .col-visual {
+      position:sticky; top:80px;
+      display:flex; flex-direction:column; gap:1rem;
+    }
+    .visual-frame {
+      background:#0f0c1a; border:1px solid var(--border);
+      aspect-ratio: 4/3; position:relative; overflow:hidden;
+    }
+    .visual-frame.paper { background:var(--paper-card); }
+    .visual-frame canvas { width:100%; height:100%; display:block; }
+    .visual-cap { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.1em; text-transform:uppercase; color:var(--ink-muted); line-height:1.6; padding:0.4rem 0; }
+    .visual-cap b { color:var(--ink); font-weight:700; }
+
+    .cita-cierre {
+      margin-top:3rem; padding:1.5rem 2rem;
+      font-family:'Cormorant Garamond',serif; font-style:italic;
+      font-size:1.2rem; line-height:1.5; color:var(--ink);
+    }
+    .cita-cierre.f1{border-left:2px solid var(--f1);background:var(--f1-dim);}
+    .cita-cierre.f2{border-left:2px solid var(--f2);background:var(--f2-dim);}
+    .cita-cierre.f3{border-left:2px solid var(--f3);background:var(--f3-dim);}
+    .cita-cierre cite { font-family:'Space Mono',monospace; font-style:normal; font-size:8px; letter-spacing:0.14em; text-transform:uppercase; color:var(--ink-muted); display:block; margin-top:0.6rem; }
+
+    /* SÍNTESIS */
+    .sintesis-bg { background:#1a1410; color:var(--paper); }
+    .sintesis-inner { max-width:980px; margin:0 auto; padding:7rem 4rem; }
+    .sintesis-bg .lbl { color:#D48798; }
+    .sintesis-bg .lbl::before { background:#D48798; }
+    .sintesis-bg h2 { color:var(--paper); }
+    .sintesis-bg h2 em { color:#9B85D4; }
+    .sintesis-lead { font-family:'Cormorant Garamond',serif; font-size:clamp(1.3rem,2vw,1.7rem); line-height:1.5; color:#E6DDD0; font-weight:300; margin:2rem 0 3rem; max-width:760px; font-style:italic; }
+    .sintesis-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2rem; margin-top:2rem; }
+    .sintesis-card { padding:1.8rem; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-top:2px solid; }
+    .sintesis-card.c1{border-top-color:#9B85D4;} .sintesis-card.c2{border-top-color:#6BAAB8;} .sintesis-card.c3{border-top-color:#D48798;}
+    .sc-eyebrow { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:0.8rem; }
+    .sintesis-card.c1 .sc-eyebrow{color:#9B85D4;} .sintesis-card.c2 .sc-eyebrow{color:#6BAAB8;} .sintesis-card.c3 .sc-eyebrow{color:#D48798;}
+    .sc-title { font-family:'Cormorant Garamond',serif; font-size:1.4rem; line-height:1.2; color:var(--paper); margin-bottom:0.6rem; }
+    .sc-txt { font-size:0.92rem; color:#BDB39E; line-height:1.7; }
+
+    footer { border-top:1px solid var(--border); padding:3rem 4rem; max-width:1180px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; background:var(--paper); flex-wrap:wrap; gap:1rem; }
+    .f-title { font-family:'Cormorant Garamond',serif; font-size:1rem; color:var(--ink-muted); font-style:italic; }
+    .f-meta { font-family:'Space Mono',monospace; font-size:8.5px; letter-spacing:0.08em; text-transform:uppercase; color:var(--ink-muted); text-align:right; line-height:1.9; }
+    .f-meta a { color:var(--f1); text-decoration:none; }
+    .f-meta a:hover { text-decoration:underline; }
+
+    @media(max-width:980px){
+      header{padding:0 1.2rem;}
+      .header-nav{display:none;}
+      .header-phases{gap:0.3rem;}
+      .hero-content,.prologo-inner,.mapa-inner,.figura-inner,.sintesis-inner,footer{padding-left:1.5rem;padding-right:1.5rem;}
+      .hero-cols,.fases-timeline,.figura-grid,.sintesis-grid{grid-template-columns:1fr;}
+      .figura-head{grid-template-columns:90px 1fr;gap:1.5rem;}
+      .figura-num{font-size:4.4rem;}
+      .col-visual{position:static;}
+      footer{flex-direction:column;text-align:center;}
+      .f-meta{text-align:center;}
+    }
+    @media(max-width:600px){
+      .figura-head{grid-template-columns:1fr;}
+      .figura-num::after{display:none;}
+      h1{font-size:clamp(2.6rem,9vw,4rem);}
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="brand">Memoria Activa · Fundamentos Matemáticos</a>
+  <div class="header-phases">
+    <a href="#fase1" class="hphase f1">I · Caos</a>
+    <a href="#fase2" class="hphase f2">II · Forma</a>
+    <a href="#fase3" class="hphase f3">III · Emergencia</a>
+  </div>
+  <nav class="header-nav">
+    <a href="#prologo">Prólogo</a>
+    <a href="#mapa">Mapa</a>
+    <a href="#sintesis">Síntesis</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero-wrap">
+  <canvas id="lorenz-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-kicker">Seis figuras · Seis ecuaciones · Una manera de pensar lo complejo</div>
+    <h1>
+      <span class="w1">Los fundamentos</span>
+      <span class="w2">matemáticos</span>
+      <span class="w3">Poincaré · Lorenz · Mandelbrot · Prigogine · Kauffman · Bak. Una arqueología de las ecuaciones que enseñaron al siglo XX que el mundo no era una máquina de relojería —y que lo desordenado tenía su propio orden, escrito en un idioma que apenas empezamos a leer.</span>
+    </h1>
+    <div class="hero-cols">
+      <p class="hero-desc">
+        El pensamiento complejo no nace de la filosofía. Nace, mucho antes, de un fracaso técnico: cuando los matemáticos descubrieron que los sistemas más simples del universo —tres cuerpos celestes, una capa de fluido calentado, una iteración de un polinomio cuadrático— se negaban obstinadamente a comportarse como prometían las ecuaciones lineales. Esta presentación recorre las seis ideas matemáticas que cambiaron lo que entendemos por <em>orden</em>, <em>predicción</em> y <em>causa</em>.
+      </p>
+      <div class="hero-manifest">
+        <p>«La predicción es difícil, especialmente sobre el futuro. Pero lo que el caos determinista nos enseñó no fue que el universo sea impredecible —fue que la predicción tiene un horizonte, y ese horizonte es una propiedad medible del sistema mismo.»</p>
+      </div>
+    </div>
+    <div class="hero-specs">
+      <span><strong>6 figuras</strong> · 3 fases</span>
+      <span><strong>1892 → 1996</strong> · un siglo de matemáticas</span>
+      <span><strong>Nivel:</strong> técnico con derivaciones</span>
+      <span><strong>Ecuaciones:</strong> renderizadas con KaTeX</span>
+    </div>
+    <div class="hero-scroll">Comenzar el descenso</div>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- PRÓLOGO -->
+<div class="prologo-bg" id="prologo">
+  <div class="prologo-inner">
+    <div class="lbl f1 fi">Prólogo</div>
+    <h2 class="fi d1" style="margin:1rem 0 1.5rem;">El siglo en que las matemáticas <em>descubrieron lo complejo</em></h2>
+    <p class="prologo-lead fi d2">
+      Durante doscientos años, desde Newton hasta finales del XIX, las matemáticas habían convencido al mundo de que el universo era —<em>en principio</em>— soluble. Si conocías las condiciones iniciales y las leyes de movimiento, el futuro estaba determinado. Laplace lo formuló como un teorema metafísico: una inteligencia suficientemente vasta podría leer el porvenir como un libro abierto.
+    </p>
+    <p class="prologo-body fi d2">
+      El problema apareció con tres cuerpos. En 1887, el rey Óscar II de Suecia ofreció un premio a quien resolviera el problema general de los <em>n</em> cuerpos en mecánica celeste —una pregunta aparentemente menor: ¿es estable el sistema solar? <em>Henri Poincaré</em> ganó el premio en 1889 con un trabajo que, tras una revisión, demostraba exactamente lo contrario de lo que pretendía: el problema no admitía solución analítica, y peor, las trayectorias eran <em>sensibles a las condiciones iniciales</em>. Una perturbación infinitesimal podía, con el tiempo, divergir sin límite.
+    </p>
+    <p class="prologo-body fi d3">
+      Esa observación quedó sepultada durante medio siglo. Resurgió en 1963, cuando <em>Edward Lorenz</em>, modelando convección atmosférica en una computadora del MIT, redondeó accidentalmente una condición inicial de seis decimales a tres. La predicción meteorológica resultante divergió por completo. Lorenz acuñó el <em>efecto mariposa</em> y, más importante, descubrió el primer <em>atractor extraño</em> documentado: un conjunto de medida cero, dimensión fractal y comportamiento aperiódico hacia el cual converge cualquier órbita.
+    </p>
+    <p class="prologo-body fi d3">
+      Lo que sigue es la genealogía de seis ideas matemáticas que, entre 1892 y 1996, redibujaron el mapa de lo pensable. No son metáforas del pensamiento complejo: <em>son su fundamento operativo</em>. Cada una formaliza algo que la intuición newtoniana no podía contener.
+    </p>
+  </div>
+</div>
+
+<hr class="div">
+
+<!-- MAPA · TRES FASES -->
+<div class="mapa-bg" id="mapa">
+  <div class="mapa-inner">
+    <div class="lbl muted fi">Cómo se organiza el recorrido</div>
+    <h2 class="fi d1" style="margin:1rem 0 0.5rem;">Tres fases, <em>seis figuras</em></h2>
+    <p class="fi d2" style="font-size:1.05rem;color:var(--ink-mid);max-width:680px;line-height:1.78;margin-bottom:0;">
+      El arco va de lo dinámico a lo geométrico a lo combinatorio. Primero el descubrimiento del caos en sistemas continuos (Poincaré, Lorenz). Después la geometría y la termodinámica que dan forma a lo lejos del equilibrio (Mandelbrot, Prigogine). Por último, la emergencia de orden en sistemas discretos masivamente paralelos (Kauffman, Bak). Cada fase contiene a las anteriores: ningún concepto se abandona, se incrusta en una capa nueva.
+    </p>
+    <div class="fases-timeline fi d2">
+      <div class="fase-tile f1t" onclick="document.getElementById('fase1').scrollIntoView({behavior:'smooth'})">
+        <div class="ft-num f1t">Fase I · Caos</div>
+        <div class="ft-title">El descubrimiento de la sensibilidad</div>
+        <div class="ft-figuras f1t">Poincaré (1892) · Lorenz (1963)</div>
+        <div class="ft-desc">Los sistemas dinámicos no lineales son deterministas pero impredecibles a largo plazo. La sensibilidad exponencial a las condiciones iniciales —cuantificable mediante exponentes de Lyapunov— establece un horizonte de predicción intrínseco al sistema.</div>
+        <div class="ft-concepto f1t">«Determinismo sin predictibilidad»</div>
+      </div>
+      <div class="fase-tile f2t" onclick="document.getElementById('fase2').scrollIntoView({behavior:'smooth'})">
+        <div class="ft-num f2t">Fase II · Forma</div>
+        <div class="ft-title">Geometría y energía de lo irregular</div>
+        <div class="ft-figuras f2t">Mandelbrot (1975) · Prigogine (1977)</div>
+        <div class="ft-desc">La irregularidad tiene una geometría propia —fractal, con dimensión no entera— y un régimen termodinámico propio: lejos del equilibrio, los sistemas disipativos construyen orden importando energía y exportando entropía, organizándose en estructuras espaciotemporales.</div>
+        <div class="ft-concepto f2t">«La forma es información acumulada»</div>
+      </div>
+      <div class="fase-tile f3t" onclick="document.getElementById('fase3').scrollIntoView({behavior:'smooth'})">
+        <div class="ft-num f3t">Fase III · Emergencia</div>
+        <div class="ft-title">El orden combinatorio</div>
+        <div class="ft-figuras f3t">Kauffman (1969) · Bak (1987)</div>
+        <div class="ft-desc">Cuando muchos elementos discretos interactúan según reglas locales, emergen propiedades globales no contenidas en ninguna parte. Redes booleanas en el borde del caos, criticalidad autoorganizada con distribuciones libres de escala: el orden aparece, literalmente, gratis.</div>
+        <div class="ft-concepto f3t">«El borde del caos»</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =============================================== -->
+<!-- FASE I · CAOS                                   -->
+<!-- =============================================== -->
+
+<section id="fase1" class="figura-section figura-bg f1">
+  <div class="figura-inner">
+
+    <!-- FIGURA 01 · POINCARÉ -->
+    <div class="figura-head fi">
+      <div class="figura-num f1">01</div>
+      <div>
+        <div class="figura-kicker">Fase I · Caos · Figura 01</div>
+        <h3 class="figura-title">Henri <em>Poincaré</em></h3>
+        <div class="figura-subtitle f1">El nacimiento del caos determinista</div>
+        <div class="figura-bio">
+          <span><strong>1854 – 1912</strong></span>
+          <span>París · École Polytechnique</span>
+          <span>Obra clave: <strong>Les méthodes nouvelles de la mécanique céleste</strong> (1892–1899)</span>
+          <span>Problema de los tres cuerpos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="figura-grid fi d1">
+      <div class="col-text">
+        <p>
+          En 1887 Poincaré ataca el problema de los tres cuerpos —tres masas mutuamente gravitantes en el espacio— y descubre que <em>no admite integrales de movimiento independientes</em> más allá de las clásicas. La consecuencia es radical: las trayectorias del sistema, aunque <strong>completamente deterministas</strong>, exhiben un comportamiento que él mismo describe como «un enredo infinitamente complicado» en el espacio de fase.
+        </p>
+
+        <h4 class="f1">El sistema dinámico</h4>
+        <p>
+          Considérese un sistema autónomo en $\mathbb{R}^n$:
+        </p>
+        <div class="eq-block f1">
+          $$\dot{\mathbf{x}} = \mathbf{f}(\mathbf{x}), \qquad \mathbf{x} \in \mathbb{R}^n$$
+        </div>
+        <p>
+          Dos trayectorias iniciadas en $\mathbf{x}_0$ y $\mathbf{x}_0 + \delta\mathbf{x}_0$, con $\|\delta\mathbf{x}_0\| \ll 1$, separan su distancia según:
+        </p>
+        <div class="eq-block f1">
+          $$\|\delta\mathbf{x}(t)\| \approx \|\delta\mathbf{x}_0\| \cdot e^{\lambda t}$$
+        </div>
+        <p class="visual-cap" style="margin-top:0.4rem;">donde $\lambda$ es el <strong>exponente de Lyapunov</strong>. Si $\lambda > 0$, el sistema es caótico: la incertidumbre inicial crece exponencialmente y la predicción tiene un horizonte finito $t_H \sim \lambda^{-1} \log(1/\epsilon)$.</p>
+
+        <h4 class="f1">Sección de Poincaré</h4>
+        <p>
+          Para visualizar la dinámica de un flujo continuo en $\mathbb{R}^3$, Poincaré introduce el <em>mapa de retorno</em>: se toma una superficie transversal $\Sigma$ y se registra la sucesión de puntos en que la trayectoria la atraviesa. El flujo continuo se convierte en un mapa discreto:
+        </p>
+        <div class="eq-block f1">
+          $$P : \Sigma \to \Sigma, \qquad \mathbf{x}_{n+1} = P(\mathbf{x}_n)$$
+        </div>
+        <p>
+          Si $\Sigma$ era una curva cerrada, el sistema es periódico. Si los puntos llenan una región con estructura intrincada, el sistema es caótico. <em>Esta es la primera herramienta operativa para detectar caos.</em>
+        </p>
+
+        <h4 class="f1">Mecánica hamiltoniana e invariantes</h4>
+        <p>
+          Para sistemas conservativos —los más estudiados por Poincaré— el flujo preserva la forma simpléctica $\omega = \sum_i dp_i \wedge dq_i$. El <strong>teorema de recurrencia</strong> (1890) garantiza que casi toda trayectoria regresa arbitrariamente cerca de su estado inicial, infinitas veces. Pero no en orden, ni periódicamente: la recurrencia coexiste con la sensibilidad. Esta tensión —recurrir sin predecir— es la firma matemática del caos hamiltoniano.
+        </p>
+
+        <h4 class="f1">El legado oculto</h4>
+        <p>
+          Poincaré publica estas ideas en tres volúmenes entre 1892 y 1899. La comunidad matemática las archiva como una curiosidad técnica del problema de los tres cuerpos. Hay que esperar a Birkhoff (1927), Smale (1960) y, sobre todo, a Lorenz (1963), para que el descubrimiento se reconozca como lo que es: <em>el nacimiento del paradigma del caos determinista</em>.
+        </p>
+
+        <div class="cita-cierre f1">
+          «Una causa muy pequeña, que se nos escapa, determina un efecto considerable que no podemos no ver, y entonces decimos que ese efecto se debe al azar.»
+          <cite>— Henri Poincaré, Science et Méthode (1908)</cite>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="visual-frame"><canvas id="cv-henon"></canvas></div>
+        <div class="visual-cap">
+          <b>Mapa de Hénon.</b> $x_{n+1}=1-ax_n^2+y_n,\ y_{n+1}=bx_n$ con $a=1.4,\ b=0.3$. Atractor extraño bidimensional con dimensión fractal $\approx 1.26$ — la versión discreta del descubrimiento de Poincaré.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="div">
+
+<section class="figura-section figura-bg f1">
+  <div class="figura-inner">
+
+    <!-- FIGURA 02 · LORENZ -->
+    <div class="figura-head fi">
+      <div class="figura-num f1">02</div>
+      <div>
+        <div class="figura-kicker">Fase I · Caos · Figura 02</div>
+        <h3 class="figura-title">Edward <em>Lorenz</em></h3>
+        <div class="figura-subtitle f1">El atractor extraño y el efecto mariposa</div>
+        <div class="figura-bio">
+          <span><strong>1917 – 2008</strong></span>
+          <span>MIT · Meteorología</span>
+          <span>Obra clave: <strong>Deterministic Nonperiodic Flow</strong> (1963)</span>
+          <span>Conferencia: «¿Puede el aleteo…?» (1972)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="figura-grid fi d1">
+      <div class="col-text">
+        <p>
+          Lorenz no estaba buscando el caos. Intentaba modelar la convección atmosférica con un sistema de doce ecuaciones diferenciales en una computadora Royal McBee LGP-30. En 1961, para verificar una simulación, reintroduce condiciones iniciales redondeadas a tres decimales en lugar de seis. La predicción meteorológica resultante <em>diverge por completo</em> de la original en pocas iteraciones. Lo que parecía error numérico era el descubrimiento del siglo: la <strong>impredecibilidad intrínseca</strong> de los sistemas dinámicos no lineales.
+        </p>
+
+        <h4 class="f1">El sistema de Lorenz</h4>
+        <p>
+          Al simplificar drásticamente la convección de Rayleigh–Bénard —siguiendo el truncamiento de Saltzman (1962)— Lorenz llega a tres ecuaciones diferenciales acopladas:
+        </p>
+        <div class="eq-block f1">
+          $$\begin{aligned}
+          \dot{x} &= \sigma\,(y - x) \\
+          \dot{y} &= x\,(\rho - z) - y \\
+          \dot{z} &= x y - \beta z
+          \end{aligned}$$
+        </div>
+        <p class="visual-cap" style="margin-top:0.4rem;">donde $x$ es la intensidad del movimiento convectivo, $y$ la diferencia de temperatura entre corrientes ascendentes y descendentes, y $z$ la distorsión del perfil vertical de temperatura. Los parámetros canónicos: $\sigma=10$ (número de Prandtl), $\beta=8/3$ (geometría), $\rho=28$ (número de Rayleigh reducido).</p>
+
+        <h4 class="f1">El atractor</h4>
+        <p>
+          Para $\rho>24.74$, los dos puntos fijos no triviales $C_{\pm} = (\pm\sqrt{\beta(\rho-1)}, \pm\sqrt{\beta(\rho-1)}, \rho-1)$ se desestabilizan vía bifurcación de Hopf subcrítica. Las trayectorias no escapan al infinito ni convergen a un ciclo: se enrollan en un conjunto compacto con la topología de dos «alas» —el famoso atractor de mariposa. Sus exponentes de Lyapunov son aproximadamente:
+        </p>
+        <div class="eq-block f1">
+          $$\lambda_1 \approx +0.906, \quad \lambda_2 = 0, \quad \lambda_3 \approx -14.572$$
+        </div>
+        <p>
+          La <strong>dimensión de Kaplan–Yorke</strong> del atractor es:
+        </p>
+        <div class="eq-block f1">
+          $$D_{KY} = 2 + \frac{\lambda_1 + \lambda_2}{|\lambda_3|} \approx 2.062$$
+        </div>
+        <p>
+          Un objeto <em>fractal</em> embebido en un espacio tridimensional: no es ni superficie (D=2) ni volumen (D=3). Esta es la firma geométrica del caos disipativo.
+        </p>
+
+        <h4 class="f1">El horizonte de predicción</h4>
+        <p>
+          Con $\lambda_1 \approx 0.9$ por unidad de tiempo, una incertidumbre inicial $\epsilon_0$ alcanza tamaño $O(1)$ tras un tiempo $t_H \sim (1/\lambda_1)\log(1/\epsilon_0)$. Para $\epsilon_0=10^{-6}$: $t_H \approx 15$ unidades. Por más que se mejore la medición —diez decimales más, cien más— el horizonte crece <em>logarítmicamente</em>. Esta es la matemática detrás del efecto mariposa: <em>no es que el aleteo cause el huracán; es que la predicción del huracán es estructuralmente limitada</em>.
+        </p>
+
+        <div class="cita-cierre f1">
+          «El caos: cuando el presente determina el futuro, pero el presente aproximado no determina aproximadamente el futuro.»
+          <cite>— Edward Lorenz</cite>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="visual-frame"><canvas id="cv-lorenz"></canvas></div>
+        <div class="visual-cap">
+          <b>Atractor de Lorenz.</b> Integración Runge–Kutta de cuarto orden con paso $h=0.01$, $\sigma=10$, $\beta=8/3$, $\rho=28$. La trayectoria se enrolla aperiódicamente en dos «alas», sin cruzarse jamás consigo misma —en un espacio de fase tridimensional, en un conjunto de dimensión 2.06.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- FASE II · FORMA                                 -->
+<!-- =============================================== -->
+
+<hr class="div">
+
+<section id="fase2" class="figura-section figura-bg f2">
+  <div class="figura-inner">
+
+    <!-- FIGURA 03 · MANDELBROT -->
+    <div class="figura-head fi">
+      <div class="figura-num f2">03</div>
+      <div>
+        <div class="figura-kicker">Fase II · Forma · Figura 03</div>
+        <h3 class="figura-title">Benoît <em>Mandelbrot</em></h3>
+        <div class="figura-subtitle f2">La geometría fractal de la naturaleza</div>
+        <div class="figura-bio">
+          <span><strong>1924 – 2010</strong></span>
+          <span>IBM Research · Yale</span>
+          <span>Obra clave: <strong>The Fractal Geometry of Nature</strong> (1982)</span>
+          <span>Acuña «fractal» (1975)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="figura-grid fi d1">
+      <div class="col-text">
+        <p>
+          Mandelbrot parte de una pregunta aparentemente trivial publicada en <em>Science</em> en 1967: «¿Cuánto mide la costa de Gran Bretaña?». La respuesta es desconcertante: <em>depende del tamaño de la regla</em>. Cuanto más fina la regla, más detalles se capturan, y más larga resulta la costa. En el límite $\epsilon \to 0$, la longitud diverge. La costa no tiene longitud bien definida en el sentido euclidiano, porque <strong>no es una curva unidimensional</strong>: es algo intermedio entre la línea y el plano.
+        </p>
+
+        <h4 class="f2">Dimensión fractal</h4>
+        <p>
+          La generalización de la dimensión euclidiana a objetos irregulares se formaliza vía la <strong>dimensión de Hausdorff</strong> o, equivalentemente para conjuntos autosimilares, la dimensión de conteo de cajas:
+        </p>
+        <div class="eq-block f2">
+          $$D = \lim_{\epsilon \to 0} \frac{\log N(\epsilon)}{\log(1/\epsilon)}$$
+        </div>
+        <p class="visual-cap" style="margin-top:0.4rem;">donde $N(\epsilon)$ es el número mínimo de cajas de lado $\epsilon$ necesarias para cubrir el conjunto. Para una línea, $D=1$; para un cuadrado, $D=2$; para la costa de Bretaña, $D \approx 1.25$.</p>
+
+        <h4 class="f2">Autosimilitud y la ley de potencia</h4>
+        <p>
+          Un objeto es <em>estrictamente autosimilar</em> si está compuesto por $N$ copias de sí mismo escaladas en un factor $r<1$, satisfaciendo $N\,r^D = 1$, de donde:
+        </p>
+        <div class="eq-block f2">
+          $$D = \frac{\log N}{\log(1/r)}$$
+        </div>
+        <p>
+          Para la <em>curva de Koch</em> ($N=4$ copias a escala $r=1/3$): $D = \log 4 / \log 3 \approx 1.262$. Para el <em>triángulo de Sierpinski</em> ($N=3$, $r=1/2$): $D = \log 3 / \log 2 \approx 1.585$. La longitud medida a escala $\epsilon$ obedece la <strong>ley de potencia</strong> $L(\epsilon) \propto \epsilon^{1-D}$, que diverge cuando $D>1$ y $\epsilon \to 0$.
+        </p>
+
+        <h4 class="f2">El conjunto de Mandelbrot</h4>
+        <p>
+          La iteración cuadrática en el plano complejo:
+        </p>
+        <div class="eq-block f2">
+          $$z_{n+1} = z_n^2 + c, \qquad z_0 = 0, \qquad c \in \mathbb{C}$$
+        </div>
+        <p>
+          define el conjunto $M = \{c \in \mathbb{C} : \{z_n\}\text{ es acotado}\}$. Su frontera $\partial M$ tiene <strong>dimensión de Hausdorff exactamente $2$</strong> (Shishikura, 1998) —máxima posible en el plano— y exhibe autosimilitud aproximada infinita: cada zoom revela copias deformadas del conjunto entero. Es probablemente el objeto matemático más complejo jamás dibujado.
+        </p>
+
+        <h4 class="f2">Geometría de la naturaleza</h4>
+        <p>
+          La irregularidad fractal no es excepción sino regla: costas, montañas, sistemas vasculares, redes neuronales, fluctuaciones bursátiles, distribución de galaxias. Mandelbrot acuña la frase «las nubes no son esferas, las montañas no son conos, las costas no son círculos, los rayos no viajan en línea recta». La geometría euclidiana era una idealización útil pero falsa de un mundo cuya forma es <em>quebrada</em> —<em>fractus</em> en latín.
+        </p>
+
+        <div class="cita-cierre f2">
+          «La forma fractal admite ser cuantificada por un número, la dimensión, que no es entero. Esta dimensión es una medida del grado de irregularidad y de fragmentación —del grado de <em>aspereza</em>— y por tanto del contenido informacional de la forma.»
+          <cite>— Benoît Mandelbrot, The Fractal Geometry of Nature</cite>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="visual-frame"><canvas id="cv-mandel"></canvas></div>
+        <div class="visual-cap">
+          <b>Conjunto de Mandelbrot.</b> $z_{n+1}=z_n^2+c$, $z_0=0$, ventana $[-2.1,\,0.8]\times[-1.2,\,1.2]$. El color codifica el tiempo de escape $|z_n|>2$. La frontera $\partial M$ tiene dimensión de Hausdorff 2.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="div">
+
+<section class="figura-section figura-bg f2">
+  <div class="figura-inner">
+
+    <!-- FIGURA 04 · PRIGOGINE -->
+    <div class="figura-head fi">
+      <div class="figura-num f2">04</div>
+      <div>
+        <div class="figura-kicker">Fase II · Forma · Figura 04</div>
+        <h3 class="figura-title">Ilya <em>Prigogine</em></h3>
+        <div class="figura-subtitle f2">Estructuras disipativas lejos del equilibrio</div>
+        <div class="figura-bio">
+          <span><strong>1917 – 2003</strong></span>
+          <span>Bruselas · Solvay · Austin</span>
+          <span>Premio Nobel de Química <strong>1977</strong></span>
+          <span>Obra: <strong>La Nouvelle Alliance</strong> (1979)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="figura-grid fi d1">
+      <div class="col-text">
+        <p>
+          La termodinámica clásica del siglo XIX —Carnot, Clausius, Boltzmann— había construido una imagen sombría del universo: la segunda ley garantizaba el aumento irreversible de entropía, y por tanto la disolución de toda estructura en equilibrio térmico. La «muerte calórica del universo» era el destino inscrito en las ecuaciones. Prigogine demuestra que esta imagen está incompleta: <em>lejos del equilibrio, los sistemas abiertos pueden auto-organizarse en estructuras coherentes</em> que persisten precisamente porque disipan entropía hacia el entorno.
+        </p>
+
+        <h4 class="f2">El balance entrópico</h4>
+        <p>
+          Para un sistema abierto, el cambio de entropía se descompone en dos términos:
+        </p>
+        <div class="eq-block f2">
+          $$dS = d_eS + d_iS$$
+        </div>
+        <p class="visual-cap" style="margin-top:0.4rem;">donde $d_eS$ es el flujo de entropía intercambiado con el entorno (puede ser positivo o negativo) y $d_iS$ es la entropía producida internamente. La segunda ley exige únicamente $d_iS \geq 0$.</p>
+        <p>
+          Si el sistema exporta entropía al entorno con $d_eS < 0$ y $|d_eS| > d_iS$, el sistema mismo puede <em>disminuir</em> su entropía localmente —ordenarse— sin violar la segunda ley. Esta es la grieta termodinámica por donde entra la complejidad.
+        </p>
+
+        <h4 class="f2">Régimen lineal · Onsager</h4>
+        <p>
+          Cerca del equilibrio, las corrientes generalizadas $J_k$ son proporcionales a las fuerzas $X_k$:
+        </p>
+        <div class="eq-block f2">
+          $$J_k = \sum_l L_{kl} X_l, \qquad L_{kl} = L_{lk}$$
+        </div>
+        <p>
+          La producción de entropía es una forma cuadrática definida positiva: $\sigma = d_iS/dt = \sum_k J_k X_k \geq 0$. En este régimen, los estados estacionarios <em>minimizan</em> la producción de entropía (teorema de Prigogine, 1947). El sistema tiende a un orden cercano al del equilibrio.
+        </p>
+
+        <h4 class="f2">Régimen no lineal · bifurcaciones</h4>
+        <p>
+          Cuando el sistema se aleja del equilibrio más allá de un umbral crítico, las relaciones se vuelven no lineales y la producción de entropía deja de tener un extremo. Aparecen <strong>bifurcaciones</strong>: el estado estacionario homogéneo pierde estabilidad y emergen <em>estructuras disipativas</em> —patrones espaciotemporales con simetría rota. Ejemplo: la inestabilidad de Bénard, las celdas convectivas hexagonales en un fluido calentado.
+        </p>
+
+        <h4 class="f2">El Brusselator</h4>
+        <p>
+          Modelo mínimo de reacción química oscilante (Prigogine–Lefever, 1968):
+        </p>
+        <div class="eq-block f2">
+          $$\begin{aligned}
+          \partial_t X &= A - (B+1)X + X^2 Y + D_X \nabla^2 X \\
+          \partial_t Y &= B X - X^2 Y + D_Y \nabla^2 Y
+          \end{aligned}$$
+        </div>
+        <p>
+          Para ciertos valores de $A$, $B$ y de los coeficientes de difusión $D_X, D_Y$, el sistema desarrolla <em>ondas químicas</em>, espirales rotantes y patrones de Turing —estructuras macroscópicas mantenidas por flujo continuo de reactivos. Es la matemática de la reacción de Belousov–Zhabotinsky.
+        </p>
+
+        <h4 class="f2">El tiempo recuperado</h4>
+        <p>
+          La consecuencia filosófica es profunda. La física clásica era reversible: las ecuaciones de Newton, las de Maxwell, las de Schrödinger, todas eran invariantes bajo $t \to -t$. La irreversibilidad parecía un artefacto subjetivo. Prigogine argumenta lo contrario: lejos del equilibrio, <em>la flecha del tiempo es constitutiva de la física misma</em>. La irreversibilidad no es ilusión, es el motor de la complejidad.
+        </p>
+
+        <div class="cita-cierre f2">
+          «La materia, lejos del equilibrio, adquiere nuevas propiedades en las que las fluctuaciones, la inestabilidad, juegan un papel esencial: la materia se vuelve activa.»
+          <cite>— Ilya Prigogine, La Nouvelle Alliance (1979)</cite>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="visual-frame paper"><canvas id="cv-grayscott"></canvas></div>
+        <div class="visual-cap">
+          <b>Reacción–difusión Gray–Scott.</b> $\partial_t u = D_u\nabla^2 u - uv^2 + F(1-u),\ \partial_t v = D_v\nabla^2 v + uv^2 - (F+k)v$, con $F=0.0367$, $k=0.0649$. Estructuras disipativas: manchas que se replican y se mantienen lejos del equilibrio.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- FASE III · EMERGENCIA                           -->
+<!-- =============================================== -->
+
+<hr class="div">
+
+<section id="fase3" class="figura-section figura-bg f3">
+  <div class="figura-inner">
+
+    <!-- FIGURA 05 · KAUFFMAN -->
+    <div class="figura-head fi">
+      <div class="figura-num f3">05</div>
+      <div>
+        <div class="figura-kicker">Fase III · Emergencia · Figura 05</div>
+        <h3 class="figura-title">Stuart <em>Kauffman</em></h3>
+        <div class="figura-subtitle f3">Redes NK y el orden gratuito</div>
+        <div class="figura-bio">
+          <span><strong>1939 –</strong></span>
+          <span>Santa Fe Institute · Pensilvania · Calgary</span>
+          <span>Obras: <strong>The Origins of Order</strong> (1993) · <strong>At Home in the Universe</strong> (1995)</span>
+          <span>Modelo NK · Conjuntos autocatalíticos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="figura-grid fi d1">
+      <div class="col-text">
+        <p>
+          Kauffman se plantea una pregunta que la biología molecular dejaba en el aire: <em>si una célula contiene unos 20.000 genes que se regulan mutuamente, ¿cómo es que el sistema no colapsa en el caos?</em> En lugar de modelar la red genética concreta, Kauffman estudia el comportamiento estadístico de redes booleanas aleatorias con $N$ nodos y $K$ entradas por nodo —el modelo NK (1969). Lo que descubre es contraintuitivo: <strong>el orden no requiere ser cuidadosamente diseñado; emerge espontáneamente cuando $K$ es pequeño</strong>.
+        </p>
+
+        <h4 class="f3">El modelo NK</h4>
+        <p>
+          Cada nodo $\sigma_i \in \{0,1\}$ recibe inputs de exactamente $K$ otros nodos elegidos al azar. Su valor en el siguiente paso de tiempo está dado por una función booleana $f_i$ asignada al azar entre las $2^{2^K}$ funciones posibles:
+        </p>
+        <div class="eq-block f3">
+          $$\sigma_i(t+1) = f_i\bigl(\sigma_{j_1}(t),\, \sigma_{j_2}(t),\, \ldots,\, \sigma_{j_K}(t)\bigr)$$
+        </div>
+        <p>
+          El espacio de estados tiene $2^N$ configuraciones. La dinámica es determinista, así que tarde o temprano cae en un ciclo —un <em>atractor</em>. La pregunta clave es: ¿cuántos atractores hay, qué tamaño tienen, y qué tan robustos son a perturbaciones?
+        </p>
+
+        <h4 class="f3">La transición caos–orden</h4>
+        <p>
+          Sea $p$ la fracción de unos en la tabla de verdad de $f_i$ (sesgo). La sensibilidad de la dinámica está controlada por:
+        </p>
+        <div class="eq-block f3">
+          $$\lambda = 2 K p (1-p)$$
+        </div>
+        <p class="visual-cap" style="margin-top:0.4rem;">el número promedio de bits-input que, si se invierten, cambian el bit-output.</p>
+        <p>
+          Hay una <strong>transición de fase</strong> aguda en $\lambda = 1$:
+        </p>
+        <div class="eq-block f3">
+          $$\begin{aligned}
+          \lambda &< 1 \quad\Rightarrow\quad \text{régimen ordenado} \\
+          \lambda &= 1 \quad\Rightarrow\quad \text{borde del caos (crítico)} \\
+          \lambda &> 1 \quad\Rightarrow\quad \text{régimen caótico}
+          \end{aligned}$$
+        </div>
+        <p>
+          Para $p=1/2$, la transición ocurre en $K_c=2$. Esto significa que una red donde cada nodo recibe únicamente <em>dos</em> entradas —por azar, sin diseño— ya está en el borde del caos. Las redes con $K=2$ exhiben:
+        </p>
+        <ul style="padding-left:1.2rem;color:var(--ink-mid);font-size:1.02rem;line-height:1.82;">
+          <li>Número de atractores ~ $\sqrt{N}$.</li>
+          <li>Longitudes de ciclo cortas comparadas con $2^N$.</li>
+          <li>Robustez ante perturbaciones puntuales: las trayectorias regresan al mismo atractor.</li>
+          <li>Capacidad de respuesta diferenciada: distintos atractores accesibles según condiciones iniciales.</li>
+        </ul>
+
+        <h4 class="f3">Conjuntos autocatalíticos</h4>
+        <p>
+          La segunda contribución mayor de Kauffman: una explicación del origen de la vida basada en la combinatoria de reacciones. Sea $\mathcal{P}$ un conjunto de polímeros y $f$ la probabilidad de que un polímero dado catalice una reacción dada. La densidad de reacciones catalizadas crece como $|\mathcal{P}|^2$, mientras que la diversidad de polímeros crece como $|\mathcal{P}|$. Existe un umbral crítico de tamaño $|\mathcal{P}|^*$ a partir del cual, casi con certeza, se forma un <strong>conjunto autocatalítico cerrado</strong>: cada miembro es producido por al menos una reacción catalizada por otro miembro.
+        </p>
+        <p>
+          La vida, en esta lectura, no requiere un evento improbable. <em>Requiere superar un umbral combinatorio</em>. El orden, otra vez, gratis.
+        </p>
+
+        <div class="cita-cierre f3">
+          «No somos accidentes improbables: somos esperables. La auto-organización es la fuente innata de orden en el universo. Estamos en casa en el universo de un modo más profundo del que sospechábamos.»
+          <cite>— Stuart Kauffman, At Home in the Universe (1995)</cite>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="visual-frame paper"><canvas id="cv-nk"></canvas></div>
+        <div class="visual-cap">
+          <b>Red booleana NK con K=2.</b> $N=200$ nodos, cada uno con $K=2$ entradas aleatorias y función booleana aleatoria. El diagrama muestra el patrón temporal $\sigma_i(t)$: filas = nodos, columnas = tiempo. La estabilización en patrones congelados es la firma del régimen ordenado en el borde del caos.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="div">
+
+<section class="figura-section figura-bg f3">
+  <div class="figura-inner">
+
+    <!-- FIGURA 06 · BAK -->
+    <div class="figura-head fi">
+      <div class="figura-num f3">06</div>
+      <div>
+        <div class="figura-kicker">Fase III · Emergencia · Figura 06</div>
+        <h3 class="figura-title">Per <em>Bak</em></h3>
+        <div class="figura-subtitle f3">Criticalidad autoorganizada</div>
+        <div class="figura-bio">
+          <span><strong>1948 – 2002</strong></span>
+          <span>Brookhaven · Niels Bohr Institute</span>
+          <span>Obra clave: <strong>How Nature Works</strong> (1996)</span>
+          <span>Modelo BTW · Pila de arena (1987)</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="figura-grid fi d1">
+      <div class="col-text">
+        <p>
+          La física estadística había estudiado las <em>transiciones de fase</em> de segundo orden —el agua hirviendo, los imanes ferromagnéticos cerca de la temperatura de Curie— y descubierto que en el punto crítico aparecen fluctuaciones de todos los tamaños, distribuciones libres de escala, divergencias de las longitudes de correlación. Pero esto exigía afinar un parámetro de control con precisión imposible. Bak, Tang y Wiesenfeld muestran en 1987 que existen sistemas que <em>se sintonizan a sí mismos</em> al punto crítico, sin necesidad de afinar nada. Lo llaman <strong>Self-Organized Criticality</strong> (SOC).
+        </p>
+
+        <h4 class="f3">El modelo BTW</h4>
+        <p>
+          Una rejilla bidimensional $L \times L$. En cada celda $(i,j)$ una variable de altura $z(i,j) \in \mathbb{N}$. La dinámica:
+        </p>
+        <div class="eq-block f3">
+          $$\text{Adición: } z(i,j) \to z(i,j) + 1 \quad\text{en una celda al azar.}$$
+        </div>
+        <div class="eq-block f3">
+          $$\text{Si } z(i,j) \geq z_c=4:\ \begin{cases} z(i,j) \to z(i,j) - 4 \\ z(\text{vecinos}) \to z(\text{vecinos}) + 1 \end{cases}$$
+        </div>
+        <p class="visual-cap" style="margin-top:0.4rem;">El proceso de relajación puede propagarse en cascada: una caída en una celda puede inducir caídas en sus vecinas, que a su vez inducen caídas en las suyas. La <em>avalancha</em> tiene tamaño $s$ (número total de celdas relajadas) y duración $T$.</p>
+
+        <h4 class="f3">Distribuciones libres de escala</h4>
+        <p>
+          Tras un transitorio, el sistema alcanza un estado estacionario crítico en el que las avalanchas obedecen leyes de potencia:
+        </p>
+        <div class="eq-block f3">
+          $$P(s) \sim s^{-\tau}, \qquad P(T) \sim T^{-\alpha}$$
+        </div>
+        <p>
+          Con exponentes universales $\tau \approx 1.10$ y $\alpha \approx 1.30$ para el modelo BTW bidimensional. <strong>No hay escala característica</strong>: hay avalanchas de todos los tamaños, desde una celda hasta cubrir el sistema completo. La distribución carece de máximo, varianza o media bien definida (para $\tau \leq 2$).
+        </p>
+
+        <h4 class="f3">El estado crítico como atractor dinámico</h4>
+        <p>
+          Lo que distingue a SOC de las transiciones de fase clásicas es la <strong>ausencia de parámetro de control afinado externamente</strong>. La pila de arena se llena, se desliza, se relaja, y el estado estacionario al que converge tiene automáticamente las propiedades del punto crítico:
+        </p>
+        <ul style="padding-left:1.2rem;color:var(--ink-mid);font-size:1.02rem;line-height:1.82;">
+          <li>Longitud de correlación divergente.</li>
+          <li>Fluctuaciones de todos los tamaños.</li>
+          <li>Sensibilidad extrema a perturbaciones (pero solo a unas pocas, no a todas).</li>
+          <li>Memoria de largo alcance temporal y espacial.</li>
+        </ul>
+
+        <h4 class="f3">Universalidad empírica</h4>
+        <p>
+          Bak conjetura que SOC es el mecanismo genérico detrás de la abundancia de leyes de potencia en sistemas naturales. La evidencia se acumula:
+        </p>
+        <ul style="padding-left:1.2rem;color:var(--ink-mid);font-size:1.02rem;line-height:1.82;">
+          <li><em>Terremotos:</em> ley de Gutenberg–Richter, $\log N(M) = a - bM$ con $b \approx 1$.</li>
+          <li><em>Extinciones biológicas:</em> distribución de magnitudes en el registro fósil (Raup, Sepkoski).</li>
+          <li><em>Avalanchas neuronales:</em> ráfagas de actividad cortical con $\tau \approx 1.5$ (Beggs–Plenz, 2003).</li>
+          <li><em>Rupturas de la red eléctrica</em>, <em>fluctuaciones bursátiles</em>, <em>tamaños de ciudades</em> (ley de Zipf).</li>
+        </ul>
+        <p>
+          La consecuencia metodológica es importante: <em>no hay que buscar causas excepcionales para los eventos extremos en sistemas SOC</em>. Una avalancha que destruye la mitad del sistema sigue la misma ley que una que afecta a una celda. Cambia la escala, no el mecanismo.
+        </p>
+
+        <div class="cita-cierre f3">
+          «Las catástrofes son la regla, no la excepción. Y son indistinguibles, en su origen, de los pequeños eventos cotidianos. La diferencia está en la cola de la distribución, no en la causa.»
+          <cite>— Per Bak, How Nature Works (1996)</cite>
+        </div>
+      </div>
+
+      <div class="col-visual">
+        <div class="visual-frame paper"><canvas id="cv-sandpile"></canvas></div>
+        <div class="visual-cap">
+          <b>Pila de arena BTW.</b> Rejilla $80\times 80$, umbral $z_c=4$. El color codifica la altura $z(i,j)$. Cada granito añadido puede o no desencadenar una avalancha; el tamaño de las avalanchas obedece $P(s)\sim s^{-\tau}$.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- =============================================== -->
+<!-- SÍNTESIS                                        -->
+<!-- =============================================== -->
+
+<section class="sintesis-bg" id="sintesis">
+  <div class="sintesis-inner">
+    <div class="lbl fi">Cierre · síntesis</div>
+    <h2 class="fi d1" style="margin:1rem 0 0;">Seis ideas, <em>una arquitectura común</em></h2>
+    <p class="sintesis-lead fi d2">
+      Las seis figuras no son contemporáneas ni intercambian referencias hasta tarde. Pero leídas juntas, sus matemáticas dibujan una arquitectura única: lo complejo no es lo complicado, ni el ruido, ni el azar puro. Es lo que aparece <em>entre</em> el orden rígido y el desorden aleatorio —y se deja describir, contra toda intuición newtoniana, con ecuaciones.
+    </p>
+    <div class="sintesis-grid fi d3">
+      <div class="sintesis-card c1">
+        <div class="sc-eyebrow">Eje 01 · Dinámica</div>
+        <div class="sc-title">Determinismo sin predicción</div>
+        <div class="sc-txt">Poincaré y Lorenz: el caos determinista. La predictibilidad no es una propiedad del universo —es una propiedad de la ecuación, medible por el exponente de Lyapunov. La incertidumbre no se reduce; se acumula exponencialmente.</div>
+      </div>
+      <div class="sintesis-card c2">
+        <div class="sc-eyebrow">Eje 02 · Forma y energía</div>
+        <div class="sc-title">Geometría de lo irregular</div>
+        <div class="sc-txt">Mandelbrot y Prigogine: las estructuras complejas tienen dimensión no entera y se mantienen lejos del equilibrio. La forma fractal y la disipación irreversible son las dos caras de un mismo régimen físico.</div>
+      </div>
+      <div class="sintesis-card c3">
+        <div class="sc-eyebrow">Eje 03 · Emergencia</div>
+        <div class="sc-title">Orden gratis, criticalidad</div>
+        <div class="sc-txt">Kauffman y Bak: cuando muchos elementos interactúan según reglas locales, emergen propiedades globales —atractores, leyes de potencia, robustez. El borde del caos no es metáfora: es un régimen identificable, con $\lambda \approx 1$ y distribuciones $\propto s^{-\tau}$.</div>
+      </div>
+    </div>
+    <p class="prologo-body fi d3" style="color:#BDB39E;margin-top:3rem;max-width:760px;">
+      Edgar Morin recogerá estas matemáticas y las trasladará al pensamiento filosófico y social a partir de los años setenta. Pero la operación de Morin tiene una deuda específica: <em>las ecuaciones aquí presentadas son la condición de posibilidad técnica del pensamiento complejo</em>. Sin ellas, el discurso sobre la complejidad sería retórica. Con ellas, es una ciencia con criterios de validación, herramientas de medición y horizontes de aplicación cuantificables.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="f-title">Fundamentos matemáticos · una arqueología cinematográfica</div>
+  <div class="f-meta">
+    Memoria Activa del Pensamiento Complejo · Andrés Taborga<br>
+    Construido iterativamente con asistencia de Claude (Anthropic)<br>
+    <a href="index.html">← Volver al índice</a>
+  </div>
+</footer>
+
+<script>
+// ══════════════════════════════════
+// FADE-IN ON SCROLL
+// ══════════════════════════════════
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('v'); });
+}, { threshold: 0.05 });
+document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+
+// ══════════════════════════════════
+// HERO · LORENZ ATTRACTOR (3D → 2D)
+// ══════════════════════════════════
+(function(){
+  const cv = document.getElementById('lorenz-canvas');
+  const cx = cv.getContext('2d');
+  function rs(){ cv.width=window.innerWidth; cv.height=window.innerHeight; }
+  rs(); window.addEventListener('resize', rs);
+
+  const SIGMA=10, BETA=8/3, RHO=28;
+  const N_TRAJ = 4;
+  const PALETTE = [[155,133,212],[107,170,184],[212,135,152],[230,221,208]];
+  const traj = Array.from({length:N_TRAJ},(_,i)=>({
+    x: 0.1+i*0.02, y:0+i*0.01, z:0,
+    pts:[],
+    color: PALETTE[i % PALETTE.length]
+  }));
+
+  function step(t){
+    const dt=0.005;
+    const dx = SIGMA*(t.y - t.x);
+    const dy = t.x*(RHO - t.z) - t.y;
+    const dz = t.x*t.y - BETA*t.z;
+    t.x += dx*dt; t.y += dy*dt; t.z += dz*dt;
+  }
+
+  let angle = 0;
+  function draw(){
+    cx.fillStyle = 'rgba(13,10,24,0.18)';
+    cx.fillRect(0,0,cv.width,cv.height);
+    angle += 0.0011;
+    const cosA = Math.cos(angle), sinA = Math.sin(angle);
+    const cx0 = cv.width*0.55, cy0 = cv.height*0.52;
+    const scale = Math.min(cv.width, cv.height) * 0.018;
+
+    for (let s=0; s<6; s++){
+      traj.forEach(t=>{
+        step(t);
+        const X = t.x*cosA - t.y*sinA;
+        const Y = t.x*sinA + t.y*cosA;
+        const Z = t.z - 25;
+        const px = cx0 + X*scale;
+        const py = cy0 + (Z*scale*0.85) - Y*scale*0.32;
+        t.pts.push([px,py]);
+        if (t.pts.length>900) t.pts.shift();
+      });
+    }
+
+    traj.forEach(t=>{
+      const [R,G,B] = t.color;
+      cx.strokeStyle = `rgba(${R},${G},${B},0.55)`;
+      cx.lineWidth = 0.9;
+      cx.beginPath();
+      t.pts.forEach((p,i)=>{
+        if(i===0) cx.moveTo(p[0],p[1]); else cx.lineTo(p[0],p[1]);
+      });
+      cx.stroke();
+      const last = t.pts[t.pts.length-1];
+      if (last){
+        cx.beginPath();
+        cx.arc(last[0],last[1],2.4,0,Math.PI*2);
+        cx.fillStyle = `rgba(${R},${G},${B},0.95)`;
+        cx.fill();
+      }
+    });
+
+    // Viñeta sutil
+    const vg = cx.createRadialGradient(cv.width*0.55, cv.height*0.52, Math.min(cv.width,cv.height)*0.2,
+                                       cv.width*0.55, cv.height*0.52, Math.max(cv.width,cv.height)*0.7);
+    vg.addColorStop(0,'rgba(13,10,24,0)');
+    vg.addColorStop(1,'rgba(13,10,24,0.55)');
+    cx.fillStyle = vg;
+    cx.fillRect(0,0,cv.width,cv.height);
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ══════════════════════════════════
+// HÉNON MAP
+// ══════════════════════════════════
+(function(){
+  const cv = document.getElementById('cv-henon'); if(!cv) return;
+  const cx = cv.getContext('2d');
+  function fit(){
+    const r = cv.getBoundingClientRect();
+    cv.width = r.width*2; cv.height = r.height*2;
+    cx.scale(2,2);
+  }
+  const start = ()=>{
+    fit();
+    const W = cv.width/2, H = cv.height/2;
+    cx.fillStyle = '#0f0c1a'; cx.fillRect(0,0,W,H);
+    const a=1.4, b=0.3;
+    let x=0.1, y=0.3;
+    // burn-in
+    for(let i=0;i<200;i++){
+      const nx = 1 - a*x*x + y;
+      const ny = b*x;
+      x=nx; y=ny;
+    }
+    const xMin=-1.5, xMax=1.5, yMin=-0.45, yMax=0.45;
+    const mapX = v => (v-xMin)/(xMax-xMin)*W;
+    const mapY = v => H - (v-yMin)/(yMax-yMin)*H;
+    let n = 0;
+    function batch(){
+      cx.fillStyle = 'rgba(155,133,212,0.7)';
+      for (let i=0;i<3000;i++){
+        const nx = 1 - a*x*x + y;
+        const ny = b*x;
+        x=nx; y=ny;
+        cx.fillRect(mapX(x),mapY(y),0.6,0.6);
+        n++;
+      }
+      if (n<150000) requestAnimationFrame(batch);
+    }
+    batch();
+  };
+  // run when in view
+  const io = new IntersectionObserver(es=>{
+    es.forEach(e=>{ if(e.isIntersecting){ start(); io.disconnect(); } });
+  },{threshold:0.1});
+  io.observe(cv);
+})();
+
+// ══════════════════════════════════
+// LORENZ DETAIL
+// ══════════════════════════════════
+(function(){
+  const cv = document.getElementById('cv-lorenz'); if(!cv) return;
+  const cx = cv.getContext('2d');
+  function fit(){ const r=cv.getBoundingClientRect(); cv.width=r.width*2; cv.height=r.height*2; cx.scale(2,2); }
+  let started = false;
+  const start = ()=>{
+    if (started) return; started = true;
+    fit();
+    const W = cv.width/2, H = cv.height/2;
+    cx.fillStyle = '#0f0c1a'; cx.fillRect(0,0,W,H);
+    const SIGMA=10, BETA=8/3, RHO=28;
+    let x=0.1,y=0,z=0;
+    const dt=0.006;
+    const cxC = W*0.5, cyC = H*0.55;
+    const sc = Math.min(W,H)*0.022;
+    let angle = -0.4;
+    const trail = [];
+    function frame(){
+      angle += 0.003;
+      const cosA = Math.cos(angle), sinA = Math.sin(angle);
+      cx.fillStyle = 'rgba(15,12,26,0.12)';
+      cx.fillRect(0,0,W,H);
+      for (let s=0;s<4;s++){
+        const dx=SIGMA*(y-x), dy=x*(RHO-z)-y, dz=x*y-BETA*z;
+        x+=dx*dt; y+=dy*dt; z+=dz*dt;
+        const X = x*cosA - y*sinA;
+        const Y = x*sinA + y*cosA;
+        const Z = z - 25;
+        const px = cxC + X*sc;
+        const py = cyC + Z*sc*0.9 - Y*sc*0.35;
+        trail.push([px,py]);
+        if (trail.length>1400) trail.shift();
+      }
+      cx.beginPath();
+      trail.forEach((p,i)=>{
+        if(i===0) cx.moveTo(p[0],p[1]); else cx.lineTo(p[0],p[1]);
+      });
+      cx.strokeStyle = 'rgba(155,133,212,0.55)';
+      cx.lineWidth = 0.7; cx.stroke();
+      const last = trail[trail.length-1];
+      if (last){
+        cx.beginPath();
+        cx.arc(last[0],last[1],2.2,0,Math.PI*2);
+        cx.fillStyle = 'rgba(212,135,152,0.95)';
+        cx.fill();
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
+  };
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)start();}),{threshold:0.1}).observe(cv);
+})();
+
+// ══════════════════════════════════
+// MANDELBROT (progressive)
+// ══════════════════════════════════
+(function(){
+  const cv = document.getElementById('cv-mandel'); if(!cv) return;
+  const cx = cv.getContext('2d');
+  function fit(){ const r=cv.getBoundingClientRect(); cv.width=Math.floor(r.width); cv.height=Math.floor(r.height); }
+  let started = false;
+  const start = ()=>{
+    if (started) return; started = true;
+    fit();
+    const W = cv.width, H = cv.height;
+    const img = cx.createImageData(W,H);
+    const xMin=-2.1, xMax=0.8, yMin=-1.2, yMax=1.2;
+    const MAX_IT = 80;
+    // teal palette
+    function colorFor(it){
+      if (it===MAX_IT) return [15,12,26];
+      const t = it/MAX_IT;
+      const r = Math.floor(30 + t*210);
+      const g = Math.floor(90 + t*120);
+      const b = Math.floor(110 + (1-t)*120);
+      return [r,g,b];
+    }
+    let row = 0;
+    function batch(){
+      const rowsPerFrame = 8;
+      for (let rr=0; rr<rowsPerFrame && row<H; rr++, row++){
+        const cy = yMin + (yMax-yMin)*row/H;
+        for (let col=0; col<W; col++){
+          const cxR = xMin + (xMax-xMin)*col/W;
+          let zr=0, zi=0, it=0;
+          while (it<MAX_IT && zr*zr+zi*zi<4){
+            const tr = zr*zr - zi*zi + cxR;
+            zi = 2*zr*zi + cy;
+            zr = tr;
+            it++;
+          }
+          const [R,G,B] = colorFor(it);
+          const idx = (row*W + col)*4;
+          img.data[idx]=R; img.data[idx+1]=G; img.data[idx+2]=B; img.data[idx+3]=255;
+        }
+      }
+      cx.putImageData(img, 0, 0);
+      if (row<H) requestAnimationFrame(batch);
+    }
+    batch();
+  };
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)start();}),{threshold:0.1}).observe(cv);
+})();
+
+// ══════════════════════════════════
+// GRAY-SCOTT REACTION-DIFFUSION
+// ══════════════════════════════════
+(function(){
+  const cv = document.getElementById('cv-grayscott'); if(!cv) return;
+  const cx = cv.getContext('2d');
+  let started = false;
+  const start = ()=>{
+    if (started) return; started = true;
+    const W = 140, H = 105;
+    cv.width = W; cv.height = H;
+    cv.style.imageRendering = 'pixelated';
+    let U = new Float32Array(W*H);
+    let V = new Float32Array(W*H);
+    let U2 = new Float32Array(W*H);
+    let V2 = new Float32Array(W*H);
+    for (let i=0;i<W*H;i++){ U[i]=1; V[i]=0; }
+    // seed
+    for (let s=0;s<5;s++){
+      const cx0 = Math.floor(20 + Math.random()*(W-40));
+      const cy0 = Math.floor(20 + Math.random()*(H-40));
+      for (let dy=-3;dy<=3;dy++) for (let dx=-3;dx<=3;dx++){
+        const xx=cx0+dx, yy=cy0+dy;
+        if (xx>=0&&xx<W&&yy>=0&&yy<H){ U[yy*W+xx]=0.5; V[yy*W+xx]=0.25; }
+      }
+    }
+    const Du=0.16, Dv=0.08, F=0.0367, K=0.0649;
+    const img = cx.createImageData(W,H);
+    function lap(arr, x, y){
+      const i = y*W+x;
+      const xm = (x-1+W)%W, xp = (x+1)%W;
+      const ym = (y-1+H)%H, yp = (y+1)%H;
+      return arr[y*W+xm]+arr[y*W+xp]+arr[ym*W+x]+arr[yp*W+x]-4*arr[i];
+    }
+    function step(){
+      for (let y=0;y<H;y++) for (let x=0;x<W;x++){
+        const i = y*W+x;
+        const u = U[i], v = V[i];
+        const uvv = u*v*v;
+        U2[i] = u + (Du*lap(U,x,y) - uvv + F*(1-u));
+        V2[i] = v + (Dv*lap(V,x,y) + uvv - (F+K)*v);
+      }
+      const tmp1=U; U=U2; U2=tmp1;
+      const tmp2=V; V=V2; V2=tmp2;
+    }
+    function render(){
+      for (let i=0;i<W*H;i++){
+        const v = Math.max(0, Math.min(1, V[i]*3.2));
+        const t = 1-v;
+        const r = Math.floor(245*t + 25*v);
+        const g = Math.floor(239*t + 94*v);
+        const b = Math.floor(228*t + 104*v);
+        img.data[i*4]=r; img.data[i*4+1]=g; img.data[i*4+2]=b; img.data[i*4+3]=255;
+      }
+      cx.putImageData(img,0,0);
+    }
+    function loop(){
+      for (let s=0;s<12;s++) step();
+      render();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  };
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)start();}),{threshold:0.1}).observe(cv);
+})();
+
+// ══════════════════════════════════
+// NK BOOLEAN NETWORK (K=2)
+// ══════════════════════════════════
+(function(){
+  const cv = document.getElementById('cv-nk'); if(!cv) return;
+  const cx = cv.getContext('2d');
+  let started = false;
+  const start = ()=>{
+    if (started) return; started = true;
+    const r = cv.getBoundingClientRect();
+    cv.width = Math.floor(r.width);
+    cv.height = Math.floor(r.height);
+    const W = cv.width, H = cv.height;
+    cx.fillStyle = '#FBF6EC'; cx.fillRect(0,0,W,H);
+    const N = 160;
+    const K = 2;
+    const T = Math.floor(W);
+    // build network
+    const inputs = []; // inputs[i] = [j1, j2]
+    const truth = [];  // truth[i] = [f(00), f(01), f(10), f(11)]
+    for (let i=0;i<N;i++){
+      const a = Math.floor(Math.random()*N);
+      let b = Math.floor(Math.random()*N); while (b===a) b = Math.floor(Math.random()*N);
+      inputs.push([a,b]);
+      truth.push([Math.random()<0.5?1:0, Math.random()<0.5?1:0, Math.random()<0.5?1:0, Math.random()<0.5?1:0]);
+    }
+    let state = new Uint8Array(N);
+    for (let i=0;i<N;i++) state[i] = Math.random()<0.5?1:0;
+    const rowH = H/N;
+    const colW = 1;
+    let t = 0;
+    function frame(){
+      // draw current column
+      for (let i=0;i<N;i++){
+        cx.fillStyle = state[i] ? '#8A2A42' : '#F6E3E7';
+        cx.fillRect(t*colW, i*rowH, colW, Math.max(1,rowH));
+      }
+      // compute next
+      const next = new Uint8Array(N);
+      for (let i=0;i<N;i++){
+        const a = state[inputs[i][0]];
+        const b = state[inputs[i][1]];
+        next[i] = truth[i][a*2 + b];
+      }
+      state = next;
+      t++;
+      if (t<T) requestAnimationFrame(frame);
+    }
+    frame();
+  };
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)start();}),{threshold:0.1}).observe(cv);
+})();
+
+// ══════════════════════════════════
+// BAK-TANG-WIESENFELD SANDPILE
+// ══════════════════════════════════
+(function(){
+  const cv = document.getElementById('cv-sandpile'); if(!cv) return;
+  const cx = cv.getContext('2d');
+  let started = false;
+  const start = ()=>{
+    if (started) return; started = true;
+    const SIZE = 80;
+    cv.width = SIZE; cv.height = SIZE;
+    cv.style.imageRendering = 'pixelated';
+    const z = new Int8Array(SIZE*SIZE);
+    const img = cx.createImageData(SIZE, SIZE);
+    const COL = [
+      [246,227,231], // 0
+      [212,135,152], // 1
+      [178,76,100],  // 2
+      [138,42,66],   // 3
+      [80,20,35]     // ≥4 (briefly)
+    ];
+    function render(){
+      for (let i=0;i<SIZE*SIZE;i++){
+        const v = Math.min(4, z[i]);
+        const [r,g,b] = COL[v];
+        img.data[i*4]=r; img.data[i*4+1]=g; img.data[i*4+2]=b; img.data[i*4+3]=255;
+      }
+      cx.putImageData(img, 0, 0);
+    }
+    function relax(){
+      let changed = true;
+      let steps = 0;
+      while (changed && steps<1000){
+        changed = false; steps++;
+        for (let y=0;y<SIZE;y++) for (let x=0;x<SIZE;x++){
+          const i = y*SIZE+x;
+          if (z[i] >= 4){
+            z[i] -= 4;
+            if (x>0) z[i-1]++;
+            if (x<SIZE-1) z[i+1]++;
+            if (y>0) z[i-SIZE]++;
+            if (y<SIZE-1) z[i+SIZE]++;
+            changed = true;
+          }
+        }
+      }
+    }
+    function step(){
+      // add multiple grains per frame for visual progress
+      for (let k=0;k<14;k++){
+        const x = Math.floor(SIZE/2 + (Math.random()-0.5)*SIZE*0.6);
+        const y = Math.floor(SIZE/2 + (Math.random()-0.5)*SIZE*0.6);
+        const xi = Math.max(0,Math.min(SIZE-1,x));
+        const yi = Math.max(0,Math.min(SIZE-1,y));
+        z[yi*SIZE + xi]++;
+      }
+      relax();
+      render();
+      requestAnimationFrame(step);
+    }
+    step();
+  };
+  new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)start();}),{threshold:0.1}).observe(cv);
+})();
+</script>
+
+</body>
+</html>
