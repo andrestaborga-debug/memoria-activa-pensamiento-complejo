@@ -1,0 +1,23 @@
+# Cloudflare Pages + Functions configuration for the encrypted vault app.
+# Static assets (the .html files) are served from the repo root; the API lives
+# in functions/api/. See CLOUDFLARE.md for full setup steps.
+
+name = "boveda"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "."
+
+# --- D1 database binding (stores encrypted vault blobs) ---
+# Create it once with:  npx wrangler d1 create boveda
+# then paste the returned database_id below.
+[[d1_databases]]
+binding = "DB"
+database_name = "boveda"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+
+# --- Cloudflare Access settings used by functions/api/vault.js ---
+# ACCESS_TEAM_DOMAIN: your Zero Trust team domain.
+# ACCESS_AUD:         the Audience (AUD) tag of the Access application that
+#                     protects this site (Zero Trust > Access > Applications).
+[vars]
+ACCESS_TEAM_DOMAIN = "https://REPLACE_WITH_YOUR_TEAM.cloudflareaccess.com"
+ACCESS_AUD = "REPLACE_WITH_YOUR_ACCESS_APPLICATION_AUD"
