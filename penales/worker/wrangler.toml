@@ -1,0 +1,21 @@
+name = "penales-worker"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Sirve el frontend estático (penales/public) desde el mismo Worker.
+[assets]
+directory = "../public"
+binding = "ASSETS"
+
+[[durable_objects.bindings]]
+name = "MATCH_ROOM"
+class_name = "MatchRoom"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["MatchRoom"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "penales-db"
+database_id = "REPLACE_WITH_REAL_D1_DATABASE_ID"

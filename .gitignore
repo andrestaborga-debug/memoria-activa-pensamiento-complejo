@@ -18,3 +18,7 @@ desktop.ini
 # Archivos temporales del pipeline OCR (Tesseract + Poppler)
 _*_text.txt
 *.tmp
+
+# Juego de penales (penales/) — dependencias y estado local de Cloudflare Workers
+penales/worker/node_modules/
+penales/worker/.wrangler/

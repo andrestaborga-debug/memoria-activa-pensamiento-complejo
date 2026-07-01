@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Penales — Partida</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>⚽ Penales</h1>
+  <p class="subtitulo">Código de partida: <strong id="codigo-partida"></strong></p>
+
+  <div class="marcador" id="marcador">
+    <div class="jugador-marcador" id="marcador-1">
+      <div class="nombre" id="nombre-1">—</div>
+      <div class="puntos" id="puntos-1"></div>
+    </div>
+    <div class="vs">VS</div>
+    <div class="jugador-marcador" id="marcador-2">
+      <div class="nombre" id="nombre-2">—</div>
+      <div class="puntos" id="puntos-2"></div>
+    </div>
+  </div>
+
+  <div class="estado-partida" id="estado-partida">Conectando…</div>
+  <div class="error" id="error-juego"></div>
+
+  <div class="arco-wrap">
+    <div class="arco" id="arco">
+      <div class="zona" data-zona="1"><span class="num">1</span></div>
+      <div class="zona" data-zona="2"><span class="num">2</span></div>
+      <div class="zona" data-zona="3"><span class="num">3</span></div>
+      <div class="zona" data-zona="4"><span class="num">4</span></div>
+      <div class="zona" data-zona="5"><span class="num">5</span></div>
+      <div class="pelota" id="pelota" style="display:none">⚽</div>
+    </div>
+    <div class="pasto"></div>
+  </div>
+
+  <div class="resultado-tanda" id="resultado-tanda"></div>
+
+  <div class="acciones">
+    <button id="btn-confirmar" style="display:none">Confirmar</button>
+    <button id="btn-volver" class="secundario" style="display:none">Volver al lobby</button>
+  </div>
+
+  <div class="final-banner" id="final-banner" style="display:none"></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
