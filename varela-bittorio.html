@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bittorio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: una columna de lectura; el laboratorio se abre en dos columnas (diagrama espacio-tiempo | anillo + controles) y se apila en móvil. */
+  :root {
+    --bg: #f5f1e8;
+    --paper: #fbf8f1;
+    --ink: #2a2620;
+    --ink-soft: #5b5246;
+    --muted: #7a7060;
+    --rule: #d9cfb8;
+    --accent: #8b3a1f;
+    --absorbed: #b9a98c;
+    --cell-off: #fbf8f1;
+    --cell-on: #2a2620;
+    --font-display: 'Crimson Pro', 'Crimson Text', Georgia, 'Times New Roman', serif;
+    --font-body: 'Crimson Pro', 'Crimson Text', Georgia, serif;
+    --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1b1916; --paper: #24211d; --ink: #ece5d6; --ink-soft: #c6bca9; --muted: #9a8f7c;
+      --rule: #3b362e; --accent: #e08a63; --absorbed: #6e6455; --cell-off: #24211d; --cell-on: #e6dcc8;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1b1916; --paper: #24211d; --ink: #ece5d6; --ink-soft: #c6bca9; --muted: #9a8f7c;
+    --rule: #3b362e; --accent: #e08a63; --absorbed: #6e6455; --cell-off: #24211d; --cell-on: #e6dcc8;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: var(--font-body); font-size: 18px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 40px 20px 64px; }
+  .prose { max-width: 680px; }
+  .kicker {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--muted); margin: 0 0 14px;
+  }
+  h1 { font-family: var(--font-display); font-weight: 500; font-size: clamp(2.6rem, 7vw, 4.2rem); line-height: 1; margin: 0 0 16px; letter-spacing: -.02em; }
+  h1 em { color: var(--accent); }
+  h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.7rem; line-height: 1.2; margin: 0 0 12px; text-wrap: balance; }
+  h3 { font-family: var(--font-mono); font-weight: 500; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0 0 10px; }
+  p { margin: 0 0 14px; }
+  .lead { font-size: 1.15em; color: var(--ink-soft); }
+  em { font-style: italic; }
+  section { margin-top: 48px; }
+  hr { border: 0; border-top: 1px solid var(--rule); margin: 40px 0 0; }
+
+  /* Laboratorio */
+  .lab {
+    margin-top: 32px; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 28px;
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; padding: 22px;
+  }
+  @media (max-width: 760px) { .lab { grid-template-columns: minmax(0, 1fr); padding: 16px; } }
+  .panel { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+  canvas { display: block; width: 100%; height: auto; image-rendering: pixelated; }
+  #st { border: 1px solid var(--rule); }
+  .axis { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--muted); }
+  #ring { max-width: 300px; margin: 0 auto; cursor: crosshair; border-radius: 50%; }
+  #ring:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .hint { font-size: .9em; color: var(--muted); text-align: center; margin: 0; }
+
+  .controls { display: grid; gap: 12px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  button, select, input[type=number] {
+    font-family: var(--font-mono); font-size: 13px; color: var(--ink); background: var(--bg);
+    border: 1px solid var(--rule); border-radius: 4px; padding: 7px 12px;
+  }
+  button { cursor: pointer; }
+  button:hover { border-color: var(--muted); }
+  button.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  select { flex: 1 1 180px; min-width: 0; }
+  input[type=number] { width: 84px; }
+  label { font-family: var(--font-mono); font-size: 12px; color: var(--ink-soft); }
+  .slider { display: grid; grid-template-columns: 110px minmax(0,1fr) 44px; gap: 10px; align-items: center; }
+  .slider output { font-family: var(--font-mono); font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .ruledesc { font-size: .95em; color: var(--ink-soft); margin: 0; min-height: 3em; }
+
+  /* Tabla de la regla (íconos de Wolfram) */
+  .rtable { display: grid; grid-template-columns: repeat(8, minmax(0,1fr)); gap: 4px; }
+  .rcell { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+  .tri { display: flex; gap: 1px; }
+  .tri i, .out i { display: block; width: 9px; height: 9px; border: 1px solid var(--muted); }
+  .tri i.on, .out i.on { background: var(--cell-on); border-color: var(--cell-on); }
+  .out i { width: 9px; }
+
+  /* Contadores */
+  .tally { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 8px; }
+  .tal { border-top: 3px solid var(--rule); padding-top: 6px; }
+  .tal b { display: block; font-family: var(--font-mono); font-size: 20px; font-weight: 500; font-variant-numeric: tabular-nums; }
+  .tal span { font-size: .85em; color: var(--ink-soft); line-height: 1.25; display: block; }
+  .tal.abs { border-color: var(--absorbed); }
+  .tal.sig { border-color: var(--accent); }
+  .tal.sig b { color: var(--accent); }
+  .bar { display: flex; height: 6px; border-radius: 3px; overflow: hidden; background: var(--rule); }
+  .bar div { height: 100%; transition: width .3s; }
+  .bar .b-nada { background: var(--rule); } .bar .b-abs { background: var(--absorbed); } .bar .b-sig { background: var(--accent); }
+
+  .soup { display: flex; flex-wrap: wrap; gap: 3px; font-family: var(--font-mono); font-size: 11px; min-height: 22px; }
+  .soup span { width: 16px; height: 18px; display: inline-flex; align-items: center; justify-content: center; border-radius: 2px; color: var(--muted); background: transparent; border: 1px solid var(--rule); }
+  .soup span.abs { border-color: var(--absorbed); color: var(--ink-soft); }
+  .soup span.sig { background: var(--accent); border-color: var(--accent); color: var(--paper); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .88em; color: var(--ink-soft); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .sw { width: 12px; height: 12px; display: inline-block; border: 2px solid; }
+  .sw.nada { border-color: var(--muted); } .sw.abs { border-color: var(--absorbed); } .sw.sig { border-color: var(--accent); background: var(--accent); }
+
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 22px; margin-top: 18px; }
+  .cards > div { min-width: 0; }
+  .cards p { font-size: .97em; }
+  .note { font-size: .92em; color: var(--muted); }
+  @media (prefers-reduced-motion: reduce) { .bar div { transition: none; } }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="prose">
+    <p class="kicker">Varela · Thompson · Rosch — <em>De cuerpo presente</em>, cap. 8: Enacción</p>
+    <h1><em>Bittorio</em></h1>
+    <p class="lead">Un anillo de 80 células binarias que se recalcula a sí mismo según una regla local. El medio le arroja bits al azar. Lo que cuenta como «evento» para Bittorio no está en los bits: lo decide su propia organización.</p>
+  </header>
+
+  <div class="lab" aria-label="Simulación de Bittorio">
+    <div class="panel">
+      <h3>Diagrama espacio-tiempo</h3>
+      <canvas id="st" width="480" height="540" aria-label="Historia del anillo: cada fila es un instante, el tiempo corre hacia abajo"></canvas>
+      <div class="axis"><span>célula 0</span><span>↓ tiempo</span><span>célula 79</span></div>
+      <div class="legend">
+        <span><i class="sw nada"></i> sin cambio</span>
+        <span><i class="sw abs"></i> absorbida</span>
+        <span><i class="sw sig"></i> deja huella</span>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>El anillo ahora</h3>
+      <canvas id="ring" width="320" height="320" tabindex="0" aria-label="Estado actual del anillo. Haga clic en una célula para perturbarla"></canvas>
+      <p class="hint">Haga clic en una célula para perturbarla a mano.</p>
+
+      <div class="controls">
+        <div class="row">
+          <button id="play" class="primary" type="button">Pausar</button>
+          <button id="stepb" type="button">Un paso</button>
+          <button id="reset" type="button">Reiniciar</button>
+        </div>
+        <div class="row">
+          <label for="preset">Regla</label>
+          <select id="preset">
+            <option value="232">232 · mayoría (clase II)</option>
+            <option value="4">4 · conserva unos aislados (clase II)</option>
+            <option value="108">108 · patrones periódicos (clase II)</option>
+            <option value="90">90 · caótica, XOR (clase III)</option>
+            <option value="110">110 · compleja (clase IV)</option>
+            <option value="custom">otra…</option>
+          </select>
+          <input id="rulenum" type="number" min="0" max="255" value="232" aria-label="Número de regla (0 a 255)">
+        </div>
+        <div class="rtable" id="rtable" aria-label="Tabla de transición de la regla"></div>
+        <p class="ruledesc" id="ruledesc"></p>
+        <div class="slider">
+          <label for="rate">Perturbación</label>
+          <input id="rate" type="range" min="0" max="100" value="25">
+          <output id="rateo">25%</output>
+        </div>
+        <div class="slider">
+          <label for="speed">Velocidad</label>
+          <input id="speed" type="range" min="2" max="40" value="12">
+          <output id="speedo">12/s</output>
+        </div>
+      </div>
+
+      <h3>Encuentros con el medio</h3>
+      <div class="tally">
+        <div class="tal"><b id="cNada">0</b><span>bit que coincide: nada cambia</span></div>
+        <div class="tal abs"><b id="cAbs">0</b><span>cambio que la dinámica disuelve</span></div>
+        <div class="tal sig"><b id="cSig">0</b><span>cambio que la dinámica conserva</span></div>
+      </div>
+      <div class="bar" aria-hidden="true"><div class="b-nada" id="bNada"></div><div class="b-abs" id="bAbs"></div><div class="b-sig" id="bSig"></div></div>
+      <h3>La «sopa» de bits (últimos 36)</h3>
+      <div class="soup" id="soup" aria-label="Últimos bits arrojados por el medio"></div>
+    </div>
+  </div>
+
+  <section class="prose">
+    <h2>Cómo funciona esta reconstrucción</h2>
+    <p>Cada célula vale 0 o 1. En cada instante, todas se recalculan a la vez mirando solo su estado y el de sus dos vecinas, según una tabla de ocho casos (la regla, numerada al modo de Wolfram de 0 a 255). El anillo se cierra sobre sí mismo: la célula 79 es vecina de la 0. Esa es la <em>clausura operacional</em> de Bittorio. Nada de afuera interviene en el cálculo.</p>
+    <p>El medio aparece como una sopa de bits aleatorios. En cada instante, con la probabilidad elegida, un bit cae sobre una célula al azar y le impone su valor. Para clasificar cada encuentro, la simulación corre en paralelo dos futuros de 24 pasos: uno con el bit y otro sin él. Si los futuros se reúnen, la perturbación fue absorbida. Si siguen distintos, dejó huella en la historia del anillo.</p>
+  </section>
+
+  <section class="prose">
+    <h2>Qué muestra el ejemplo</h2>
+    <p>Varela, Thompson y Rosch presentan a Bittorio para mostrar en miniatura qué quieren decir con <em>enacción</em>: la cognición no es la representación de un mundo dado de antemano, sino la emergencia de un mundo a través de la historia de acoplamiento de un sistema autónomo con su medio.</p>
+  </section>
+
+  <div class="cards">
+    <div>
+      <h3>Autonomía</h3>
+      <p>La regla y el cierre del anillo definen qué es Bittorio. El medio no le dice qué hacer. Solo puede gatillar cambios que la propia estructura de Bittorio determina.</p>
+    </div>
+    <div>
+      <h3>El medio no trae significado</h3>
+      <p>Los bits de la sopa son todos iguales: ruido sin propósito. Con la regla 232, un mismo «1» se disuelve en el interior de un bloque y desplaza la frontera si cae en el borde. La diferencia está en el estado de Bittorio, no en el bit.</p>
+    </div>
+    <div>
+      <h3>Un mundo de distinciones</h3>
+      <p>Cada regla recorta la sopa de otra manera. Algunas secuencias de perturbación cuentan y otras no. En el libro, los autores eligen una regla con la que Bittorio responde solo a cierta clase de secuencias. Ese recorte es su «mundo».</p>
+    </div>
+    <div>
+      <h3>Ni rígido ni caótico</h3>
+      <p>Compare las clases. Con la regla 90 casi todo deja huella y no hay selección. Con reglas de clase II, Bittorio se estabiliza y elige. La identidad que distingue necesita estabilidad y, a la vez, plasticidad.</p>
+    </div>
+  </div>
+
+  <hr>
+  <section class="prose">
+    <p class="note">Reconstrucción interactiva inspirada en el capítulo 8 de <em>De cuerpo presente: las ciencias cognitivas y la experiencia humana</em> (Varela, Thompson y Rosch, 1991; ed. castellana Gedisa). Los parámetros del libro (tamaño del anillo, regla exacta, forma de perturbar) pueden diferir de los usados aquí. La clasificación por futuros paralelos es un recurso de esta página para hacer visible la idea, no un procedimiento del texto.</p>
+  </section>
+</div>
+
+<script>
+(() => {
+  const N = 80, ROWS = 90, K = 24, CELL = 6, SOUP = 36;
+  const DESC = {
+    232: 'Cada célula adopta el valor de la mayoría entre ella y sus vecinas. El anillo se ordena en bloques estables. Un bit suelto dentro de un bloque se borra; uno que cae en una frontera la desplaza para siempre.',
+    4: 'Solo sobrevive un 1 rodeado de ceros. Todo lo demás se apaga. Un bit que crea un 1 aislado queda inscrito; uno que toca a otro 1 borra a ambos.',
+    108: 'La dinámica cae en patrones fijos y oscilantes de período 2. Algunas perturbaciones cambian la fase de una zona; la mayoría se disipa.',
+    90: 'Cada célula es el XOR de sus vecinas. Toda diferencia se propaga como un triángulo y nunca se reabsorbe: todo cuenta, y entonces nada se distingue.',
+    110: 'Estructuras que se desplazan y chocan sobre un fondo periódico. Las perturbaciones pueden generar o destruir partículas.'
+  };
+  let rule = 232, rate = .25, speed = 12, running = true;
+  let state, hist, counts, soup, pending;
+
+  const $ = id => document.getElementById(id);
+  const st = $('st'), sx = st.getContext('2d');
+  const ring = $('ring'), rx = ring.getContext('2d');
+
+  function stepOf(s, r) {
+    const n = new Uint8Array(N);
+    for (let i = 0; i < N; i++) {
+      const l = s[(i + N - 1) % N], c = s[i], rr = s[(i + 1) % N];
+      n[i] = (r >> ((l << 2) | (c << 1) | rr)) & 1;
+    }
+    return n;
+  }
+  const same = (a, b) => { for (let i = 0; i < N; i++) if (a[i] !== b[i]) return false; return true; };
+
+  function classify(before, after) {
+    if (same(before, after)) return 'nada';
+    let a = before, b = after;
+    for (let k = 0; k < K; k++) { a = stepOf(a, rule); b = stepOf(b, rule); }
+    return same(a, b) ? 'abs' : 'sig';
+  }
+
+  function perturb(i, bit) {
+    const before = state.slice();
+    state[i] = bit;
+    const type = classify(before, state);
+    counts[type]++;
+    soup.push({ bit, type }); if (soup.length > SOUP) soup.shift();
+    pending.push({ i, type });
+  }
+
+  function tick() {
+    if (Math.random() < rate) perturb((Math.random() * N) | 0, Math.random() < .5 ? 1 : 0);
+    hist.push({ cells: state.slice(), marks: pending }); pending = [];
+    if (hist.length > ROWS) hist.shift();
+    state = stepOf(state, rule);
+  }
+
+  function reset() {
+    state = new Uint8Array(N).map(() => Math.random() < .5 ? 1 : 0);
+    for (let k = 0; k < 30; k++) state = stepOf(state, rule);
+    hist = []; counts = { nada: 0, abs: 0, sig: 0 }; soup = []; pending = [];
+    for (let k = 0; k < ROWS; k++) tick();
+    draw();
+  }
+
+  function colors() {
+    const cs = getComputedStyle(document.documentElement);
+    const g = n => cs.getPropertyValue(n).trim();
+    return { on: g('--cell-on'), off: g('--cell-off'), acc: g('--accent'), abs: g('--absorbed'), muted: g('--muted'), rule: g('--rule'), bg: g('--bg') };
+  }
+
+  function draw() {
+    const c = colors();
+    sx.fillStyle = c.off; sx.fillRect(0, 0, st.width, st.height);
+    const off = ROWS - hist.length;
+    hist.forEach((row, r) => {
+      const y = (r + off) * CELL;
+      sx.fillStyle = c.on;
+      for (let i = 0; i < N; i++) if (row.cells[i]) sx.fillRect(i * CELL, y, CELL, CELL);
+      row.marks.forEach(m => {
+        const col = m.type === 'sig' ? c.acc : m.type === 'abs' ? c.abs : c.muted;
+        sx.strokeStyle = col; sx.lineWidth = 2;
+        sx.strokeRect(m.i * CELL - 2, y - 2, CELL + 4, CELL + 4);
+        if (m.type === 'sig') { sx.fillStyle = col; sx.fillRect(m.i * CELL, y, CELL, CELL); sx.fillStyle = c.on; }
+      });
+    });
+    // anillo
+    const W = ring.width, cx = W / 2, R1 = W / 2 - 8, R0 = R1 - 34;
+    rx.clearRect(0, 0, W, W);
+    const last = hist[hist.length - 1];
+    const lastMarks = new Map((last ? last.marks : []).map(m => [m.i, m.type]));
+    for (let i = 0; i < N; i++) {
+      const a0 = (i / N) * Math.PI * 2 - Math.PI / 2, a1 = ((i + 1) / N) * Math.PI * 2 - Math.PI / 2;
+      rx.beginPath(); rx.arc(cx, cx, R1, a0 + .01, a1 - .01); rx.arc(cx, cx, R0, a1 - .01, a0 + .01, true); rx.closePath();
+      rx.fillStyle = state[i] ? c.on : c.off; rx.fill();
+      const mt = lastMarks.get(i);
+      rx.strokeStyle = mt === 'sig' ? c.acc : mt === 'abs' ? c.abs : c.rule;
+      rx.lineWidth = mt ? 3 : 1; rx.stroke();
+    }
+    rx.fillStyle = c.muted; rx.font = '500 12px "IBM Plex Mono", monospace'; rx.textAlign = 'center';
+    rx.fillText('regla ' + rule, cx, cx - 4);
+    rx.fillText('t = ' + (hist.length ? tcount : 0), cx, cx + 14);
+    // contadores
+    const tot = counts.nada + counts.abs + counts.sig || 1;
+    $('cNada').textContent = counts.nada; $('cAbs').textContent = counts.abs; $('cSig').textContent = counts.sig;
+    $('bNada').style.width = (100 * counts.nada / tot) + '%';
+    $('bAbs').style.width = (100 * counts.abs / tot) + '%';
+    $('bSig').style.width = (100 * counts.sig / tot) + '%';
+    $('soup').innerHTML = soup.map(s => `<span class="${s.type}">${s.bit}</span>`).join('');
+  }
+
+  let tcount = 0;
+  const realTick = tick;
+  function advance() { realTick(); tcount++; }
+
+  function renderRule() {
+    const t = $('rtable'); t.innerHTML = '';
+    for (let p = 7; p >= 0; p--) {
+      const bits = [(p >> 2) & 1, (p >> 1) & 1, p & 1], out = (rule >> p) & 1;
+      t.insertAdjacentHTML('beforeend',
+        `<div class="rcell" title="${bits.join('')} → ${out}"><div class="tri">${bits.map(b => `<i class="${b ? 'on' : ''}"></i>`).join('')}</div><div class="out"><i class="${out ? 'on' : ''}"></i></div></div>`);
+    }
+    $('ruledesc').textContent = DESC[rule] || 'Regla elegida por usted. Observe qué proporción de perturbaciones deja huella.';
+  }
+
+  function setRule(r) {
+    rule = Math.max(0, Math.min(255, r | 0));
+    $('rulenum').value = rule;
+    $('preset').value = DESC[rule] ? String(rule) : 'custom';
+    renderRule(); tcount = 0; reset(); tcount = ROWS; draw();
+  }
+
+  $('preset').addEventListener('change', e => { if (e.target.value !== 'custom') setRule(+e.target.value); else $('rulenum').focus(); });
+  $('rulenum').addEventListener('change', e => setRule(+e.target.value));
+  $('rate').addEventListener('input', e => { rate = e.target.value / 100; $('rateo').textContent = e.target.value + '%'; });
+  $('speed').addEventListener('input', e => { speed = +e.target.value; $('speedo').textContent = speed + '/s'; });
+  $('play').addEventListener('click', () => { running = !running; $('play').textContent = running ? 'Pausar' : 'Continuar'; });
+  $('stepb').addEventListener('click', () => { advance(); draw(); });
+  $('reset').addEventListener('click', () => setRule(rule));
+
+  ring.addEventListener('click', e => {
+    const b = ring.getBoundingClientRect();
+    const x = (e.clientX - b.left) / b.width - .5, y = (e.clientY - b.top) / b.height - .5;
+    const d = Math.hypot(x, y); if (d < .28 || d > .52) return;
+    let a = Math.atan2(y, x) + Math.PI / 2; if (a < 0) a += Math.PI * 2;
+    const i = Math.floor(a / (Math.PI * 2) * N) % N;
+    perturb(i, 1 - state[i]);
+    hist.push({ cells: state.slice(), marks: pending }); pending = [];
+    if (hist.length > ROWS) hist.shift();
+    state = stepOf(state, rule); tcount++;
+    draw();
+  });
+
+  const mq = matchMedia('(prefers-color-scheme: dark)');
+  mq.addEventListener && mq.addEventListener('change', draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) { running = false; $('play').textContent = 'Continuar'; }
+
+  let acc = 0, prev = performance.now();
+  function loop(now) {
+    const dt = Math.min(250, now - prev); prev = now;
+    if (running && !document.hidden) {
+      acc += dt;
+      const per = 1000 / speed; let n = 0;
+      while (acc >= per && n < 8) { advance(); acc -= per; n++; }
+      if (n) draw();
+    }
+    requestAnimationFrame(loop);
+  }
+
+  renderRule(); reset(); tcount = ROWS; draw();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>

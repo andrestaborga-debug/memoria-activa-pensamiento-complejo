@@ -41,6 +41,7 @@ Vistas disponibles: alfabética · por tradición · por autor · por tema. Bús
 - `Weaving Teams/` — Materiales del taller homónimo (autonomía, dialógico, ecología, emergencia)
 - `composicion-compleja-12.html` y variantes — Taller universitario lúdico de 12 sesiones
 - `ciencia-compleja.html` — Recorrido jugable por la ciencia compleja
+- `varela-bittorio.html` — Simulación interactiva de Bittorio (Varela, Thompson y Rosch, *De cuerpo presente*, cap. 8)
 
 ## Uso
 
