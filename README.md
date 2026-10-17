@@ -37,6 +37,7 @@ Vistas disponibles: alfabética · por tradición · por autor · por tema. Bús
 
 ### Materiales adicionales
 
+- `capsula-de-cuerpo-presente.html` — Cápsula sobre *De cuerpo presente* (*The Embodied Mind*, Varela, Thompson & Rosch): enacción, mente sin yo, vía media, con práctica guiada para el taller
 - `Morin_MetodoI_Diagrams_EN.html` — Diagramas conceptuales del Tomo I de *El Método*
 - `Weaving Teams/` — Materiales del taller homónimo (autonomía, dialógico, ecología, emergencia)
 - `composicion-compleja-12.html` y variantes — Taller universitario lúdico de 12 sesiones

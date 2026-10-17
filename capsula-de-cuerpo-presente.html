@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>De cuerpo presente · Cápsula</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5EFE4;
+    --paper-deep: #EDE5D5;
+    --card: #FBF6EC;
+    --ink: #1F1810;
+    --ink-mid: #5A4D40;
+    --muted: #8A7E6F;
+    --rule: rgba(31,24,16,0.14);
+    --accent: #6b4a3c;        /* color de la tradición "embodied" en el Glosario */
+    --accent-2: #8b3a1f;
+    --accent-dim: rgba(107,74,60,0.08);
+    --c1: #4A3590;            /* cognitivismo */
+    --c2: #1F5E68;            /* emergencia */
+    --c3: #8A2A42;            /* enacción */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.72;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: var(--accent-2); }
+  em { font-style: italic; }
+
+  /* ── Barra superior ── */
+  header {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: 0 1.5rem; height: 50px;
+    background: rgba(245,239,228,0.94); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--rule);
+  }
+  .mono { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; }
+  header a { text-decoration: none; color: var(--accent); }
+  header nav { display: flex; gap: 1.1rem; overflow-x: auto; scrollbar-width: none; }
+  header nav a { color: var(--muted); white-space: nowrap; }
+  header nav a:hover { color: var(--accent); }
+
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 20px; }
+  section { padding: 4.5rem 0; border-bottom: 1px solid var(--rule); }
+  .kicker { color: var(--muted); margin-bottom: 1rem; display: block; }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; letter-spacing: -0.01em; line-height: 1.12; }
+  h1 { font-size: clamp(2.6rem, 8vw, 4.6rem); }
+  h2 { font-size: clamp(1.9rem, 5vw, 2.6rem); margin-bottom: 1.4rem; }
+  h3 { font-size: 1.45rem; margin-bottom: 0.5rem; }
+  h1 em, h2 em, h3 em { color: var(--accent); }
+  p + p { margin-top: 1rem; }
+  .lead { font-size: 1.2rem; color: var(--ink-mid); }
+
+  /* ── Portada ── */
+  .hero { padding: 5.5rem 0 4rem; }
+  .hero .sub { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.5rem; color: var(--ink-mid); margin: 0.6rem 0 2rem; }
+  .ficha { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 2.2rem; }
+  .ficha div { background: var(--card); padding: 0.9rem 1rem; font-size: 0.95rem; }
+  .ficha .mono { display: block; color: var(--muted); margin-bottom: 0.25rem; }
+  .duracion { margin-top: 1.4rem; color: var(--muted); }
+
+  .frase {
+    margin-top: 2.6rem; padding: 1.6rem 1.8rem;
+    border-left: 3px solid var(--accent); background: var(--accent-dim);
+    font-family: 'Cormorant Garamond', serif; font-size: 1.55rem; line-height: 1.35;
+  }
+  .frase .mono { display: block; color: var(--accent); margin-bottom: 0.6rem; font-family: 'Space Mono', monospace; font-size: 10px; }
+
+  /* ── Problema ── */
+  .dos-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 2rem 0; }
+  .polo { background: var(--card); border: 1px solid var(--rule); padding: 1.2rem 1.3rem; }
+  .polo h3 { font-size: 1.25rem; }
+  .polo p { font-size: 0.98rem; color: var(--ink-mid); }
+  .centro { text-align: center; font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-style: italic; color: var(--accent); margin: 0.5rem 0 1.5rem; }
+
+  /* ── Diagrama interactivo ── */
+  .toggle { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.6rem 0 1rem; }
+  .toggle button {
+    font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--card); color: var(--ink-mid); border: 1px solid var(--rule);
+    padding: 0.55rem 0.9rem; cursor: pointer; border-radius: 2px;
+  }
+  .toggle button[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .diagram { background: var(--card); border: 1px solid var(--rule); padding: 1rem; }
+  .diagram svg { width: 100%; height: auto; display: block; }
+  .diagram-caption { margin-top: 0.9rem; font-size: 1rem; color: var(--ink-mid); min-height: 4.5em; }
+  .diagram-caption strong { color: var(--ink); }
+
+  /* ── Tres etapas ── */
+  .etapas { display: grid; gap: 1rem; margin-top: 1.8rem; }
+  .etapa { background: var(--card); border: 1px solid var(--rule); border-top: 3px solid var(--c); padding: 1.3rem 1.4rem; }
+  .etapa .mono { color: var(--c); }
+  .etapa h3 { margin-top: 0.3rem; }
+  .etapa dl { display: grid; grid-template-columns: 9.5rem 1fr; gap: 0.35rem 1rem; font-size: 0.97rem; margin-top: 0.8rem; }
+  .etapa dt { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); padding-top: 0.35rem; }
+  .etapa dd { color: var(--ink-mid); }
+
+  /* ── Conceptos ── */
+  .conceptos { display: grid; gap: 0.7rem; margin-top: 1.6rem; }
+  details.concepto { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--accent); }
+  details.concepto summary {
+    list-style: none; cursor: pointer; padding: 1rem 1.2rem;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem;
+  }
+  details.concepto summary::-webkit-details-marker { display: none; }
+  details.concepto summary h3 { margin: 0; font-size: 1.35rem; }
+  details.concepto summary .mono { color: var(--muted); flex-shrink: 0; }
+  details.concepto summary::after { content: '+'; font-family: 'Space Mono', monospace; color: var(--accent); }
+  details.concepto[open] summary::after { content: '−'; }
+  .concepto-body { padding: 0 1.2rem 1.2rem; font-size: 1rem; color: var(--ink-mid); }
+  .concepto-body .glos { display: inline-block; margin-top: 0.7rem; font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
+
+  /* ── Citas ── */
+  blockquote { margin: 1.6rem 0; padding: 1.2rem 1.4rem; background: var(--card); border: 1px solid var(--rule); }
+  blockquote .en { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; line-height: 1.4; }
+  blockquote .es { margin-top: 0.6rem; font-size: 0.98rem; color: var(--ink-mid); font-style: italic; }
+  blockquote cite { display: block; margin-top: 0.7rem; font-style: normal; color: var(--muted); }
+  .nota { font-size: 0.9rem; color: var(--muted); font-style: italic; }
+
+  /* ── Demo color ── */
+  .color-demo { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--rule); margin-top: 1.4rem; transition: background 0.5s; }
+  .color-demo .lado { height: 190px; display: flex; align-items: center; justify-content: center; transition: background 0.6s; }
+  .color-demo .lado:first-child { background: #2b2b2b; }
+  .color-demo .lado:last-child { background: #e8e8e8; }
+  .color-demo .muestra { width: 70px; height: 70px; background: #8a8a8a; }
+  .color-demo.revelado .lado { background: #8a8a8a; }
+  .color-demo.revelado .muestra { outline: 1px dashed rgba(0,0,0,0.35); }
+
+  /* ── Arquitectura ── */
+  .partes { counter-reset: parte; margin-top: 1.6rem; display: grid; gap: 0.8rem; }
+  .parte { display: grid; grid-template-columns: 3.2rem 1fr; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--rule); }
+  .parte .num { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; color: var(--accent); line-height: 1; }
+  .parte h3 { font-size: 1.25rem; margin-bottom: 0.2rem; }
+  .parte ol { list-style: none; font-size: 0.95rem; color: var(--ink-mid); }
+  .parte ol li span { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); margin-right: 0.4rem; }
+
+  /* ── Puentes ── */
+  .puentes { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.8rem; margin-top: 1.6rem; }
+  .puente { background: var(--card); border: 1px solid var(--rule); padding: 1.1rem 1.2rem; font-size: 0.97rem; color: var(--ink-mid); }
+  .puente h3 { font-size: 1.2rem; color: var(--ink); }
+  .puente a { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; display: inline-block; margin-top: 0.5rem; }
+
+  /* ── Práctica ── */
+  .practica { background: var(--ink); color: var(--paper); }
+  .practica h2 em, .practica h3 em { color: #d9b8a3; }
+  .practica .kicker { color: #b8ab98; }
+  .pasos { list-style: none; counter-reset: paso; margin-top: 1.4rem; }
+  .pasos li { counter-increment: paso; position: relative; padding: 0.8rem 0 0.8rem 3rem; border-top: 1px solid rgba(245,239,228,0.15); }
+  .pasos li::before { content: counter(paso, decimal-leading-zero); position: absolute; left: 0; top: 0.95rem; font-family: 'Space Mono', monospace; font-size: 12px; color: #d9b8a3; }
+  .temporizador { margin-top: 1.6rem; display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+  .temporizador button { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; background: transparent; color: var(--paper); border: 1px solid rgba(245,239,228,0.5); padding: 0.6rem 1rem; cursor: pointer; }
+  .temporizador .t { font-family: 'Space Mono', monospace; font-size: 1.6rem; }
+  .preguntas { margin-top: 2.4rem; }
+  .preguntas li { margin: 0.6rem 0 0 1.2rem; }
+
+  footer { padding: 3rem 0 4rem; font-size: 0.92rem; color: var(--muted); }
+  footer ul { margin: 0.6rem 0 1.6rem 1.2rem; }
+  footer a { text-decoration: none; }
+
+  @media (max-width: 620px) {
+    header nav { display: none; }
+    .dos-col, .color-demo { grid-template-columns: 1fr; }
+    .color-demo .lado { height: 130px; }
+    .etapa dl { grid-template-columns: 1fr; }
+    .etapa dt { padding-top: 0.6rem; }
+    section { padding: 3.2rem 0; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="mono" href="index.html">← Memoria Activa</a>
+  <nav class="mono">
+    <a href="#problema">Problema</a>
+    <a href="#etapas">Tres etapas</a>
+    <a href="#conceptos">Conceptos</a>
+    <a href="#color">Color</a>
+    <a href="#libro">El libro</a>
+    <a href="#puentes">Puentes</a>
+    <a href="#practica">Práctica</a>
+  </nav>
+</header>
+
+<!-- ═════════ PORTADA ═════════ -->
+<section class="hero">
+  <div class="wrap">
+    <span class="kicker mono">Cápsula · Eje 03 · Cognición encarnada</span>
+    <h1>De cuerpo <em>presente</em></h1>
+    <p class="sub">Las ciencias cognitivas y la experiencia humana</p>
+    <p class="lead">Un biólogo chileno, un filósofo y una psicóloga cognitiva se preguntan qué pasaría si la ciencia de la mente tomara en serio <em>la experiencia de quien la vive</em>. Su respuesta abre una vía media entre el realismo ingenuo y el idealismo: la mente y el mundo <em>surgen juntos</em> en la acción.</p>
+
+    <div class="ficha">
+      <div><span class="mono">Autores</span>Francisco J. Varela, Evan Thompson, Eleanor Rosch</div>
+      <div><span class="mono">Original</span><em>The Embodied Mind</em>, MIT Press, 1991</div>
+      <div><span class="mono">En español</span>Gedisa, Barcelona, 1992 (trad. Carlos Gardini)</div>
+      <div><span class="mono">Ed. revisada</span>MIT Press, 2016, con introducciones nuevas</div>
+    </div>
+    <p class="duracion mono">Lectura ≈ 15 min · práctica 10 min</p>
+
+    <div class="frase">
+      <span class="mono">En una frase</span>
+      Conocer no es representar un mundo dado por una mente dada, sino <em>enactuar</em> —hacer emerger— un mundo y una mente a partir de la historia de acciones de un cuerpo vivo.
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ EL PROBLEMA ═════════ -->
+<section id="problema">
+  <div class="wrap">
+    <span class="kicker mono">01 · El punto de partida</span>
+    <h2>Una <em>circularidad</em> fundamental</h2>
+    <p>El libro arranca con una incomodidad: el científico cognitivo estudia la mente desde afuera, pero sólo puede hacerlo <em>con</em> su propia mente, desde adentro de una experiencia que su teoría no incluye. Reflexionamos sobre un mundo que no hicimos, pero lo hacemos con un cuerpo y un lenguaje que ya nos sitúan en él. No hay un punto de vista desde ningún lugar.</p>
+    <p>Los autores, siguiendo a Merleau-Ponty, no intentan escapar de ese círculo: lo convierten en el método. La pregunta deja de ser «¿cómo llega el mundo a la mente?» y pasa a ser «¿cómo se codeterminan?».</p>
+
+    <div class="dos-col">
+      <div class="polo">
+        <span class="mono" style="color:var(--muted)">Ciencia sin experiencia</span>
+        <h3>La mente como mecanismo</h3>
+        <p>Las ciencias cognitivas explican la percepción, la memoria o el yo como procesos subpersonales… y dejan fuera lo que se siente vivirlos.</p>
+      </div>
+      <div class="polo">
+        <span class="mono" style="color:var(--muted)">Experiencia sin método</span>
+        <h3>La vida cotidiana</h3>
+        <p>Vivimos con la certeza de un yo sólido y de un mundo «ahí afuera», sin examinar con disciplina cómo surge esa certeza.</p>
+      </div>
+    </div>
+    <p class="centro">El puente que proponen: la atención plena como método de examen de la experiencia.</p>
+    <p>Para eso recurren a la tradición meditativa budista —<em>śamatha</em> (calma) y <em>vipaśyanā</em> (visión clara)— no como religión, sino como un saber práctico, refinado durante siglos, para observar la mente <em>en acto</em>. Es la primera gran apuesta del libro y lo que lo distingue de cualquier otro manual de ciencia cognitiva de su época.</p>
+
+    <h3 style="margin-top:2.4rem">La <em>ansiedad cartesiana</em></h3>
+    <p>Detrás del problema hay un vértigo: o la mente refleja un mundo con fundamento firme (objetivismo), o todo es invención subjetiva y nada se sostiene (nihilismo). Los autores llaman a ese «o esto o el caos» la <em>ansiedad cartesiana</em>. El libro entero es un intento de disolverla sin caer en ninguno de los dos polos.</p>
+
+    <div class="toggle" role="group" aria-label="Modelos de la relación mente–mundo">
+      <button type="button" data-m="rep" aria-pressed="true">Representación</button>
+      <button type="button" data-m="pro" aria-pressed="false">Proyección</button>
+      <button type="button" data-m="ena" aria-pressed="false">Enacción</button>
+    </div>
+    <div class="diagram">
+      <svg viewBox="0 0 640 260" role="img" aria-labelledby="dg-title">
+        <title id="dg-title">Relación entre mente y mundo según tres modelos</title>
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#6b4a3c"/>
+          </marker>
+        </defs>
+        <!-- Mundo -->
+        <g id="mundo">
+          <circle cx="470" cy="130" r="78" fill="#EDE5D5" stroke="#5A4D40" stroke-width="1.2"/>
+          <text x="470" y="126" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="24" fill="#1F1810">Mundo</text>
+          <text id="mundo-sub" x="470" y="150" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="#8A7E6F">dado de antemano</text>
+        </g>
+        <!-- Mente -->
+        <g id="mente">
+          <circle cx="170" cy="130" r="78" fill="#FBF6EC" stroke="#5A4D40" stroke-width="1.2"/>
+          <text x="170" y="126" text-anchor="middle" font-family="Cormorant Garamond, serif" font-size="24" fill="#1F1810">Mente</text>
+          <text id="mente-sub" x="170" y="150" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="#8A7E6F">espejo interno</text>
+        </g>
+        <!-- Flechas -->
+        <path id="a-rep" d="M390,130 L252,130" stroke="#6b4a3c" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+        <path id="a-pro" d="M250,130 L388,130" stroke="#6b4a3c" stroke-width="2" fill="none" marker-end="url(#ah)" opacity="0"/>
+        <g id="a-ena" opacity="0">
+          <path d="M235,85 C290,30 350,30 405,85" stroke="#8A2A42" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+          <path d="M405,175 C350,230 290,230 235,175" stroke="#8A2A42" stroke-width="2" fill="none" marker-end="url(#ah)"/>
+          <text x="320" y="40" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="#8A2A42">acción sensoriomotora</text>
+          <text x="320" y="232" text-anchor="middle" font-family="Space Mono, monospace" font-size="10" fill="#8A2A42">percepción guiada</text>
+          <text x="320" y="135" text-anchor="middle" font-family="Cormorant Garamond, serif" font-style="italic" font-size="19" fill="#8A2A42">co-emergencia</text>
+        </g>
+      </svg>
+      <p class="diagram-caption" id="dg-caption"></p>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ TRES ETAPAS ═════════ -->
+<section id="etapas">
+  <div class="wrap">
+    <span class="kicker mono">02 · Un recorrido por la ciencia cognitiva</span>
+    <h2>Tres respuestas a <em>«¿qué es conocer?»</em></h2>
+    <p>Los autores reconstruyen la historia de la ciencia cognitiva en tres momentos. Cada uno responde a las mismas preguntas; lo interesante es cómo cambia la respuesta.</p>
+
+    <div class="etapas">
+      <article class="etapa" style="--c:var(--c1)">
+        <span class="mono">Etapa 1 · años 50–70</span>
+        <h3>Cognitivismo</h3>
+        <dl>
+          <dt>¿Qué es conocer?</dt><dd>Procesar información: computar símbolos según reglas.</dd>
+          <dt>¿Cómo funciona?</dt><dd>Un sistema manipula representaciones discretas, como un ordenador con su programa.</dd>
+          <dt>¿Cuándo funciona bien?</dt><dd>Cuando sus símbolos representan correctamente un rasgo del mundo real.</dd>
+          <dt>Lo que se pierde</dt><dd>El cuerpo, la experiencia y —sobre todo— el yo, que no aparece en ningún lugar del procesamiento.</dd>
+        </dl>
+      </article>
+      <article class="etapa" style="--c:var(--c2)">
+        <span class="mono">Etapa 2 · años 80</span>
+        <h3>Emergencia (conexionismo)</h3>
+        <dl>
+          <dt>¿Qué es conocer?</dt><dd>La aparición de estados globales en una red de componentes simples.</dd>
+          <dt>¿Cómo funciona?</dt><dd>Reglas locales y conexiones que cambian; el orden emerge sin un controlador central.</dd>
+          <dt>¿Cuándo funciona bien?</dt><dd>Cuando las propiedades emergentes corresponden a una capacidad cognitiva adecuada.</dd>
+          <dt>Lo que se pierde</dt><dd>Sigue suponiendo un mundo dado al que la red debe ajustarse.</dd>
+        </dl>
+      </article>
+      <article class="etapa" style="--c:var(--c3)">
+        <span class="mono">Etapa 3 · la propuesta del libro</span>
+        <h3>Enacción</h3>
+        <dl>
+          <dt>¿Qué es conocer?</dt><dd>Acción efectiva: la historia de un acoplamiento estructural que hace emerger un mundo.</dd>
+          <dt>¿Cómo funciona?</dt><dd>Redes sensoriomotoras interconectadas en un cuerpo que actúa en un medio.</dd>
+          <dt>¿Cuándo funciona bien?</dt><dd>Cuando el sistema se integra a un mundo de sentido en curso —o forma uno nuevo— y sigue viviendo.</dd>
+          <dt>Lo que se gana</dt><dd>Mente y mundo dejan de ser polos separados: se especifican mutuamente.</dd>
+        </dl>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ CONCEPTOS ═════════ -->
+<section id="conceptos">
+  <div class="wrap">
+    <span class="kicker mono">03 · Vocabulario esencial</span>
+    <h2>Siete <em>conceptos</em> para llevarse</h2>
+    <p>Abre cada uno. Los enlaces llevan a la entrada correspondiente del Glosario unificado, con la cita literal verificada.</p>
+
+    <div class="conceptos">
+      <details class="concepto">
+        <summary><h3>Enacción</h3><span class="mono">cap. 8</span></summary>
+        <div class="concepto-body">
+          <p>Del inglés <em>to enact</em>: poner en acto, representar en el sentido teatral. La cognición no recupera un mundo preexistente ni lo proyecta desde adentro: lo trae a la mano a través de la acción. Dos tesis la definen: la percepción es acción guiada perceptivamente, y las estructuras cognitivas emergen de los patrones sensoriomotores recurrentes que permiten guiar esa acción.</p>
+          <a class="glos" href="Glosario - Pensamiento Complejo.html#enaccion">Glosario · Enacción →</a>
+        </div>
+      </details>
+      <details class="concepto">
+        <summary><h3>Acción encarnada</h3><span class="mono">cap. 8</span></summary>
+        <div class="concepto-body">
+          <p>«Encarnada» significa dos cosas: que la cognición depende de tener un cuerpo con capacidades sensoriomotoras concretas, y que esas capacidades están inmersas en un contexto biológico, psicológico y cultural más amplio. «Acción» subraya que percepción y movimiento son inseparables. El cuerpo no es el vehículo de la mente: es su condición.</p>
+          <a class="glos" href="Glosario - Pensamiento Complejo.html#accion-encarnada">Glosario · Acción encarnada →</a>
+        </div>
+      </details>
+      <details class="concepto">
+        <summary><h3>Mente sin yo</h3><span class="mono">caps. 4 y 6</span></summary>
+        <div class="concepto-body">
+          <p>Cuando la ciencia cognitiva busca el yo, no lo encuentra: sólo halla procesos —una «sociedad de la mente», como diría Minsky—. Cuando el meditador lo busca con atención, tampoco: halla los cinco agregados (forma, sensación, percepción, impulsos, conciencia) surgiendo y cesando. La convergencia es notable. La diferencia, también: la ciencia concluye que el yo es una ilusión y sigue como si nada; la práctica muestra cómo esa ilusión produce apego y sufrimiento, y qué se transforma al verla.</p>
+          <a class="glos" href="Glosario - Pensamiento Complejo.html#sin-yo">Glosario · Sin yo →</a>
+        </div>
+      </details>
+      <details class="concepto">
+        <summary><h3>Ansiedad cartesiana</h3><span class="mono">cap. 7</span></summary>
+        <div class="concepto-body">
+          <p>El anhelo de un fundamento absoluto —dentro (el sujeto) o fuera (el mundo)— y el miedo a que, sin él, sólo quede el caos. Los autores la ven como el motor oculto tanto del objetivismo como del nihilismo, que en el fondo comparten la misma premisa: o hay suelo firme, o no hay nada.</p>
+        </div>
+      </details>
+      <details class="concepto">
+        <summary><h3>Deriva natural</h3><span class="mono">cap. 9</span></summary>
+        <div class="concepto-body">
+          <p>La evolución no optimiza la adaptación a un medio fijo: selecciona lo <em>viable</em>, lo que basta para seguir viviendo. Los organismos y su medio se transforman juntos. Es el correlato evolutivo de la enacción y retoma la idea de <em>El árbol del conocimiento</em>: no hay un camino óptimo trazado, hay caminos que se hacen al andar.</p>
+          <a class="glos" href="Glosario - Pensamiento Complejo.html#hacer-camino-al-andar">Glosario · Hacer camino al andar →</a>
+        </div>
+      </details>
+      <details class="concepto">
+        <summary><h3>Falta de fundamento</h3><span class="mono">caps. 10–11</span></summary>
+        <div class="concepto-body">
+          <p>La <em>śūnyatā</em> («vacuidad») de la escuela Madhyamaka de Nāgārjuna: nada existe por sí mismo, todo surge en codependencia. No significa que nada exista, sino que nada tiene un fundamento independiente —ni el yo ni el mundo—. Para los autores, esta es la salida a la ansiedad cartesiana: una falta de fundamento que no es abismo sino apertura.</p>
+          <a class="glos" href="Glosario - Pensamiento Complejo.html#camino-medio">Glosario · Camino medio →</a>
+        </div>
+      </details>
+      <details class="concepto">
+        <summary><h3>Conciencia plena / conciencia abierta</h3><span class="mono">caps. 2 y 11</span></summary>
+        <div class="concepto-body">
+          <p><em>Mindfulness</em> es estar presente en lo que la mente hace mientras lo hace; <em>awareness</em> es la amplitud que permite ver los patrones de ese hacer. Juntas son el método de examen de la experiencia que el libro propone a la ciencia. En el capítulo final se proyectan hacia la ética: actuar desde la compasión, no desde un yo que defender.</p>
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ CITAS ═════════ -->
+<section id="citas">
+  <div class="wrap">
+    <span class="kicker mono">04 · En sus palabras</span>
+    <h2>Tres <em>citas</em> verificadas</h2>
+    <p class="nota">Texto original de la edición de MIT Press (1991), tal como figura en el Glosario. La versión en español es una traducción propia de trabajo, no la de Gedisa.</p>
+
+    <blockquote>
+      <p class="en">“In a nutshell, the enactive approach consists of two points: (1) perception consists in perceptually guided action and (2) cognitive structures emerge from the recurrent sensorimotor patterns that enable action to be perceptually guided.”</p>
+      <p class="es">En pocas palabras, el enfoque enactivo consiste en dos puntos: (1) la percepción consiste en acción guiada perceptivamente y (2) las estructuras cognitivas emergen de los patrones sensoriomotores recurrentes que permiten que la acción sea guiada perceptivamente.</p>
+      <cite class="mono">Cap. 8 — Enaction: Embodied Cognition</cite>
+    </blockquote>
+
+    <blockquote>
+      <p class="en">“We have spent the first three parts of this book looking for the self, but even when we could not find it, we never doubted the stability of the world.”</p>
+      <p class="es">Hemos pasado las tres primeras partes de este libro buscando el yo, pero aun cuando no pudimos encontrarlo, nunca dudamos de la estabilidad del mundo.</p>
+      <cite class="mono">Cap. 6 — Selfless Minds</cite>
+    </blockquote>
+
+    <blockquote>
+      <p class="en">“We are always constrained by the path we have laid down, but there is no ultimate ground to prescribe the steps that we take.”</p>
+      <p class="es">Siempre estamos condicionados por el camino que hemos trazado, pero no hay un fundamento último que prescriba los pasos que damos.</p>
+      <cite class="mono">Cap. 9 — Evolutionary Path Making and Natural Drift</cite>
+    </blockquote>
+  </div>
+</section>
+
+<!-- ═════════ COLOR ═════════ -->
+<section id="color">
+  <div class="wrap">
+    <span class="kicker mono">05 · El caso de estudio</span>
+    <h2>¿De qué <em>color</em> es este cuadrado?</h2>
+    <p>Para mostrar la enacción en concreto, el capítulo 8 se detiene en el color. El color no está «en» las cosas —la misma longitud de onda se ve distinta según el contexto— ni está sólo «en» la cabeza: depende de la luz, de las superficies, del sistema visual y de la historia evolutiva de cada especie. Las abejas, las palomas y los humanos habitan mundos cromáticos distintos. El color es un ejemplo perfecto de algo que no es ni objetivo ni subjetivo, sino <em>enactuado</em>.</p>
+    <p>Mira los dos cuadrados centrales. ¿Cuál es más claro?</p>
+    <div class="color-demo" id="colorDemo">
+      <div class="lado"><div class="muestra"></div></div>
+      <div class="lado"><div class="muestra"></div></div>
+    </div>
+    <div class="toggle"><button type="button" id="colorBtn" aria-pressed="false">Quitar el contexto</button></div>
+    <p class="nota" id="colorNota">El contraste simultáneo es un fenómeno conocido. Lo que el libro subraya es su consecuencia: no hay un «color verdadero» que el sistema visual se limite a copiar.</p>
+  </div>
+</section>
+
+<!-- ═════════ ARQUITECTURA ═════════ -->
+<section id="libro">
+  <div class="wrap">
+    <span class="kicker mono">06 · Mapa del libro</span>
+    <h2>Cinco partes, <em>once capítulos</em></h2>
+    <p>El libro avanza como un camino: parte de la circularidad, atraviesa el cognitivismo y la emergencia, se detiene ante el abismo del sin-fundamento y termina en una propuesta ética.</p>
+    <div class="partes">
+      <div class="parte"><div class="num">I</div><div>
+        <h3>El punto de partida</h3>
+        <ol><li><span>01</span>Una circularidad fundamental: en la mente del científico reflexivo</li><li><span>02</span>¿Qué entendemos por «experiencia humana»?</li></ol>
+      </div></div>
+      <div class="parte"><div class="num">II</div><div>
+        <h3>Variedades del cognitivismo</h3>
+        <ol><li><span>03</span>Símbolos: la hipótesis cognitivista</li><li><span>04</span>El yo en la tormenta</li></ol>
+      </div></div>
+      <div class="parte"><div class="num">III</div><div>
+        <h3>Variedades de la emergencia</h3>
+        <ol><li><span>05</span>Propiedades emergentes y conexionismo</li><li><span>06</span>Mentes sin yo</li></ol>
+      </div></div>
+      <div class="parte"><div class="num">IV</div><div>
+        <h3>Pasos hacia una vía media</h3>
+        <ol><li><span>07</span>La ansiedad cartesiana</li><li><span>08</span>Enacción: la cognición encarnada</li><li><span>09</span>Hacer camino evolutivo y deriva natural</li></ol>
+      </div></div>
+      <div class="parte"><div class="num">V</div><div>
+        <h3>Mundos sin fundamento</h3>
+        <ol><li><span>10</span>La vía media</li><li><span>11</span>Hacer camino al andar</li></ol>
+      </div></div>
+    </div>
+    <p class="nota" style="margin-top:1.2rem">Títulos traducidos desde el original inglés; pueden variar ligeramente respecto de la edición de Gedisa. El último capítulo toma su título del verso de Antonio Machado: «Caminante, no hay camino, se hace camino al andar».</p>
+  </div>
+</section>
+
+<!-- ═════════ PUENTES ═════════ -->
+<section id="puentes">
+  <div class="wrap">
+    <span class="kicker mono">07 · En la Memoria Activa</span>
+    <h2>Puentes con el <em>corpus</em></h2>
+    <div class="puentes">
+      <div class="puente">
+        <h3>Maturana &amp; Varela</h3>
+        <p><em>De cuerpo presente</em> es la extensión cognitiva de la autopoiesis: si un ser vivo es una unidad que se produce a sí misma, su conocer es el modo en que esa unidad trae un mundo a la mano.</p>
+        <a href="Indice_Memoria_Activa.html#maturana-varela">El árbol del conocimiento →</a>
+      </div>
+      <div class="puente">
+        <h3>Merleau-Ponty</h3>
+        <p>El filósofo tutelar del libro. Su «cuerpo propio» y la idea de que la percepción es un diálogo entre el cuerpo y el mundo anticipan la enacción.</p>
+        <a href="Glosario - Pensamiento Complejo.html#cuerpo-propio">Cuerpo propio →</a>
+      </div>
+      <div class="puente">
+        <h3>Edgar Morin</h3>
+        <p>En <em>El Método III</em> (El conocimiento del conocimiento), Morin también pide una ciencia que incluya al sujeto que conoce. Varela aporta lo que a Morin le falta: un método de primera persona.</p>
+        <a href="Indice_Memoria_Activa.html#morin-3">El Método III →</a>
+      </div>
+      <div class="puente">
+        <h3>Von Foerster</h3>
+        <p>La cibernética de segundo orden, la del observador que se incluye en lo observado, es el clima intelectual del que surge la «circularidad fundamental».</p>
+        <a href="Indice_Memoria_Activa.html#von-foerster">Von Foerster →</a>
+      </div>
+      <div class="puente">
+        <h3>Clark &amp; Friston</h3>
+        <p>La mente predictiva retoma el acoplamiento sensoriomotor pero reintroduce modelos internos. El debate entre enactivismo y procesamiento predictivo sigue abierto.</p>
+        <a href="Indice_Memoria_Activa.html#clark">Mente predictiva →</a>
+      </div>
+      <div class="puente">
+        <h3>Vedānta (contrapunto)</h3>
+        <p>Advaita afirma un fundamento último: Brahman, la conciencia sin segundo. El Madhyamaka que inspira a Varela niega todo fundamento. Dos no-dualismos que vale la pena poner en diálogo.</p>
+        <a href="vedanta/index.html">Guía de Vedānta →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ PRÁCTICA ═════════ -->
+<section id="practica" class="practica">
+  <div class="wrap">
+    <span class="kicker mono">08 · Para el taller</span>
+    <h2>Diez minutos de <em>ciencia en primera persona</em></h2>
+    <p>El libro insiste en que sus ideas no se entienden sólo leyéndolas. Esta práctica, inspirada en la atención plena que describen los autores, sirve para abrir o cerrar una sesión.</p>
+    <ol class="pasos">
+      <li><strong>Postura (1 min).</strong> Siéntate con la espalda erguida y sin rigidez. Nota el peso del cuerpo y los puntos de contacto.</li>
+      <li><strong>Calma (3 min).</strong> Lleva la atención a la respiración. Cada vez que te distraigas, nótalo sin juzgar y vuelve. Eso es <em>śamatha</em>.</li>
+      <li><strong>Observar el surgir (3 min).</strong> Deja de dirigir la atención. Observa qué aparece: una sensación, un sonido, un pensamiento. ¿Aparece primero el contenido o el «yo» que lo tiene?</li>
+      <li><strong>Buscar al observador (2 min).</strong> Intenta encontrar a quien observa. ¿Dónde está? ¿Qué encuentras cuando lo buscas?</li>
+      <li><strong>Volver (1 min).</strong> Abre los ojos. Nota cómo el mundo de la sala «vuelve a aparecer» con sus objetos, sus distancias, sus nombres.</li>
+    </ol>
+    <div class="temporizador">
+      <button type="button" id="timerBtn">Iniciar 10:00</button>
+      <span class="t" id="timerOut" aria-live="polite">10:00</span>
+      <span class="mono" id="timerPaso" style="color:#b8ab98"></span>
+    </div>
+
+    <div class="preguntas">
+      <h3>Preguntas para el <em>diálogo</em></h3>
+      <ul>
+        <li>En el paso 4, ¿encontraste un yo o una sucesión de experiencias? ¿Qué cambia si lo describes de una u otra manera?</li>
+        <li>Piensa en un equipo de trabajo: ¿su «mundo» (lo que considera un problema, una oportunidad) está dado o lo enactúa en su forma de actuar?</li>
+        <li>Si nada tiene fundamento último, ¿desde dónde se decide y se actúa con responsabilidad?</li>
+        <li>¿Qué ganaría una organización si incluyera la experiencia de primera persona en sus diagnósticos, y no sólo los indicadores?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════ CIERRE ═════════ -->
+<footer>
+  <div class="wrap">
+    <span class="kicker mono">Legado y lecturas</span>
+    <p>El libro inauguró el «enactivismo», hoy una de las corrientes centrales de las ciencias cognitivas. Varela lo prolongó en la <em>neurofenomenología</em> (1996), que propone combinar sistemáticamente los datos neurocientíficos con descripciones disciplinadas de la experiencia. Thompson lo desarrolló en <em>Mind in Life</em> (2007). La edición revisada de 2016 incluye nuevas introducciones de Thompson y Rosch que revisan el libro veinticinco años después.</p>
+    <ul>
+      <li>Maturana &amp; Varela, <em>El árbol del conocimiento</em> (1984): la base biológica.</li>
+      <li>Varela, <em>Ética y acción</em> (1992): la dimensión ética del capítulo 11.</li>
+      <li>Thompson, <em>Mind in Life</em> (2007): el desarrollo maduro del enactivismo.</li>
+      <li>Merleau-Ponty, <em>Fenomenología de la percepción</em> (1945): la raíz fenomenológica.</li>
+    </ul>
+    <p><a href="Indice_Memoria_Activa.html#embodied-mind">Ficha en el Índice</a> · <a href="Glosario - Pensamiento Complejo.html">Glosario</a> · <a href="index.html">Inicio</a></p>
+    <p style="margin-top:1rem">Andrés Taborga · Taller TRAMA · Construido con asistencia de Claude (Anthropic) · CC BY-SA 4.0. Las citas pertenecen a sus editores y se reproducen bajo derecho de cita.</p>
+  </div>
+</footer>
+
+<script>
+  // Diagrama: tres modelos de la relación mente–mundo
+  (function () {
+    const textos = {
+      rep: { mente: 'espejo interno', mundo: 'dado de antemano', cap: '<strong>Representación (realismo).</strong> El mundo existe con sus propiedades ya fijadas; la mente lo copia. Conocer bien es reflejar con fidelidad. Es el supuesto del cognitivismo.' },
+      pro: { mente: 'constructora', mundo: 'proyectado', cap: '<strong>Proyección (idealismo).</strong> La mente impone sus categorías y el mundo es su creación. Si se lleva al extremo, no hay nada que contraste lo que pensamos.' },
+      ena: { mente: 'cuerpo en acción', mundo: 'traído a la mano', cap: '<strong>Enacción (vía media).</strong> Ni el mundo ni la mente vienen primero. Se codeterminan en un ciclo de acción y percepción: el organismo selecciona qué cuenta como mundo, y ese mundo modela al organismo.' }
+    };
+    const btns = document.querySelectorAll('.toggle [data-m]');
+    const set = (m) => {
+      btns.forEach(b => b.setAttribute('aria-pressed', b.dataset.m === m));
+      document.getElementById('a-rep').style.opacity = m === 'rep' ? 1 : 0;
+      document.getElementById('a-pro').style.opacity = m === 'pro' ? 1 : 0;
+      document.getElementById('a-ena').style.opacity = m === 'ena' ? 1 : 0;
+      document.getElementById('mente-sub').textContent = textos[m].mente;
+      document.getElementById('mundo-sub').textContent = textos[m].mundo;
+      document.getElementById('dg-caption').innerHTML = textos[m].cap;
+    };
+    btns.forEach(b => b.addEventListener('click', () => set(b.dataset.m)));
+    set('rep');
+  })();
+
+  // Demo de color: contraste simultáneo
+  (function () {
+    const demo = document.getElementById('colorDemo');
+    const btn = document.getElementById('colorBtn');
+    btn.addEventListener('click', () => {
+      const on = demo.classList.toggle('revelado');
+      btn.setAttribute('aria-pressed', on);
+      btn.textContent = on ? 'Devolver el contexto' : 'Quitar el contexto';
+      if (on) document.getElementById('colorNota').innerHTML = 'Son <strong>el mismo gris</strong>. El contexto no distorsiona un color verdadero: forma parte de lo que el color es para un sistema visual.';
+    });
+  })();
+
+  // Temporizador de la práctica
+  (function () {
+    const pasos = [[0, 'Postura'], [60, 'Calma'], [240, 'Observar el surgir'], [420, 'Buscar al observador'], [540, 'Volver']];
+    const out = document.getElementById('timerOut');
+    const paso = document.getElementById('timerPaso');
+    const btn = document.getElementById('timerBtn');
+    let id = null, t = 0;
+    const fmt = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+    const render = () => {
+      out.textContent = fmt(600 - t);
+      const actual = pasos.filter(p => t >= p[0]).pop();
+      paso.textContent = id || t ? actual[1] : '';
+    };
+    btn.addEventListener('click', () => {
+      if (id) { clearInterval(id); id = null; btn.textContent = 'Continuar'; return; }
+      if (t >= 600) t = 0;
+      btn.textContent = 'Pausar';
+      id = setInterval(() => {
+        t++;
+        if (t >= 600) { clearInterval(id); id = null; btn.textContent = 'Reiniciar'; paso.textContent = 'Fin'; out.textContent = '00:00'; return; }
+        render();
+      }, 1000);
+      render();
+    });
+  })();
+</script>
+</body>
+</html>
